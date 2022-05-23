@@ -16,10 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import name.zzhxufeng.wanandroid.screens.WanBottomBar
-import name.zzhxufeng.wanandroid.screens.WanDrawer
-import name.zzhxufeng.wanandroid.screens.WanScreen
-import name.zzhxufeng.wanandroid.screens.WanTopBar
+import name.zzhxufeng.wanandroid.screens.*
 import name.zzhxufeng.wanandroid.ui.theme.WanandroidTheme
 
 
@@ -37,7 +34,7 @@ fun WanAndroid(
 
 ) {
     WanandroidTheme {
-        val allScreens = WanScreen.values().toList()
+        val allScreens = WanScreen.values().toList().filter { it.type == ScreenType.direct }
         val navController = rememberNavController()
         /*TODO 验证：State会触发重组？*/
         val backstackEntry = navController.currentBackStackEntryAsState()
@@ -48,6 +45,8 @@ fun WanAndroid(
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
 
+        val onBackClicked = { navController.popBackStack() }
+
         Scaffold(
             scaffoldState =  scaffoldState,
             modifier = Modifier,
@@ -55,7 +54,7 @@ fun WanAndroid(
                 WanTopBar(
                     title = title.value,
                     onDrawerClick = { scope.launch { scaffoldState.drawerState.open() } },
-                    onSearchClick = { /*TODO navController.navigate("")*/ }
+                    onSearchClick = { navController.navigate(WanScreen.Search.name) }
                 )
             },
             bottomBar = {
@@ -88,6 +87,9 @@ fun WanAndroid(
                 }
                 composable(WanScreen.Projects.name) {
                     Text(text = WanScreen.Projects.name)
+                }
+                composable(WanScreen.Search.name) {
+                    WanSearch { onBackClicked() }
                 }
             }
         }
