@@ -1,6 +1,7 @@
 package name.zzhxufeng.wanandroid.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -15,8 +16,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WanDrawer() {
-    Column {
+fun WanDrawer(
+    onDrawerClick: () -> Unit
+) {
+    Column(
+        Modifier.clickable { onDrawerClick() }
+    ) {
         Info()
         FunctionList()
     }
@@ -91,10 +96,4 @@ fun Info() {
 @Composable
 fun PreviewListRow() {
     FunctionList()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewDrawer() {
-    WanDrawer()
 }

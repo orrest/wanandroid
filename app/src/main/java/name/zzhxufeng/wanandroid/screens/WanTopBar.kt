@@ -8,6 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,7 @@ fun WanTopBar(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         IconButton(onClick = { onDrawerClick() }) {
-            Image(imageVector = Icons.Filled.ExitToApp, contentDescription = "drawer")
+            Image(imageVector = Icons.Filled.Menu, contentDescription = "drawer")
         }
         Text(text = title)
         IconButton(onClick = { onSearchClick() }) {

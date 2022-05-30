@@ -33,6 +33,11 @@ enum class WanScreen (
     Search(
         type = ScreenType.deep,
         icon = Icons.Filled.Search
+    ),
+
+    Web(
+        type = ScreenType.deep,
+        icon = Icons.Filled.Web
     );
 
     /*静态方法*/
@@ -47,6 +52,7 @@ enum class WanScreen (
                 Projects.name -> Projects
                 /*deep compose*/
                 Search.name -> Search
+                Web.name -> Web
                 null -> Home
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }

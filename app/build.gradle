@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    /*hilt*/
+//    id 'kotlin-kapt'
+//    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -46,11 +49,29 @@ android {
 }
 
 dependencies {
+//    /*hilt*/
+//    implementation "com.google.dagger:hilt-android:2.41"
+//    kapt "com.google.dagger:hilt-android-compiler:2.40"
+
+    /*paging*/
+    implementation "androidx.paging:paging-compose:1.0.0-alpha14"
+
+    /*retrofit*/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    /*coroutines in android*/
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    /*accompanist*/
     implementation "androidx.navigation:navigation-compose:2.5.0-rc01"
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
     implementation("com.google.accompanist:accompanist-webview:0.24.9-beta")
     implementation("androidx.compose.material:material-icons-extended:1.2.0-beta02")
 
+    /*compose*/
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"

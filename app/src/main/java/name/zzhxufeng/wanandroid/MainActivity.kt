@@ -1,6 +1,7 @@
 package name.zzhxufeng.wanandroid
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -11,16 +12,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.screens.*
 import name.zzhxufeng.wanandroid.ui.theme.WanandroidTheme
+import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
+import name.zzhxufeng.wanandroid.webview.WanWebView
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,7 +44,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WanAndroid(
-
+    /*
+    * 使用viewModel()要求ViewModel不能有依赖项？
+    * */
+    viewModel: MainViewModel = viewModel()
 ) {
     WanandroidTheme {
         val allScreens = WanScreen.values().toList().filter { it.type == ScreenType.direct }
@@ -45,10 +61,14 @@ fun WanAndroid(
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
 
-        val onBackClicked = { navController.popBackStack() }
+        val onBackClicked = { navController.navigateUp()
+            navController.backQueue.forEach {
+                Log.d("MainActivity", it.destination.toString())
+            }
+        }
 
         Scaffold(
-            scaffoldState =  scaffoldState,
+            scaffoldState = scaffoldState,
             modifier = Modifier,
             topBar = {
                 WanTopBar(
@@ -58,15 +78,29 @@ fun WanAndroid(
                 )
             },
             bottomBar = {
-                WanBottomBar (
+                WanBottomBar(
                     allScreens = allScreens,
-                    onTabSelected = { screen -> navController.navigate(screen.name) },
+                    onTabSelected = { screen ->
+                        navController.navigate(screen.name) {
+                            navController.backQueue.forEach {
+                                Log.d("MainActivity", it.destination.toString())
+                            }
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
                     currentScreen = currentScreen
                 )
             },
             drawerContent = {
-                WanDrawer()
-            }
+                WanDrawer(
+                    onDrawerClick = { scope.launch { scaffoldState.drawerState.close() } },
+                )
+            },
+            drawerGesturesEnabled = false
         ) {
             NavHost(
                 navController = navController,
@@ -74,7 +108,14 @@ fun WanAndroid(
                 modifier = Modifier.padding(it)
             ) {
                 composable(WanScreen.Home.name) {
-                    Text(text = WanScreen.Home.name)
+                    WanHome(
+                        viewModel = viewModel,
+                        onArticleClicked = { url ->
+                            val encode = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+                            Log.d("Encoded url", encode)
+                            navController.navigate("${WanScreen.Web.name}/${encode}")
+                        }
+                    )
                 }
                 composable(WanScreen.Public.name) {
                     Text(text = WanScreen.Public.name)
@@ -91,13 +132,24 @@ fun WanAndroid(
                 composable(WanScreen.Search.name) {
                     WanSearch { onBackClicked() }
                 }
+                composable(
+                    /*这个url作为一个命名参数是不带$的*/
+                    route = "${WanScreen.Web.name}/{url}",
+                    arguments = listOf(
+                        navArgument("url") {
+                            type = NavType.StringType
+                        }
+                    ),
+                ) { backstackEntry ->
+                    val webUrl = backstackEntry.arguments?.getString("url")
+                    val decode = URLDecoder.decode(webUrl, StandardCharsets.UTF_8.toString())
+                    if (decode != null) {
+                        WanWebView(url = decode)
+                    } else {
+                        Text(text = "Error article routing!")
+                    }
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewNav() {
-    WanAndroid()
 }
