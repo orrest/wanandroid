@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.screens
+package name.zzhxufeng.wanandroid.composables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import name.zzhxufeng.wanandroid.screens.WanScreen
 
 @Composable
 fun WanBottomBar(
@@ -33,7 +34,7 @@ fun WanBottomBar(
         ) {
             allScreens.forEach { screen ->
                 WanTab(
-                    text = screen.name,
+                    text = screen.route,
                     icon = screen.icon,
                     onSelected = { onTabSelected(screen) },
                     selected = currentScreen == screen
