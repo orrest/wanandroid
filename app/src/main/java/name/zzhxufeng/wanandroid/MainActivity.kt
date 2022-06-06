@@ -1,7 +1,6 @@
 package name.zzhxufeng.wanandroid
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
@@ -32,56 +31,45 @@ fun AppNavigation(
     mainViewModel:MainViewModel = viewModel()
 ) {
     val navController = rememberNavController()
-    val backstackEntry = navController.currentBackStackEntryAsState()
 
     NavHost(
         navController = navController,
-        startDestination = "home_graph"
+        startDestination = WanNavigation.MAIN_NAV
     ) {
         homeGraph(navController, mainViewModel)
-        publicGraph(navController)
     }
 }
 
+/*
+* 仿佛一个Main容器，一个WebView就足够了
+* */
 fun NavGraphBuilder.homeGraph(navController: NavHostController, viewModel: MainViewModel) {
     navigation(
-        route = "home_graph",
+        route = WanNavigation.MAIN_NAV,
         startDestination = WanScreen.Home.route
     ) {
         composable(route = WanScreen.Home.route) {
             WanHome(
                 viewModel = viewModel,
+                navController = navController,
                 onArticleClicked = { navController.navigate(WanScreen.Web.createRoute(it)) }
             )
         }
 
-        webComposable()
-    }
-}
-
-fun NavGraphBuilder.publicGraph(navController: NavHostController) {
-    navigation(
-        route = "public_graph",
-        startDestination = WanScreen.Public.route
-    ) {
-        composable(route = WanScreen.Public.route) {
-
+        composable(route = WanScreen.Search.route) {
+            WanSearch( onBackClicked = {navController.popBackStack()} )
         }
 
-        webComposable()
-    }
-}
-
-private fun NavGraphBuilder.webComposable() {
-    composable(
-        route = WanScreen.Web.route,
-        arguments = listOf(navArgument("url") { type = NavType.StringType })
-    ) { navBackStackEntry ->
-        val encodedUrl = navBackStackEntry.arguments?.getString("url")
-        if (encodedUrl != null) {
-            WanWebView(url = WanScreen.Web.parseUrl(encodedUrl))
-        } else {
-            Text(text = "不该发生的情况")
+        composable(
+            route = WanScreen.Web.route,
+            arguments = listOf(navArgument("url") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            val encodedUrl = navBackStackEntry.arguments?.getString("url")
+            if (encodedUrl != null) {
+                WanWebView(url = WanScreen.Web.parseUrl(encodedUrl))
+            } else {
+                Text(text = "不该发生的情况")
+            }
         }
     }
 }

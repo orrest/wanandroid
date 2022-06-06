@@ -16,12 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WanDrawer(
-    onDrawerClick: () -> Unit
-) {
-    Column(
-        Modifier.clickable { onDrawerClick() }
-    ) {
+fun WanDrawer() {
+    Column{
         Info()
         FunctionList()
     }

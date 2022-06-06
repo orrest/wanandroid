@@ -8,6 +8,11 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
+object WanNavigation{
+    const val MAIN_NAV = "main"
+    const val PUBLIC_NAV = "public"
+}
+
 sealed class WanScreen (
     val route: String,
     val type: ScreenType,
@@ -66,8 +71,9 @@ sealed class WanScreen (
 
     /*静态方法*/
     companion object {
-        fun fromRouteToScreen(route: String?): WanScreen =
-            when (route?.substringBefore("/")) {
+        fun fromRouteToScreen(route: String?): WanScreen {
+            Log.d("fromRouteToScreen", route.toString())
+            return when (route) {
                 /*direct compose*/
                 Home.route -> Home
                 Public.route -> Public
@@ -80,6 +86,14 @@ sealed class WanScreen (
                 null -> Home
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }
+        }
+
+        fun allScreens(): List<WanScreen> {
+            return mutableListOf(
+                Home,
+                Public
+            )
+        }
     }
 }
 
