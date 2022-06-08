@@ -8,9 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.pagesource.ArticleSource
-import name.zzhxufeng.wanandroid.repository.ArticleModel
-import name.zzhxufeng.wanandroid.repository.ArticleRefreshError
-import name.zzhxufeng.wanandroid.repository.ArticleRepository
+import name.zzhxufeng.wanandroid.repository.*
 
 class MainViewModel : ViewModel() {
     /*ui state*/
@@ -26,14 +24,21 @@ class MainViewModel : ViewModel() {
     var articles = mutableStateOf(listOf<ArticleModel>())
         private set
     private var articlePageId = 0
+
+    var banners = mutableStateOf(listOf<BannerModel>())
         private set
 
-    fun refreshArticles() = launchDataLoad {
+    private fun refreshArticles() = launchDataLoad {
         articles.value = articles.value + ArticleRepository.refreshArticles(articlePageId)
         articlePageId ++
     }
 
+    private fun refreshBanner() = launchDataLoad {
+        banners.value = BannerRepository.refreshBanner()
+    }
+
     init {
+        refreshBanner()
         refreshArticles()
     }
 

@@ -1,11 +1,10 @@
 package name.zzhxufeng.wanandroid.screens
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -14,24 +13,30 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.composables.WanTopBar
 import name.zzhxufeng.wanandroid.repository.ArticleModel
+import name.zzhxufeng.wanandroid.repository.BannerModel
 import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
 
 @Composable
 fun WanHome(
     viewModel: MainViewModel,
     navController: NavHostController,
-    onArticleClicked: (String) -> Unit
+    onArticleClick: (String) -> Unit
 ) {
     /*抽屉*/
     val scaffoldState = rememberScaffoldState()
@@ -59,7 +64,8 @@ fun WanHome(
     * */
     Log.d("currentScreen", currentScreen.toString())
 
-    val state = rememberLazyListState()
+    val articleListState = rememberLazyListState()
+    val imageListState = rememberLazyListState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -87,10 +93,24 @@ fun WanHome(
 
         when (selectedScreen.value) {
             WanScreen.Home -> {
-                HomeArticleList(
+                /*
+                * 如果
+                * LazyColumn#
+                *   LazyRow
+                *   LazyColumn*
+                * 那么LazyColumn*的滚动与LazyColumn#的滚动是分开的，造成非预期的滚动效果。
+                *
+                * 所以需要
+                * LazyColumn
+                *   item    { LazyRow }
+                *   items   { }
+                * 此时LazyRow仅仅属于一个LazyColumn，因此会跟随列表一起向上滚动。
+                * */
+                Home(
                     viewModel = viewModel,
-                    onArticleClicked = onArticleClicked,
-                    state = state
+                    onArticleClicked = onArticleClick,
+                    state = articleListState,
+                    imageListState = imageListState
                 )
             }
             WanScreen.Public -> {
@@ -102,26 +122,89 @@ fun WanHome(
 }
 
 @Composable
-private fun HomeArticleList(
+fun HomeImageList(
+    banners: List<BannerModel>,
+    navigateToArticle: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState()
+) {
+    LazyRow(modifier = modifier.padding(5.dp), state = state) {
+       items(banners) { item ->
+           BannerImage(
+               banner = item,
+               onBannerClick = navigateToArticle,
+               modifier = Modifier.padding(horizontal = 8.dp)
+           )
+       }
+    }
+}
+
+@Composable
+fun BannerImage(
+    banner: BannerModel,
+    onBannerClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier.size(400.dp, 240.dp)
+    ) {
+        Column(
+            modifier = Modifier.clickable { onBannerClick(banner.url) }
+        ){
+            val painter = rememberImagePainter(
+                data = banner.imagePath,
+                builder = { transformations(RoundedCornersTransformation()) }
+            )
+
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth(),
+            )
+
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = banner.title,
+                    style = MaterialTheme.typography.h6,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Home(
     viewModel: MainViewModel,
     onArticleClicked: (String) -> Unit,
-    state: LazyListState
+    state: LazyListState = rememberLazyListState(),
+    imageListState: LazyListState,
 ) {
     Log.d("WanHome#HomeArticleList",
         "entering... ${state.firstVisibleItemIndex}, ${state.firstVisibleItemScrollOffset}")
+
     val flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
 
     // A Google issue: https://issuetracker.google.com/issues/177245496?pli=1
-    val refresh = flowItems.loadState.refresh
-    if (flowItems.itemCount == 0 && refresh is LoadState.NotLoading ) {
-        Log.d("WanHome#HomeArticleList", "skip...")
-        return //skip dummy state, waiting next compose
-    }
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-        state = state
+        state = state,
+        modifier = Modifier.height(900.dp)
     ) {
+        item{
+            HomeImageList(
+                banners = viewModel.banners.value,
+                navigateToArticle = onArticleClicked,
+                state = imageListState
+            )
+        }
+
         items(flowItems) { item ->
             if (item == null) {
                 NetworkErrorIndicator()
@@ -130,6 +213,7 @@ private fun HomeArticleList(
             }
             Divider(color = Color.Gray, thickness = 1.dp)
         }
+
         flowItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
