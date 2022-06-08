@@ -52,7 +52,7 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController, viewModel: MainV
             WanHome(
                 viewModel = viewModel,
                 navController = navController,
-                onArticleClicked = { navController.navigate(WanScreen.Web.createRoute(it)) }
+                onArticleClick = { navController.navigate(WanScreen.Web.createRoute(it)) }
             )
         }
 
