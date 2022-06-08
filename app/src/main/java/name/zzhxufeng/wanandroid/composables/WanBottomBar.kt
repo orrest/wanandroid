@@ -8,9 +8,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,12 +34,12 @@ fun WanBottomBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            /*
-            * 没有触发bottombar的重组
-            * */
-            Log.d("WanBottomBar", "recomposing...")
-
             allScreens.forEach { screen ->
+                if (screen == currentScreen) {
+                    Log.d("WanBottomBar#screen#WanTab", "currentScreen ${screen.route}")
+                }
+                Log.d("WanBottomBar#screen#WanTab", "${screen.route} recomposing...")
+
                 WanTab(
                     text = screen.route,
                     icon = screen.icon,
@@ -61,20 +58,14 @@ fun WanTab(
     selected: Boolean,
     onScreenSelected: () -> Unit
 ) {
-    val iconColor = remember { mutableStateOf(Color.Black) }
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.selectable(
             selected = selected,
             onClick = {
-                onScreenSelected()
                 Log.d("WanBottomBar#WanTab", "onClick...")
-                if (selected) {
-                    iconColor.value = Color.Red
-                } else {
-                    iconColor.value = Color.Black
-                }
+                onScreenSelected()
             },
             role = Role.Tab,
         )
@@ -82,7 +73,7 @@ fun WanTab(
         Icon(
             imageVector = icon,
             contentDescription = "icon",
-            tint = iconColor.value
+            tint = if (selected) Color.Red else Color.Black
         )
         Text(text = text)
     }

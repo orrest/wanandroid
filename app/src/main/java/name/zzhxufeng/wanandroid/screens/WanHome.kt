@@ -77,7 +77,7 @@ fun WanHome(
                 /*让这个状态的改变发生的事件发生在它该发生的地方*/
                 /*这个状态反过来影响这个地方的重组*/
                 onScreenSelected = { screen -> selectedScreen.value = screen },
-                currentScreen = currentScreen
+                currentScreen = selectedScreen.value
             )
         },
         drawerContent = { WanDrawer() },
