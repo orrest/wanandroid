@@ -22,27 +22,22 @@ sealed class WanScreen (
     /*main*/
     object Home: WanScreen (
         route = "Home",
-        type = ScreenType.direct,
+        type = ScreenType.main,
         icon = Icons.Filled.Home
-    )
-    object Public: WanScreen (
-        route = "Public",
-        type = ScreenType.direct,
-        icon = Icons.Filled.Place
     )
     object Posts: WanScreen (
         route = "Posts",
-        type = ScreenType.direct,
+        type = ScreenType.main,
         icon = Icons.Filled.Notifications
     )
     object Path: WanScreen (
         route = "Path",
-        type = ScreenType.direct,
+        type = ScreenType.main,
         icon = Icons.Filled.Person
     )
     object Projects: WanScreen (
         route = "Projects",
-        type = ScreenType.direct,
+        type = ScreenType.main,
         icon = Icons.Filled.Face
     )
 
@@ -76,7 +71,6 @@ sealed class WanScreen (
             return when (route) {
                 /*direct compose*/
                 Home.route -> Home
-                Public.route -> Public
                 Posts.route -> Posts
                 Path.route -> Path
                 Projects.route -> Projects
@@ -91,13 +85,15 @@ sealed class WanScreen (
         fun allScreens(): List<WanScreen> {
             return mutableListOf(
                 Home,
-                Public
+                Posts,
+                Path,
+                Projects,
             )
         }
     }
 }
 
 enum class ScreenType {
-    direct,
+    main,
     deep
 }

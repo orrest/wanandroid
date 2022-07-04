@@ -12,10 +12,11 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import name.zzhxufeng.wanandroid.screens.WanScreen
 
 @Composable
 fun WanTopBar(
-    title: String,
+    currentScreen: WanScreen,
     onDrawerClick: () -> Unit,
     onSearchClick: () -> Unit
 ) {
@@ -27,7 +28,7 @@ fun WanTopBar(
         IconButton(onClick = { onDrawerClick() }) {
             Image(imageVector = Icons.Filled.Menu, contentDescription = "drawer")
         }
-        Text(text = title)
+        Text(text = currentScreen.route)
         IconButton(onClick = { onSearchClick() }) {
             Image(imageVector = Icons.Filled.Search, contentDescription = "search")
         }
