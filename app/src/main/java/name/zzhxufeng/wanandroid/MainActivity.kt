@@ -40,16 +40,13 @@ fun AppNavigation(
     }
 }
 
-/*
-* 仿佛一个Main容器，一个WebView就足够了
-* */
 fun NavGraphBuilder.homeGraph(navController: NavHostController, viewModel: MainViewModel) {
     navigation(
         route = WanNavigation.MAIN_NAV,
         startDestination = WanScreen.Home.route
     ) {
         composable(route = WanScreen.Home.route) {
-            WanHome(
+            WanMainContainer(
                 viewModel = viewModel,
                 navController = navController,
                 onArticleClick = { navController.navigate(WanScreen.Web.createRoute(it)) }
@@ -57,7 +54,7 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController, viewModel: MainV
         }
 
         composable(route = WanScreen.Search.route) {
-            WanSearch( onBackClicked = {navController.popBackStack()} )
+            WanSearch( onBackClicked = {navController.navigateUp()} )
         }
 
         composable(

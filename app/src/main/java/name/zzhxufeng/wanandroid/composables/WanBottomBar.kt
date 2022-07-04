@@ -35,6 +35,9 @@ fun WanBottomBar(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             allScreens.forEach { screen ->
+                /*
+                * 要么通过遍历的方式，要么每个Tab单独写。
+                * */
                 if (screen == currentScreen) {
                     Log.d("WanBottomBar#screen#WanTab", "currentScreen ${screen.route}")
                 }

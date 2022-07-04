@@ -18,9 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
@@ -33,7 +31,7 @@ import name.zzhxufeng.wanandroid.repository.BannerModel
 import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
 
 @Composable
-fun WanHome(
+fun WanMainContainer(
     viewModel: MainViewModel,
     navController: NavHostController,
     onArticleClick: (String) -> Unit
@@ -52,28 +50,17 @@ fun WanHome(
     /*只需要初始化一次，并且不需要作为state更新*/
     val allScreens = remember { WanScreen.allScreens() }
 
-    /*作为state，它的更新会触发重组; 每次重组重新计算currentRoute*/
-    val backstackEntry = navController.currentBackStackEntryAsState()
-    val currentScreen = WanScreen.fromRouteToScreen(
-        backstackEntry.value?.destination?.route
-    )
-
-    /*
-    * TODO
-    * 这个currentScreen一直是Home容器，没有发生变化，（并且它也不是一个State）
-    * */
-    Log.d("currentScreen", currentScreen.toString())
-
-    val articleListState = rememberLazyListState()
-    val imageListState = rememberLazyListState()
+    Log.d("selectedScreen", selectedScreen.toString())
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             WanTopBar(
-                title = "首页",
+                currentScreen = selectedScreen.value,
                 onDrawerClick = { scope.launch { scaffoldState.drawerState.open() } },
-                onSearchClick = { navController.navigate(WanScreen.Search.route) }
+                onSearchClick = { navController.navigate(WanScreen.Search.route) {
+                    launchSingleTop = true
+                } }
             )
         },
         bottomBar = {
@@ -109,12 +96,16 @@ fun WanHome(
                 Home(
                     viewModel = viewModel,
                     onArticleClicked = onArticleClick,
-                    state = articleListState,
-                    imageListState = imageListState
                 )
             }
-            WanScreen.Public -> {
-                Text("Public")
+            WanScreen.Posts -> {
+                Text("Posts")
+            }
+            WanScreen.Path -> {
+                Text("Path")
+            }
+            WanScreen.Projects -> {
+                Text("Projects")
             }
             else -> {}
         }
@@ -126,9 +117,8 @@ fun HomeImageList(
     banners: List<BannerModel>,
     navigateToArticle: (String) -> Unit,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState()
 ) {
-    LazyRow(modifier = modifier.padding(5.dp), state = state) {
+    LazyRow(modifier = modifier.padding(5.dp)) {
        items(banners) { item ->
            BannerImage(
                banner = item,
@@ -182,26 +172,19 @@ fun BannerImage(
 private fun Home(
     viewModel: MainViewModel,
     onArticleClicked: (String) -> Unit,
-    state: LazyListState = rememberLazyListState(),
-    imageListState: LazyListState,
 ) {
-    Log.d("WanHome#HomeArticleList",
-        "entering... ${state.firstVisibleItemIndex}, ${state.firstVisibleItemScrollOffset}")
-
     val flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
 
     // A Google issue: https://issuetracker.google.com/issues/177245496?pli=1
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-        state = state,
         modifier = Modifier.height(900.dp)
     ) {
         item{
             HomeImageList(
                 banners = viewModel.banners.value,
                 navigateToArticle = onArticleClicked,
-                state = imageListState
             )
         }
 
