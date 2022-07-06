@@ -1,5 +1,6 @@
 package name.zzhxufeng.wanandroid.viewmodels
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,9 +21,10 @@ class MainViewModel : ViewModel() {
     val snackBar = mutableStateOf<String?>(null)
 
     /*paging flow*/
-    val articleFlow = Pager(PagingConfig(pageSize = 20)){
-        ArticleSource()
-    }.flow.cachedIn(viewModelScope)
+    val articleFlow = Pager(
+        config = PagingConfig(pageSize = 20),
+        pagingSourceFactory = { ArticleSource() }
+    ).flow.cachedIn(viewModelScope)
 
     /*data*/
     var articles = mutableStateOf(listOf<ArticleModel>())
@@ -31,6 +33,9 @@ class MainViewModel : ViewModel() {
 
     var banners = mutableStateOf(listOf<BannerModel>())
         private set
+
+    val posts = mutableStateListOf<ArticleModel>()
+    private var postsPageId = 0
 
     private fun refreshArticles() = launchDataLoad {
         articles.value = articles.value + ArticleRepository.refreshArticles(articlePageId)
@@ -41,7 +46,12 @@ class MainViewModel : ViewModel() {
         banners.value = BannerRepository.refreshBanner()
     }
 
+    private fun refreshPosts() = launchDataLoad {
+        posts.addAll(PostsRepository.refreshPosts(postsPageId++))
+    }
+
     init {
+        /*refresh the main page*/
         refreshBanner()
         refreshArticles()
     }

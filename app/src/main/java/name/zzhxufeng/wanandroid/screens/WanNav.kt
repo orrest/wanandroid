@@ -21,29 +21,29 @@ sealed class WanScreen (
 
     /*main*/
     object Home: WanScreen (
-        route = "Home",
+        route = "首页",
         type = ScreenType.main,
         icon = Icons.Filled.Home
     )
     object Posts: WanScreen (
-        route = "Posts",
+        route = "广场",
         type = ScreenType.main,
         icon = Icons.Filled.Notifications
     )
     object Path: WanScreen (
-        route = "Path",
+        route = "体系",
         type = ScreenType.main,
         icon = Icons.Filled.Person
     )
     object Projects: WanScreen (
-        route = "Projects",
+        route = "项目",
         type = ScreenType.main,
         icon = Icons.Filled.Face
     )
 
     /*deep*/
     object Search: WanScreen(
-        route = "Search",
+        route = "搜索",
         type = ScreenType.deep,
         icon = Icons.Filled.Search
     )
