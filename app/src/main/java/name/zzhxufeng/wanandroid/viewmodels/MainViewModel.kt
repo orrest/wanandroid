@@ -1,6 +1,5 @@
 package name.zzhxufeng.wanandroid.viewmodels
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +9,12 @@ import androidx.paging.cachedIn
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.pagesource.ArticleSource
 import name.zzhxufeng.wanandroid.repository.*
+import name.zzhxufeng.wanandroid.screens.WanScreen
 
 class MainViewModel : ViewModel() {
+
+    val selectedScreen =  mutableStateOf<WanScreen>(WanScreen.Home)
+
     /*ui state*/
     val spinner = mutableStateOf(false)
     val snackBar = mutableStateOf<String?>(null)

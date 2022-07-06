@@ -45,12 +45,13 @@ fun WanMainContainer(
     * remember意味着使用同一个变量，只初始化一次
     * state代表它将触发重组
     * */
-    val selectedScreen = remember { mutableStateOf<WanScreen>(WanScreen.Home) }
+    val selectedScreen = viewModel.selectedScreen
 
     /*只需要初始化一次，并且不需要作为state更新*/
     val allScreens = remember { WanScreen.allScreens() }
 
     Log.d("selectedScreen", selectedScreen.toString())
+    Log.d("Is this the same ViewModel?", viewModel.toString())
 
     Scaffold(
         scaffoldState = scaffoldState,
