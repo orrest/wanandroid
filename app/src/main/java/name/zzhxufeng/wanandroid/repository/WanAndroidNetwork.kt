@@ -5,8 +5,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 
 object WanAndroidNetwork {
@@ -21,6 +19,7 @@ object WanAndroidNetwork {
     private val articleService = retrofit.create(ArticleInterface::class.java)
     private val bannerService = retrofit.create(BannerInterface::class.java)
     private val postsService = retrofit.create(PostsInterface::class.java)
+    private val projectService = retrofit.create(ProjectInterface::class.java)
 
     suspend fun fetchArticles(id: Int): List<ArticleModel>
     = withContext(Dispatchers.Default){
@@ -36,8 +35,20 @@ object WanAndroidNetwork {
     }
 
     suspend fun fetchPosts(id: Int): List<ArticleModel>
-            = withContext(Dispatchers.Default) {
+    = withContext(Dispatchers.Default) {
         delay(500)
         postsService.fetchPosts(id).data.datas
     }
+
+    suspend fun fetchProjects(): List<ProjectNameModel>
+    = withContext(Dispatchers.Default) {
+        delay(500)
+        projectService.fetchProjectsName().data
+    }
 }
+
+data class WanResponse<T>(
+    val data: T,
+    val errorCode: Int,
+    val errorMsg: String
+)

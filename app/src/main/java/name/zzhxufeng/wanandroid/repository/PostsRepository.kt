@@ -12,7 +12,7 @@ object PostsRepository{
 
 interface PostsInterface {
     @GET("user_article/list/{id}/json")
-    suspend fun fetchPosts(@Path("id") id: Int): ArticleResponse
+    suspend fun fetchPosts(@Path("id") id: Int): WanResponse<ArticleData>
 }
 
 /**

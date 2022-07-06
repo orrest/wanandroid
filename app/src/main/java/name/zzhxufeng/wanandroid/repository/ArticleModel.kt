@@ -10,13 +10,7 @@ package name.zzhxufeng.wanandroid.repository
 *   优点：结构化、避免解析出错
 *   缺点：接口如果有变动，需要修改数据类型； 数据冗余
 * */
-data class ArticleResponse(
-    val data: DataObject,
-    val errorCode: Int,
-    val errorMsg: String
-)
-
-data class DataObject(
+data class ArticleData(
     val curPage: Int,
     val datas: List<ArticleModel>,
     val offset: Int,

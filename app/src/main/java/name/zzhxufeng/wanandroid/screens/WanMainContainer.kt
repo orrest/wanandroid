@@ -72,7 +72,10 @@ fun WanMainContainer(
                 Text("Path")
             }
             WanScreen.Projects -> {
-                Text("Projects")
+                WanProject(
+                    viewModel = viewModel,
+                    onArticleClick = onArticleClick
+                )
             }
             else -> {}
         }

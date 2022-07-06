@@ -13,31 +13,33 @@ import name.zzhxufeng.wanandroid.screens.WanScreen
 import name.zzhxufeng.wanandroid.utils.DEFAULT_PAGING_SIZE
 
 class MainViewModel : BaseViewModel() {
-/*ui state*/
     val selectedScreen = mutableStateOf<WanScreen>(WanScreen.Home)
 
-/*data*/
-    /*paging flow*/
+    /*bottom bar 1*/
     val articleFlow = Pager(
         config = PagingConfig(pageSize = DEFAULT_PAGING_SIZE /*这个要和服务器返回的每页数据量对应着才行...*/),
         pagingSourceFactory = { ArticleSource() }
     ).flow.cachedIn(viewModelScope)
 
+    val banners = mutableStateListOf<BannerModel>()
+    private fun refreshBanner() = launchDataLoad {
+        banners.addAll(BannerRepository.refreshBanner())
+    }
+
+    /*bottom bar 2*/
     val postsFlow = Pager(
         config = PagingConfig(pageSize = DEFAULT_PAGING_SIZE),
         pagingSourceFactory = { PostsSource() }
     ).flow.cachedIn(viewModelScope)
 
-    /*banner*/
-    /*Maybe there's no need to paging this.*/
-    val banners = mutableStateListOf<BannerModel>()
-
-    private fun refreshBanner() = launchDataLoad {
-        banners.addAll(BannerRepository.refreshBanner())
+    /*bottom bar 4*/
+    val projectsName = mutableStateListOf<ProjectNameModel>()
+    fun refreshProjectsName() = launchDataLoad {
+        projectsName.addAll(ProjectsRepository.refreshProjectsName())
     }
 
     init {
-        /*refresh the main page*/
         refreshBanner()
+        refreshProjectsName()
     }
 }
