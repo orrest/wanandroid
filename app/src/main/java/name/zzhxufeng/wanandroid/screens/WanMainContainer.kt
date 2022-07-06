@@ -57,26 +57,16 @@ fun WanMainContainer(
 
         when (selectedScreen.value) {
             WanScreen.Home -> {
-                /*
-                * 如果
-                * LazyColumn#
-                *   LazyRow
-                *   LazyColumn*
-                * 那么LazyColumn*的滚动与LazyColumn#的滚动是分开的，造成非预期的滚动效果。
-                *
-                * 所以需要
-                * LazyColumn
-                *   item    { LazyRow }
-                *   items   { }
-                * 此时LazyRow仅仅属于一个LazyColumn，因此会跟随列表一起向上滚动。
-                * */
-                Home(
+                WanHome(
                     viewModel = viewModel,
-                    onArticleClicked = onArticleClick,
+                    onArticleClick = onArticleClick,
                 )
             }
             WanScreen.Posts -> {
-                Text("Posts")
+                WanPosts(
+                    viewModel = viewModel,
+                    onArticleClick = onArticleClick
+                )
             }
             WanScreen.Path -> {
                 Text("Path")

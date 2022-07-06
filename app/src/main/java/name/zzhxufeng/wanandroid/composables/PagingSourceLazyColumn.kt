@@ -61,7 +61,7 @@ fun <T : Any> PagingSourceLazyColumn(
 }
 
 @Composable
-private fun BottomSnackBar(
+fun BottomSnackBar(
     errorMsg: String
 ) {
     Box(

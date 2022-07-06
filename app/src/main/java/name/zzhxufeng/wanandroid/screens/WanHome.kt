@@ -3,41 +3,79 @@ package name.zzhxufeng.wanandroid.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import name.zzhxufeng.wanandroid.composables.PagingSourceLazyColumn
-import name.zzhxufeng.wanandroid.repository.ArticleModel
+import name.zzhxufeng.wanandroid.composables.*
 import name.zzhxufeng.wanandroid.repository.BannerModel
 import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
 
+/*
+* 如果
+* LazyColumn#
+*   LazyRow
+*   LazyColumn*
+* 那么LazyColumn*的滚动与LazyColumn#的滚动是分开的，造成非预期的滚动效果。
+*
+* 所以需要
+* LazyColumn
+*   item    { LazyRow }
+*   items   { }
+* 此时LazyRow仅仅属于一个LazyColumn，因此会跟随列表一起向上滚动。
+* */
 @Composable
-fun Home(
+fun WanHome(
     viewModel: MainViewModel,
-    onArticleClicked: (String) -> Unit,
+    onArticleClick: (String) -> Unit,
 ) {
-    Banners(
-        banners = viewModel.banners,
-        navigateToArticle = onArticleClicked,
-    )
+    val flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
 
-    PagingSourceLazyColumn(
-        flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
-    ){ item ->
-        ArticleItem(
-            model = item,
-            onArticleClicked = onArticleClicked,
-            modifier = Modifier
-        )
+    LazyColumn {
+        item {
+            Banners(
+                banners = viewModel.banners,
+                navigateToArticle = onArticleClick,
+            )
+        }
+
+        items(flowItems) { item ->
+            if (item == null) {
+                NetworkErrorIndicator()
+            } else {
+                ArticleItem(model = item, onArticleClick = onArticleClick)
+            }
+            Divider(color = Color.Gray, thickness = 1.dp)
+        }
+
+        flowItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { ListCircularProgressIndicator() }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { ListCircularProgressIndicator() }
+                }
+
+                loadState.refresh is LoadState.Error -> {
+                    val e = flowItems.loadState.refresh as LoadState.Error
+                    item { BottomSnackBar(e.toString()) }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = flowItems.loadState.append as LoadState.Error
+                    item { BottomSnackBar(e.toString()) }
+                }
+            }
+        }
     }
 }
 
@@ -96,28 +134,3 @@ fun BannerImage(
         }
     }
 }
-
-@Composable
-private fun ArticleItem(
-    model: ArticleModel,
-    onArticleClicked: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.clickable { onArticleClicked(model.link) }
-    ){
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            model.tags!!.forEach {
-                Text(text = it.name)
-            }
-            Text(text = model.author!!)
-            Text(text = model.niceDate)
-        }
-        Text(text = model.title, fontSize = 22.sp)
-        Text(text = "${model.superChapterName}/${model.chapterName}")
-    }
-}
-
