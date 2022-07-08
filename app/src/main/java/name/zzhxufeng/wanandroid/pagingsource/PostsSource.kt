@@ -8,11 +8,13 @@ import name.zzhxufeng.wanandroid.repository.PostsRepository
 
 class PostsSource: PagingSource<Int, ArticleModel>() {
     override fun getRefreshKey(state: PagingState<Int, ArticleModel>): Int? {
+        Log.d("PostsSource", "When this will be called?")
         return state.anchorPosition
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleModel> {
         Log.d("PostsSource", "load more... ${params.key}")
+        /*TODO max page count*/
         return try {
             val nextPage = params.key ?: 0
             val response = PostsRepository.refreshPosts(nextPage)

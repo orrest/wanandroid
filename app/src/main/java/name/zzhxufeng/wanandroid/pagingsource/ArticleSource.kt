@@ -13,6 +13,7 @@ class ArticleSource: PagingSource<Int, ArticleModel>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleModel> {
         Log.d("ArticleSource", "load more... ${params.key}")
+        /*TODO max page count*/
         return try {
             val nextPage = params.key ?: 0
             val movieListResponse = ArticleRepository.refreshArticles(nextPage)

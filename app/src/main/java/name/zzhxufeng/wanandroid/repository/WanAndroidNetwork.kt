@@ -19,7 +19,7 @@ object WanAndroidNetwork {
     private val articleService = retrofit.create(ArticleInterface::class.java)
     private val bannerService = retrofit.create(BannerInterface::class.java)
     private val postsService = retrofit.create(PostsInterface::class.java)
-    private val projectService = retrofit.create(ProjectInterface::class.java)
+    private val projectService = retrofit.create(ProjectsInterface::class.java)
 
     suspend fun fetchArticles(id: Int): List<ArticleModel>
     = withContext(Dispatchers.Default){
@@ -40,10 +40,16 @@ object WanAndroidNetwork {
         postsService.fetchPosts(id).data.datas
     }
 
-    suspend fun fetchProjects(): List<ProjectNameModel>
+    suspend fun fetchProjectColumnName(): List<ProjectNameModel>
     = withContext(Dispatchers.Default) {
         delay(500)
-        projectService.fetchProjectsName().data
+        projectService.fetchProjectColumnName().data
+    }
+
+    suspend fun fetchProjectByColumn(page: Int, cid: Int): List<ProjectModel>
+    = withContext(Dispatchers.Default) {
+        delay(500)
+        projectService.fetchProjects(page, cid).data.datas
     }
 }
 
