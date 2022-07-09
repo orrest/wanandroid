@@ -18,7 +18,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import name.zzhxufeng.wanandroid.composables.*
 import name.zzhxufeng.wanandroid.repository.BannerModel
-import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
 
 /*
 * 如果

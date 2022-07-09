@@ -12,7 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import name.zzhxufeng.wanandroid.screens.*
-import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
 import name.zzhxufeng.wanandroid.composables.WanWebView
 
 
@@ -34,7 +34,7 @@ fun AppNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = WanNavigation.MAIN_NAV
+        startDestination = NavControllerNav.MAIN_NAV
     ) {
         homeGraph(navController, mainViewModel)
     }
@@ -42,7 +42,7 @@ fun AppNavigation(
 
 fun NavGraphBuilder.homeGraph(navController: NavHostController, viewModel: MainViewModel) {
     navigation(
-        route = WanNavigation.MAIN_NAV,
+        route = NavControllerNav.MAIN_NAV,
         startDestination = WanScreen.Home.route
     ) {
         composable(route = WanScreen.Home.route) {

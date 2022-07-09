@@ -1,8 +1,11 @@
 package name.zzhxufeng.wanandroid.repository
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import name.zzhxufeng.wanandroid.repository.model.ArticleModel
+import name.zzhxufeng.wanandroid.repository.model.WanResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,6 +23,7 @@ object WanAndroidNetwork {
     private val bannerService = retrofit.create(BannerInterface::class.java)
     private val postsService = retrofit.create(PostsInterface::class.java)
     private val projectService = retrofit.create(ProjectsInterface::class.java)
+    private val naviService = retrofit.create(NaviInterface::class.java)
 
     suspend fun fetchArticles(id: Int): List<ArticleModel>
     = withContext(Dispatchers.Default){
@@ -51,10 +55,10 @@ object WanAndroidNetwork {
         delay(500)
         projectService.fetchProjects(page, cid).data.datas
     }
-}
 
-data class WanResponse<T>(
-    val data: T,
-    val errorCode: Int,
-    val errorMsg: String
-)
+    suspend fun fetchNavi(): List<NaviData>
+    = withContext(Dispatchers.Default) {
+        delay(500)
+        naviService.fetchNavi().data
+    }
+}

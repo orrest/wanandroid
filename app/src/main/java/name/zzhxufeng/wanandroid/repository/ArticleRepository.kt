@@ -1,5 +1,8 @@
 package name.zzhxufeng.wanandroid.repository
 
+import name.zzhxufeng.wanandroid.repository.model.ArticleData
+import name.zzhxufeng.wanandroid.repository.model.ArticleModel
+import name.zzhxufeng.wanandroid.repository.model.WanResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

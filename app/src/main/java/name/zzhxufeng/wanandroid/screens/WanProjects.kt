@@ -17,7 +17,7 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.composables.UriImage
 import name.zzhxufeng.wanandroid.repository.ProjectModel
-import name.zzhxufeng.wanandroid.viewmodels.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable

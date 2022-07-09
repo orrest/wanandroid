@@ -1,5 +1,6 @@
 package name.zzhxufeng.wanandroid.repository
 
+import name.zzhxufeng.wanandroid.repository.model.WanResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

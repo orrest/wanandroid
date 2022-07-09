@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.viewmodels
+package name.zzhxufeng.wanandroid.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +11,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.pagingsource.ArticleSource
-import name.zzhxufeng.wanandroid.pagingsource.PostsSource
 import name.zzhxufeng.wanandroid.pagingsource.ProjectsSource
 import name.zzhxufeng.wanandroid.repository.*
 import name.zzhxufeng.wanandroid.screens.WanScreen
@@ -31,19 +30,18 @@ class MainViewModel : BaseViewModel() {
     ).flow.cachedIn(viewModelScope)
 
     val banners = mutableStateListOf<BannerModel>()
+
+    /*bottom bar 2*/
+    val navi = mutableStateListOf<NaviData>()
+
+    /*bottom bar 3*/
+    val projectsName = mutableStateListOf<ProjectNameModel>()
+    val projectFlowMap = mutableMapOf<Int, Flow<PagingData<ProjectModel>>>()
+
+
     private fun refreshBanner() = launchDataLoad {
         banners.addAll(BannerRepository.refreshBanner())
     }
-
-    /*bottom bar 2*/
-    val postsFlow = Pager(
-        config = PagingConfig(pageSize = DEFAULT_PAGING_SIZE),
-        pagingSourceFactory = { PostsSource() }
-    ).flow.cachedIn(viewModelScope)
-
-    /*bottom bar 4*/
-    val projectsName = mutableStateListOf<ProjectNameModel>()
-    val projectFlowMap = mutableMapOf<Int, Flow<PagingData<ProjectModel>>>()
 
     /*
     * TODO 这些数据都是基于网络的，几个问题
@@ -66,6 +64,10 @@ class MainViewModel : BaseViewModel() {
                 )
             }
         }
+    }
+
+    fun refreshNavi() = launchDataLoad {
+        navi.addAll(NaviRepository.refreshNavi())
     }
 
     init {

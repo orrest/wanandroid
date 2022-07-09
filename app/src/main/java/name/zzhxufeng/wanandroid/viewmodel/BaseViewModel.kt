@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.viewmodels
+package name.zzhxufeng.wanandroid.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

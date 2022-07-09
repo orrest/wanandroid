@@ -8,7 +8,7 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-object WanNavigation{
+object NavControllerNav{
     const val MAIN_NAV = "main"
     const val PUBLIC_NAV = "public"
 }
@@ -25,13 +25,8 @@ sealed class WanScreen (
         type = ScreenType.main,
         icon = Icons.Filled.Home
     )
-    object Posts: WanScreen (
-        route = "广场",
-        type = ScreenType.main,
-        icon = Icons.Filled.Notifications
-    )
-    object Path: WanScreen (
-        route = "体系",
+    object Navi: WanScreen (
+        route = "导航",
         type = ScreenType.main,
         icon = Icons.Filled.Person
     )
@@ -71,8 +66,7 @@ sealed class WanScreen (
             return when (route) {
                 /*direct compose*/
                 Home.route -> Home
-                Posts.route -> Posts
-                Path.route -> Path
+                Navi.route -> Navi
                 Projects.route -> Projects
                 /*deep compose*/
                 Search.route -> Search
@@ -85,8 +79,7 @@ sealed class WanScreen (
         fun allScreens(): List<WanScreen> {
             return mutableListOf(
                 Home,
-                Posts,
-                Path,
+                Navi,
                 Projects,
             )
         }

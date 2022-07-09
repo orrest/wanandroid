@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.repository
+package name.zzhxufeng.wanandroid.repository.model
 
 /*
 * 这里有两种方式，

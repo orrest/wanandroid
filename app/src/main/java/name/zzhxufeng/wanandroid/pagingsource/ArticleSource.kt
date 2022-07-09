@@ -3,7 +3,7 @@ package name.zzhxufeng.wanandroid.pagingsource
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import name.zzhxufeng.wanandroid.repository.ArticleModel
+import name.zzhxufeng.wanandroid.repository.model.ArticleModel
 import name.zzhxufeng.wanandroid.repository.ArticleRepository
 
 class ArticleSource: PagingSource<Int, ArticleModel>() {
