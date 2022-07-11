@@ -40,7 +40,7 @@ class MainViewModel : BaseViewModel() {
 
 
     private fun refreshBanner() = launchDataLoad {
-        banners.addAll(BannerRepository.refreshBanner())
+        banners.addAll(HomeRepository.refreshBanner())
     }
 
     /*

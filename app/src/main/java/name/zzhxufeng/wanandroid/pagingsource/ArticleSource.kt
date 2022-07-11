@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import name.zzhxufeng.wanandroid.repository.model.ArticleModel
-import name.zzhxufeng.wanandroid.repository.ArticleRepository
+import name.zzhxufeng.wanandroid.repository.HomeRepository
 
 class ArticleSource: PagingSource<Int, ArticleModel>() {
     override fun getRefreshKey(state: PagingState<Int, ArticleModel>): Int? {
@@ -16,7 +16,7 @@ class ArticleSource: PagingSource<Int, ArticleModel>() {
         /*TODO max page count*/
         return try {
             val nextPage = params.key ?: 0
-            val movieListResponse = ArticleRepository.refreshArticles(nextPage)
+            val movieListResponse = HomeRepository.refreshArticles(nextPage)
 
             LoadResult.Page(
                 data = movieListResponse,
