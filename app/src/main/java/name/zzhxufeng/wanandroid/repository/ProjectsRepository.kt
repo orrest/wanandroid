@@ -6,12 +6,14 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 object ProjectsRepository {
+    private val projectService = WanAndroidNetwork.retrofit.create(ProjectsInterface::class.java)
+
     suspend fun refreshProjectColumnName(): List<ProjectNameModel> {
-        return WanAndroidNetwork.fetchProjectColumnName()
+        return projectService.fetchProjectColumnName().data
     }
 
     suspend fun refreshProjects(page: Int, cid: Int): List<ProjectModel> {
-        return WanAndroidNetwork.fetchProjectByColumn(page, cid)
+        return projectService.fetchProjects(page, cid).data.datas
     }
 }
 

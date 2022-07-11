@@ -3,8 +3,10 @@ package name.zzhxufeng.wanandroid.repository
 import retrofit2.http.GET
 
 object NaviRepository {
+    private val naviService = WanAndroidNetwork.retrofit.create(NaviInterface::class.java)
+
     suspend fun refreshNavi(): List<NaviData> {
-        return WanAndroidNetwork.fetchNavi()
+        return naviService.fetchNavi().data
     }
 }
 
