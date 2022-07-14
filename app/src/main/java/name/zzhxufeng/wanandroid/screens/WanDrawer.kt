@@ -3,23 +3,55 @@ package name.zzhxufeng.wanandroid.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import name.zzhxufeng.wanandroid.repository.LoginManager
 
 @Composable
-fun WanDrawer() {
-    Column{
-        Info()
-        FunctionList()
+fun WanDrawer(
+    login: (String, String) -> Unit
+) {
+    if (LoginManager.isLogin()) {
+        Column{
+            Info()
+            FunctionList()
+        }
+    } else {
+        LoginView(login)
+    }
+}
+
+@Composable
+fun LoginView(
+    login: (String, String) -> Unit
+) {
+    var accountName by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        TextField(value = accountName, onValueChange = {
+            accountName = it
+        } )
+
+        TextField(value = password, onValueChange = {
+            password = it
+        })
+
+        Button(onClick = { login(accountName, password) }) {
+            Text(text = "登录")
+        }
     }
 }
 

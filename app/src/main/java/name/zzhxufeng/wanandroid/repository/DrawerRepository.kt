@@ -1,20 +1,22 @@
 package name.zzhxufeng.wanandroid.repository
 
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 object DrawerRepository {
     private val drawerService = WanAndroidNetwork.retrofit.create(DrawerInterface::class.java)
 
-    suspend fun login(namePwd: NamePwd) {
-        drawerService.login(namePwd)
+    suspend fun login(name: String, pwd: String) {
+        drawerService.login(name, pwd)
     }
 }
 
 interface DrawerInterface {
+    @FormUrlEncoded
     @POST("user/login")
-    suspend fun login(@Body namePwd: NamePwd)
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    )
 
     @POST("user/register")
     suspend fun register(@Body namePwdRepwd: NamePwdRepwd)
