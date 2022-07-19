@@ -18,7 +18,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import name.zzhxufeng.wanandroid.composables.*
 import name.zzhxufeng.wanandroid.repository.BannerModel
-import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
 
 /*
 * 如果
@@ -35,7 +35,7 @@ import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
 * */
 @Composable
 fun WanHome(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     onArticleClick: (String) -> Unit,
 ) {
     val flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
