@@ -9,11 +9,11 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.composables.WanTopBar
-import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
 
 @Composable
 fun WanMainContainer(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     navController: NavHostController,
     onArticleClick: (String) -> Unit
 ) {

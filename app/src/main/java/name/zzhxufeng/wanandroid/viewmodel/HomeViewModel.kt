@@ -17,7 +17,7 @@ import name.zzhxufeng.wanandroid.screens.WanScreen
 import name.zzhxufeng.wanandroid.utils.DEFAULT_PAGING_SIZE
 import name.zzhxufeng.wanandroid.utils.MAX_PAGING_SIZE
 
-class MainViewModel : BaseViewModel() {
+class HomeViewModel : BaseViewModel() {
     val selectedScreen = mutableStateOf<WanScreen>(WanScreen.Home)
 
     /*bottom bar 1*/

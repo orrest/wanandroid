@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
 
 @Composable
 fun WanNavi(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     onNaviClick: (String) -> Unit
 ) {
     LaunchedEffect(key1 = Unit, block = {

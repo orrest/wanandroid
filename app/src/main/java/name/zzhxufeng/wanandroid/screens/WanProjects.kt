@@ -17,12 +17,12 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.composables.UriImage
 import name.zzhxufeng.wanandroid.repository.ProjectModel
-import name.zzhxufeng.wanandroid.viewmodel.MainViewModel
+import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun WanProject(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     onArticleClick: (String) -> Unit
 ) {
     val pagerState = rememberPagerState()
