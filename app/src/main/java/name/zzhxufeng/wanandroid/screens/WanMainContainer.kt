@@ -50,7 +50,9 @@ fun WanMainContainer(
                 currentScreen = selectedScreen.value
             )
         },
-        drawerContent = { WanDrawer(login = {name, pwd -> viewModel.login(name, pwd)}) },
+        drawerContent = {
+            WanDrawer()
+        },
     ) {
         val padding = it
         Log.d("Switching...", selectedScreen.value.toString())

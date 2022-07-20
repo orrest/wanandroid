@@ -8,5 +8,17 @@
     <string name="title_dark_mode"> 夜间模式</string>
     <string name="title_settings">  设置</string>
     <string name="title_logout">    退出登录</string>
+    <string name="error_action">确认</string>
+    <string name="error_title">发生了一些问题…</string>
+    <string name="title_sign_in">登录</string>
+    <string name="title_sign_up">注册</string>
+    <string name="label_email_address">输入邮箱地址…</string>
+    <string name="label_password">请输入密码…</string>
+    <string name="cd_show_password">显示密码</string>
+    <string name="cd_hide_password">隐藏密码</string>
+    <string name="action_sign_in">去登录</string>
+    <string name="action_sign_up">去注册</string>
+    <string name="action_need_account">没有账号?去注册!</string>
+    <string name="action_already_have_account">已有账号?去登录!</string>
 
 </resources>

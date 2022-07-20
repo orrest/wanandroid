@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import name.zzhxufeng.wanandroid.repository.LoginManager
 import name.zzhxufeng.wanandroid.ui.event.DrawerEvent
 import name.zzhxufeng.wanandroid.ui.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.ui.state.DrawerItem
 import name.zzhxufeng.wanandroid.ui.state.DrawerUiState
 
 class DrawerViewModel: BaseViewModel() {
@@ -16,23 +17,23 @@ class DrawerViewModel: BaseViewModel() {
 
     fun handleEvent(event: DrawerEvent) {
         when (event) {
-
+            is DrawerEvent.OpenDrawerItem -> {
+                openDrawerItem(event.drawerItem)
+            }
         }
     }
 
-    /*
-    * 先去实现一个，然后再重构进行抽象
-    * */
-    private fun bookmark() {
-
-    }
-
-    private fun cancelBookmark() {
-
-    }
-
-    private fun points() {
-
+    private fun openDrawerItem(drawerItem: DrawerItem) {
+        when (drawerItem) {
+            /*TODO open drawer item*/
+            DrawerItem.LOYALTY      -> {}
+            DrawerItem.BOOKMARKS    -> {}
+            DrawerItem.SHARE        -> {}
+            DrawerItem.TODO         -> {}
+            DrawerItem.DARK_MODE    -> {}
+            DrawerItem.SETTINGS     -> {}
+            DrawerItem.LOGOUT       -> {}
+        }
     }
 
     private fun authenticate() {
@@ -51,10 +52,10 @@ class DrawerViewModel: BaseViewModel() {
 
     private fun exit() {
         /*in login manager*/
+        LoginManager.exit()
     }
 
-    private fun userInfo() {
-
+    private fun userInfo() = launchDataLoad {
     }
 
     private fun toggleDrawerMode() {
