@@ -49,6 +49,9 @@ android {
 }
 
 dependencies {
+    /*local storage*/
+    implementation 'com.tencent:mmkv:1.2.13'
+
     /*coil*/
     implementation "io.coil-kt:coil-compose:2.1.0"
 
