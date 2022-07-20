@@ -8,6 +8,18 @@ object DrawerRepository {
     suspend fun login(name: String, pwd: String) {
         drawerService.login(name, pwd)
     }
+
+    suspend fun register(
+        username: String,
+        password: String,
+        repassword: String
+    ) {
+        drawerService.register(username, password, repassword)
+    }
+
+    suspend fun logout() {
+        drawerService.logout()
+    }
 }
 
 interface DrawerInterface {
@@ -18,24 +30,14 @@ interface DrawerInterface {
         @Field("password") password: String
     )
 
+    @FormUrlEncoded
     @POST("user/register")
-    suspend fun register(@Body namePwdRepwd: NamePwdRepwd)
+    suspend fun register(
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("repassword") repassword: String,
+    )
 
-    /*
-    * TODO 登录与退出时客户端与服务端实际在做什么？抓包看一下。
-    * 直接让OkHttp代理自己根据头去做缓存之类的就好了。
-    * */
     @GET("user/logout/json")
     suspend fun logout()
 }
-
-data class NamePwd(
-    val name: String,
-    val pwd: String,
-)
-
-data class NamePwdRepwd(
-    val name: String,
-    val pwd: String,
-    val repwd: String,
-)
