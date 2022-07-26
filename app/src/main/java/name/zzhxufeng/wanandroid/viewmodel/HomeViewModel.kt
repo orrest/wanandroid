@@ -31,9 +31,6 @@ class HomeViewModel : BaseViewModel() {
 
     val banners = mutableStateListOf<BannerModel>()
 
-    /*bottom bar 2*/
-    val navi = mutableStateListOf<NaviData>()
-
     /*bottom bar 3*/
     val projectsName = mutableStateListOf<ProjectNameModel>()
     val projectFlowMap = mutableMapOf<Int, Flow<PagingData<ProjectModel>>>()
@@ -66,8 +63,8 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    fun refreshNavi() = launchDataLoad {
-        navi.addAll(NaviRepository.refreshNavi())
+    fun login(name: String, pwd: String) = launchDataLoad {
+        DrawerRepository.login(name, pwd)
     }
 
     init {

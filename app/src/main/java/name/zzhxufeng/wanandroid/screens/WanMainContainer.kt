@@ -65,10 +65,7 @@ fun WanMainContainer(
                 )
             }
             WanScreen.Navi -> {
-                WanNavi(
-                    viewModel = viewModel,
-                    onNaviClick = onArticleClick,
-                )
+                WanNavi()
             }
             WanScreen.Projects -> {
                 WanProject(
