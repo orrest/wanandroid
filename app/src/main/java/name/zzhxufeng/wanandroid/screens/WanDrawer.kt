@@ -1,5 +1,6 @@
 package name.zzhxufeng.wanandroid.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.ui.event.DrawerEvent
 import name.zzhxufeng.wanandroid.ui.state.AuthenticationMode
@@ -30,20 +32,20 @@ import name.zzhxufeng.wanandroid.viewmodel.DrawerViewModel
 
 @Composable
 fun WanDrawer(
-    viewModel: DrawerViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: DrawerViewModel = viewModel(),
 ) {
     val state = viewModel.drawerUiState.collectAsState().value
     when (state.login) {
         true ->
             DrawerContent(
                 state = state,
-                handleEvent = {event -> viewModel.handleEvent(event) }
+                handleEvent = viewModel::handleEvent
             )
 
         false ->
             AuthenticationContent(
                 state = state,
-                handleEvent = {event -> viewModel.handleEvent(event) }
+                handleEvent = viewModel::handleEvent
             )
     }
 }
@@ -92,9 +94,11 @@ fun PersonalItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.clickable{
-            onClick()
-        }.fillMaxWidth(),
+        modifier = modifier
+            .clickable {
+                onClick()
+            }
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -122,7 +126,7 @@ fun AuthenticationContent(
             AuthenticationForm(
                 modifier = Modifier.fillMaxSize(),
                 authenticationMode = state.authenticationMode,
-                email = state.email,
+                accountName = state.name,
                 password = state.password,
                 onEmailChanged = {
                     handleEvent(DrawerEvent.EmailChanged(it))
@@ -154,7 +158,7 @@ fun AuthenticationForm(
     modifier: Modifier = Modifier,
     enableAuthentication: Boolean = true,
     authenticationMode: AuthenticationMode,
-    email: String?,
+    accountName: String?,
     password: String?,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
@@ -182,7 +186,7 @@ fun AuthenticationForm(
                 val passwordFocusRequester = FocusRequester()
                 EmailInput(
                     modifier = Modifier.fillMaxWidth(),
-                    email = email,
+                    accountName = accountName,
                     onEmailChanged = onEmailChanged,
                     onNextClicked = {
                         passwordFocusRequester.requestFocus()
@@ -200,6 +204,19 @@ fun AuthenticationForm(
                     }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
+                AnimatedVisibility (visible = authenticationMode == AuthenticationMode.SIGN_UP) {
+                    PasswordInput(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(passwordFocusRequester),
+                        password = password,
+                        indication = stringResource(id = R.string.label_re_password),
+                        onPasswordChanged = onPasswordChanged,
+                        onDoneClicked = {
+                            onAuthenticate()
+                        }
+                    )
+                }
                 AuthenticationButton(
                     authenticationMode = authenticationMode,
                     enableAuthentication = enableAuthentication,
@@ -262,13 +279,13 @@ fun AuthenticationTitle(
 @Composable
 fun EmailInput(
     modifier: Modifier = Modifier,
-    email: String?,
+    accountName: String?,
     onEmailChanged: (email: String) -> Unit,
     onNextClicked: () -> Unit
 ) {
     TextField(
         modifier = modifier,
-        value = email ?: "",
+        value = accountName ?: "",
         onValueChange = onEmailChanged,
         label = {
             Text(text = stringResource(id = R.string.label_email_address))
@@ -292,6 +309,7 @@ fun EmailInput(
 @Composable
 fun PasswordInput(
     modifier: Modifier = Modifier,
+    indication: String = stringResource(id = R.string.label_password),
     password: String?,
     onPasswordChanged: (password: String) -> Unit,
     onDoneClicked: () -> Unit
@@ -306,7 +324,7 @@ fun PasswordInput(
         onValueChange = onPasswordChanged,
         singleLine = true,
         label = {
-            Text(text = stringResource(id = R.string.label_password))
+            Text(text = indication)
         },
         leadingIcon = {
             Icon(imageVector = Icons.Default.Lock, contentDescription = null)

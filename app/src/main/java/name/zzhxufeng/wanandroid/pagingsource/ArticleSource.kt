@@ -16,12 +16,12 @@ class ArticleSource: PagingSource<Int, ArticleModel>() {
         /*TODO max page count*/
         return try {
             val nextPage = params.key ?: 0
-            val movieListResponse = HomeRepository.refreshArticles(nextPage)
+            val response = HomeRepository.refreshArticles(nextPage)
 
             LoadResult.Page(
-                data = movieListResponse,
+                data = response,
                 prevKey = if (nextPage == 0) null else nextPage - 1,
-                nextKey = nextPage + 1
+                nextKey = if (response.isEmpty()) null else nextPage + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

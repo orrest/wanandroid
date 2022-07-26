@@ -14,7 +14,15 @@ object MMKVRepo {
         return kv.getString(k, null)
     }
 
-    fun removeStringKey(k: String): SharedPreferences.Editor{
-        return kv.remove(k)
+    fun putBoolean(k: String, v: Boolean) {
+        kv.putBoolean(k, v)
+    }
+
+    fun getBoolean(k: String): Boolean {
+        return kv.getBoolean(k, false)
+    }
+
+    fun removeValuesForKeys(keys: Array<String>) {
+        kv.removeValuesForKeys(keys)
     }
 }

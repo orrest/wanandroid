@@ -1,19 +1,26 @@
 package name.zzhxufeng.wanandroid.repository
 
-import name.zzhxufeng.wanandroid.utils.LOGIN_COOKIE
 import name.zzhxufeng.wanandroid.utils.MMKVRepo
+import okhttp3.Cookie
+
+/* Indicator of whether the user has logged in. */
+const val LOGIN_COOKIE_BOOLEAN = "LOGIN_COOKIE"
 
 object LoginManager{
 
     fun isLogin(): Boolean {
-        return MMKVRepo.getString(LOGIN_COOKIE) != null
+        return MMKVRepo.getBoolean(LOGIN_COOKIE_BOOLEAN)
     }
 
-    fun login(v: String /*TODO what v?*/) {
-        MMKVRepo.putString(LOGIN_COOKIE, v)
+    fun putCookies(cookies: List<Cookie>) {
+        MMKVRepo.putBoolean(LOGIN_COOKIE_BOOLEAN, true)
+        cookies.forEach {
+
+        }
     }
 
-    fun exit() {
-        MMKVRepo.removeStringKey(LOGIN_COOKIE)
+    fun clearCookies() {
+        MMKVRepo.putBoolean(LOGIN_COOKIE_BOOLEAN, false)
+
     }
 }

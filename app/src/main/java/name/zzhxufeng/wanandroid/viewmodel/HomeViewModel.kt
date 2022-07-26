@@ -70,10 +70,6 @@ class HomeViewModel : BaseViewModel() {
         navi.addAll(NaviRepository.refreshNavi())
     }
 
-    fun login(name: String, pwd: String) = launchDataLoad {
-        DrawerRepository.login(name, pwd)
-    }
-
     init {
         refreshBanner()
         refreshProjectColumnName()

@@ -1,11 +1,9 @@
 package name.zzhxufeng.wanandroid.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import name.zzhxufeng.wanandroid.repository.DrawerRepository
 import name.zzhxufeng.wanandroid.repository.LoginManager
 import name.zzhxufeng.wanandroid.ui.event.DrawerEvent
 import name.zzhxufeng.wanandroid.ui.state.AuthenticationMode
@@ -15,12 +13,24 @@ import name.zzhxufeng.wanandroid.ui.state.DrawerUiState
 class DrawerViewModel: BaseViewModel() {
     val drawerUiState = MutableStateFlow(DrawerUiState())
 
+    init {
+        if (drawerUiState.value.login) fetchUserInfo()
+    }
+
     fun handleEvent(event: DrawerEvent) {
         when (event) {
-            is DrawerEvent.OpenDrawerItem -> {
-                openDrawerItem(event.drawerItem)
-            }
+            is DrawerEvent.OpenDrawerItem -> openDrawerItem(event.drawerItem)
+            is DrawerEvent.EmailChanged -> updateName(event.name)
+            is DrawerEvent.PasswordChanged -> updatePassword(event.pwd)
+
+            DrawerEvent.Authenticate -> authenticate()
+            DrawerEvent.ToggleAuthenticationMode -> toggleDrawerMode()
+            DrawerEvent.ErrorDismissed -> dismissError()
         }
+    }
+
+    private fun fetchUserInfo() = launchDataLoad {
+
     }
 
     private fun openDrawerItem(drawerItem: DrawerItem) {
@@ -36,26 +46,52 @@ class DrawerViewModel: BaseViewModel() {
         }
     }
 
-    private fun authenticate() {
-        drawerUiState.value = drawerUiState.value.copy(isLoading = true)
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(2000)
-            /*switch between thread*/
+    private fun authenticate() = launchDataLoad {
+        withContext(Dispatchers.Main) { setLoading(isLoading = true) }
+
+        if (drawerUiState.value.password == "" || drawerUiState.value.name == "") {
+            withContext(Dispatchers.Main) { alertMessage("用户名或密码为空.") }
+        } else {
+            val response = DrawerRepository.login(
+                name = drawerUiState.value.name,
+                pwd = drawerUiState.value.password
+            )
             withContext(Dispatchers.Main) {
-                drawerUiState.value = drawerUiState.value.copy(
-                    isLoading = false,
-                    error = "TODO: Network error message."
-                )
+                if (response.body() == null) {
+                    alertMessage("网络异常, 请重试.")
+                } else if (response.body()!!.errorMsg != "") {
+                    alertMessage(response.body()!!.errorMsg)
+                } else {
+
+                    setLoading(isLoading = false)
+                }
             }
         }
     }
 
-    private fun exit() {
-        /*in login manager*/
-        LoginManager.exit()
+    private fun alertMessage(error: String) {
+        drawerUiState.value = drawerUiState.value.copy(
+            isLoading = false,
+            error = error
+        )
     }
 
-    private fun userInfo() = launchDataLoad {
+    private fun setLoading(isLoading: Boolean) {
+        drawerUiState.value = drawerUiState.value.copy(isLoading = isLoading)
+    }
+
+    private fun exit() {
+        /*in login manager*/
+        LoginManager.clearCookies()
+    }
+
+    private fun updateName(name: String) {
+        drawerUiState.value = drawerUiState.value.copy(name = name)
+    }
+
+
+    private fun updatePassword(password: String) {
+        drawerUiState.value = drawerUiState.value.copy(password = password)
     }
 
     private fun toggleDrawerMode() {
@@ -63,7 +99,10 @@ class DrawerViewModel: BaseViewModel() {
         val newMode = if (currentMode == AuthenticationMode.SIGN_IN) {
             AuthenticationMode.SIGN_UP
         } else AuthenticationMode.SIGN_IN
-        drawerUiState.value =
-            drawerUiState.value.copy(authenticationMode = newMode)
+        drawerUiState.value = drawerUiState.value.copy(authenticationMode = newMode)
+    }
+
+    private fun dismissError() {
+        drawerUiState.value = drawerUiState.value.copy(error = null)
     }
 }

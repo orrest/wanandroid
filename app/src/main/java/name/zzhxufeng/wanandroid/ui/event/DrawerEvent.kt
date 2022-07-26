@@ -4,7 +4,7 @@ import name.zzhxufeng.wanandroid.ui.state.DrawerItem
 
 sealed class DrawerEvent {
     class OpenDrawerItem(val drawerItem: DrawerItem): DrawerEvent()
-    class EmailChanged(val email: String): DrawerEvent()
+    class EmailChanged(val name: String): DrawerEvent()
     class PasswordChanged(val pwd: String): DrawerEvent()
 
     object Authenticate: DrawerEvent()

@@ -1,6 +1,5 @@
 package name.zzhxufeng.wanandroid.ui.state
 
-import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -9,8 +8,9 @@ import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.repository.LoginManager
 
 data class DrawerUiState(
-    val email: String? = null,
-    val password: String? = null,
+    val name: String = "",
+    val password: String = "",
+    val repassword: String = "",
     val login: Boolean = LoginManager.isLogin(),
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
     val isLoading: Boolean = false,
