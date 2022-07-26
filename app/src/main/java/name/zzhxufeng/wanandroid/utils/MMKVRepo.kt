@@ -22,6 +22,10 @@ object MMKVRepo {
         return kv.getBoolean(k, false)
     }
 
+    fun remove(key: String) {
+        kv.removeValueForKey(key)
+    }
+
     fun removeValuesForKeys(keys: Array<String>) {
         kv.removeValuesForKeys(keys)
     }

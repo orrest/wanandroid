@@ -34,6 +34,8 @@ class SessionCookieJar: CookieJar {
         if (url.encodedPath.contains("login")) {
             Log.d("Cookie#login", cookies.toString())
 
+            LoginManager.putCookies(cookies)
+
             cookies.forEach { cookie ->
                 Log.d("Cookie#login", "--------")
                 Log.d("Cookie#login name:\t", cookie.name)
