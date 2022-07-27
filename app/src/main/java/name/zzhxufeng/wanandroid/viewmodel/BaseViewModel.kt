@@ -1,5 +1,8 @@
 package name.zzhxufeng.wanandroid.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -7,7 +10,7 @@ import name.zzhxufeng.wanandroid.repository.model.WanResponse
 import retrofit2.HttpException
 
 open class BaseViewModel: ViewModel() {
-    var errorMsg: String? = null
+    var errorMsg by mutableStateOf<String?>(null)
         private set
 
     fun dismissError() { errorMsg = null }

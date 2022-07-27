@@ -18,6 +18,7 @@ object LoginManager{
     }
 
     fun putCookies(cookies: List<Cookie>) {
+        /*TODO 这个地方需要修改*/
         MMKVRepo.putBoolean(LOGIN_COOKIE_BOOLEAN, true)
         MMKVRepo.putString(LOGIN_COOKIE,
             cookies.toString().removeSurrounding("[", "]")

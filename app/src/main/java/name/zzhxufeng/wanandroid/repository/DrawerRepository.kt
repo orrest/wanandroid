@@ -14,9 +14,8 @@ object DrawerRepository {
         username: String,
         password: String,
         repassword: String
-    ) {
+    ): Response<AuthenticationModel> =
         drawerService.register(username, password, repassword)
-    }
 
     suspend fun logout() {
         drawerService.logout()
@@ -37,7 +36,7 @@ interface DrawerInterface {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("repassword") repassword: String,
-    )
+    ): Response<AuthenticationModel>
 
     @GET("user/logout/json")
     suspend fun logout()

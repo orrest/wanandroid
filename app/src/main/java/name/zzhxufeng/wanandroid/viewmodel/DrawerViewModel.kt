@@ -13,24 +13,22 @@ import name.zzhxufeng.wanandroid.ui.state.DrawerUiState
 class DrawerViewModel: BaseViewModel() {
     val drawerUiState = MutableStateFlow(DrawerUiState())
 
-    init {
-        if (drawerUiState.value.login) fetchUserInfo()
-    }
-
     fun handleEvent(event: DrawerEvent) {
         when (event) {
             is DrawerEvent.OpenDrawerItem -> openDrawerItem(event.drawerItem)
             is DrawerEvent.EmailChanged -> updateName(event.name)
             is DrawerEvent.PasswordChanged -> updatePassword(event.pwd)
+            is DrawerEvent.RepasswordChanged -> updateRepassword(event.repwd)
 
             DrawerEvent.Authenticate -> authenticate()
+            DrawerEvent.Register -> register()
             DrawerEvent.ToggleAuthenticationMode -> toggleDrawerMode()
             DrawerEvent.ErrorDismissed -> dismissError()
         }
     }
 
-    private fun fetchUserInfo() = launchDataLoad {
-
+    private fun updateRepassword(pwd: String) {
+        drawerUiState.value = drawerUiState.value.copy(repassword = pwd)
     }
 
     private fun openDrawerItem(drawerItem: DrawerItem) {
@@ -43,6 +41,28 @@ class DrawerViewModel: BaseViewModel() {
             DrawerItem.DARK_MODE    -> {}
             DrawerItem.SETTINGS     -> {}
             DrawerItem.LOGOUT       -> {}
+        }
+    }
+
+    private fun register() = launchDataLoad {
+        setLoading(true)
+        if (drawerUiState.value.name == ""
+            || drawerUiState.value.password == ""
+            || drawerUiState.value.repassword == "") {
+            alertMessage("不能为空.")
+        } else {
+            val response = DrawerRepository.register(
+                drawerUiState.value.name,
+                drawerUiState.value.password,
+                drawerUiState.value.repassword,
+            )
+            if (response.body() == null) {
+                alertMessage("网络异常, 请重试.")
+            } else if (response.body()!!.errorMsg != "") {
+                alertMessage(response.body()!!.errorMsg)
+            } else {
+                setLoading(isLoading = false)
+            }
         }
     }
 
@@ -62,7 +82,6 @@ class DrawerViewModel: BaseViewModel() {
                 } else if (response.body()!!.errorMsg != "") {
                     alertMessage(response.body()!!.errorMsg)
                 } else {
-
                     setLoading(isLoading = false)
                 }
             }
@@ -100,9 +119,5 @@ class DrawerViewModel: BaseViewModel() {
             AuthenticationMode.SIGN_UP
         } else AuthenticationMode.SIGN_IN
         drawerUiState.value = drawerUiState.value.copy(authenticationMode = newMode)
-    }
-
-    private fun dismissError() {
-        drawerUiState.value = drawerUiState.value.copy(error = null)
     }
 }
