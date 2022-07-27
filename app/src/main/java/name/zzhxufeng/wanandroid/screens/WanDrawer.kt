@@ -128,14 +128,21 @@ fun AuthenticationContent(
                 authenticationMode = state.authenticationMode,
                 accountName = state.name,
                 password = state.password,
+                repassword = state.repassword,
                 onEmailChanged = {
                     handleEvent(DrawerEvent.EmailChanged(it))
                 },
                 onPasswordChanged = {
                     handleEvent(DrawerEvent.PasswordChanged(it))
                 },
+                onRepasswordChanged = {
+                    handleEvent(DrawerEvent.RepasswordChanged(it))
+                },
                 onAuthenticate = {
                     handleEvent(DrawerEvent.Authenticate)
+                },
+                onRegister = {
+                    handleEvent(DrawerEvent.Register)
                 },
                 onToggleMode = {
                     handleEvent(DrawerEvent.ToggleAuthenticationMode)
@@ -160,9 +167,12 @@ fun AuthenticationForm(
     authenticationMode: AuthenticationMode,
     accountName: String?,
     password: String?,
+    repassword: String?,
     onEmailChanged: (email: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit,
+    onRepasswordChanged: (password: String) -> Unit,
     onAuthenticate: () -> Unit,
+    onRegister: () -> Unit,
     onToggleMode: () -> Unit
 ) {
     Column(
@@ -209,13 +219,14 @@ fun AuthenticationForm(
                         modifier = Modifier
                             .fillMaxWidth()
                             .focusRequester(passwordFocusRequester),
-                        password = password,
+                        password = repassword,
                         indication = stringResource(id = R.string.label_re_password),
-                        onPasswordChanged = onPasswordChanged,
+                        onPasswordChanged = onRepasswordChanged,
                         onDoneClicked = {
-                            onAuthenticate()
+                            onRegister()
                         }
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
                 AuthenticationButton(
                     authenticationMode = authenticationMode,
