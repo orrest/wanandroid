@@ -3,8 +3,9 @@ package name.zzhxufeng.wanandroid.utils
 import android.content.SharedPreferences
 import com.tencent.mmkv.MMKV
 
-object MMKVRepo {
-    private val kv: MMKV = MMKV.defaultMMKV()
+/*TODO*/
+object CookieRepo {
+    private var kv: MMKV = MMKV.mmkvWithID("cookie")
 
     fun putString(k: String, v: String): SharedPreferences.Editor{
         return kv.putString(k, v)
