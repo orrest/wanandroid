@@ -1,27 +1,32 @@
 package name.zzhxufeng.wanandroid.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import name.zzhxufeng.wanandroid.repository.model.WanResponse
+import name.zzhxufeng.wanandroid.data.model.WanResponse
 import retrofit2.HttpException
 
 open class BaseViewModel: ViewModel() {
-    var errorMsg: String? = null
+    var errorMsg = mutableStateOf<String?>(null)
         private set
+    var isRefreshing = mutableStateOf(false)
 
-    fun dismissError() { errorMsg = null }
+    fun dismissError() { errorMsg.value = null }
 
     fun launchDataLoad(block: suspend () -> Unit) {
         viewModelScope.launch {
+            isRefreshing.value = true
             try {
                 block()
             } catch (e: RuntimeException) {
-                errorMsg = e.message
+                errorMsg.value = e.message
             } catch (e: HttpException) {
-                errorMsg = e.message
+                errorMsg.value = e.message
             } catch (e: Error) {
-                errorMsg = e.message
+                errorMsg.value = e.message
+            } finally {
+                isRefreshing.value = false
             }
         }
     }

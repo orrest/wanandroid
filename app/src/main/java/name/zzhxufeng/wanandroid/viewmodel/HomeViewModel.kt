@@ -10,12 +10,12 @@ import androidx.paging.cachedIn
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import name.zzhxufeng.wanandroid.pagingsource.ArticleSource
-import name.zzhxufeng.wanandroid.pagingsource.ProjectsSource
-import name.zzhxufeng.wanandroid.repository.*
-import name.zzhxufeng.wanandroid.screens.WanScreen
-import name.zzhxufeng.wanandroid.utils.DEFAULT_PAGING_SIZE
-import name.zzhxufeng.wanandroid.utils.MAX_PAGING_SIZE
+import name.zzhxufeng.wanandroid.data.pagingsource.ArticleSource
+import name.zzhxufeng.wanandroid.data.pagingsource.ProjectsSource
+import name.zzhxufeng.wanandroid.data.*
+import name.zzhxufeng.wanandroid.data.network.DEFAULT_PAGING_SIZE
+import name.zzhxufeng.wanandroid.data.network.MAX_PAGING_SIZE
+import name.zzhxufeng.wanandroid.ui.screens.WanScreen
 
 class HomeViewModel : BaseViewModel() {
     val selectedScreen = mutableStateOf<WanScreen>(WanScreen.Home)
@@ -61,10 +61,6 @@ class HomeViewModel : BaseViewModel() {
                 )
             }
         }
-    }
-
-    fun login(name: String, pwd: String) = launchDataLoad {
-        DrawerRepository.login(name, pwd)
     }
 
     init {

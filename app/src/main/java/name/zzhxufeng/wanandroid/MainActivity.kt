@@ -11,9 +11,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
-import name.zzhxufeng.wanandroid.screens.*
+import name.zzhxufeng.wanandroid.ui.screens.*
 import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
-import name.zzhxufeng.wanandroid.composables.WanWebView
+import name.zzhxufeng.wanandroid.ui.composables.WanWebView
 
 
 class MainActivity : ComponentActivity() {
