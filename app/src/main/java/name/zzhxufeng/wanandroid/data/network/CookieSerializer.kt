@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.repository.cookie
+package name.zzhxufeng.wanandroid.data.network
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
