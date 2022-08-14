@@ -27,4 +27,7 @@
     <string name="action_need_account">没有账号?去注册!</string>
     <string name="action_already_have_account">已有账号?去登录!</string>
 
+    <string name="desc_topbar_left_icon">left icon</string>
+    <string name="desc_topbar_right_icon">right icon</string>
+
 </resources>

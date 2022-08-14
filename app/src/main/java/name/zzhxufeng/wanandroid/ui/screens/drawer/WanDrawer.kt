@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -78,6 +79,7 @@ fun DrawerContent(
             level = state.level,
             rank = state.rank
         )
+        Spacer(modifier = Modifier.height(80.dp))
         state.drawerList.forEach { drawerItem ->
             DrawerItem(
                 item = drawerItem,
@@ -120,10 +122,10 @@ fun DrawerItem(
     ) {
         Icon(
             imageVector = item.icon,
-            contentDescription = item.name,
+            contentDescription = stringResource(id = item.desc),
             modifier = Modifier.padding(10.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = item.name, modifier = Modifier.padding(10.dp))
+        Text(text = stringResource(id = item.desc), modifier = Modifier.padding(10.dp))
     }
 }

@@ -2,6 +2,9 @@ package name.zzhxufeng.wanandroid.ui.screens
 
 import android.util.Log
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,9 +36,11 @@ fun WanMainContainer(
         scaffoldState = scaffoldState,
         topBar = {
             WanTopBar(
-                currentScreen = selectedScreen.value,
-                onDrawerClick = { scope.launch { scaffoldState.drawerState.open() } },
-                onSearchClick = { navController.navigate(WanScreen.Search.route) {
+                desc = selectedScreen.value.route,
+                leftIcon = Icons.Default.Menu,
+                rightIcon = Icons.Default.Search,
+                onLeftIconClick = { scope.launch { scaffoldState.drawerState.open() } },
+                onRightIconClick = { navController.navigate(WanScreen.Search.route) {
                     launchSingleTop = true
                 } }
             )

@@ -1,6 +1,5 @@
 package name.zzhxufeng.wanandroid.viewmodel.state
 
-import name.zzhxufeng.wanandroid.data.model.CollectArticleInfo
 
 data class DrawerItemUiState(
     val userName: String? = null,
