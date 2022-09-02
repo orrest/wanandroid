@@ -13,7 +13,7 @@ object HomeRepository {
     suspend fun refreshBanner(): WanResponse<List<BannerModel>> {
         return homeService.fetchBanner()
     }
-    suspend fun refreshArticles(pageId: Int): WanResponse<ArticleData> {
+    suspend fun fetchArticles(pageId: Int): WanResponse<ArticleData> {
         return homeService.fetchArticles(pageId)
     }
 }

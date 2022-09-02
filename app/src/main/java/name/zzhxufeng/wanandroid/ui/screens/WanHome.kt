@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -49,10 +50,17 @@ fun WanHome(
             )
         }
 
-        items(uiState.articles) { item ->
+        itemsIndexed(uiState.articles) { index, item ->
             ArticleItem(model = item, onArticleClick = onArticleClick)
             Divider(color = Color.Gray, thickness = 1.dp)
+
+            LaunchedEffect(key1 = uiState.nextPage, block = {
+                if (uiState.articles.size - index < 3) {
+                    handleEvent(MainContainerEvent.HomeEvent.LoadMoreArticles)
+                }
+            })
         }
+
     }
 }
 

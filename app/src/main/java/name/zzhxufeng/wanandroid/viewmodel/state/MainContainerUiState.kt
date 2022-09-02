@@ -16,7 +16,7 @@ data class HomeUiState(
     val articleListState: LazyListState = LazyListState(),
     val articles: List<ArticleModel> = emptyList(),
     val nextPage: Int = START_PAGE,
-    val perPage: Int = DEFAULT_PAGING_SIZE,
     val maxPage: Int = Int.MAX_VALUE,
+    val PER_PAGE: Int = DEFAULT_PAGING_SIZE,
     val banners: List<BannerModel> = emptyList()
 )

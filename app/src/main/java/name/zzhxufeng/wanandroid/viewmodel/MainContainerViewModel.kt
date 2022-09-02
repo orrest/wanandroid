@@ -3,6 +3,7 @@ package name.zzhxufeng.wanandroid.viewmodel
 import androidx.compose.foundation.lazy.LazyListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import name.zzhxufeng.wanandroid.data.network.START_PAGE
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.HomeRepository
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
@@ -21,7 +22,33 @@ class MainContainerViewModel : BaseViewModel() {
         when (event) {
             is MainContainerEvent.ChangeScreen -> { changeScreen(event.screen) }
             is MainContainerEvent.HomeEvent.UpdateListState -> { updateListState(event.listState) }
+            MainContainerEvent.HomeEvent.LoadMoreArticles -> { loadMoreArticles() }
             else -> {}
+        }
+    }
+
+    private fun loadMoreArticles() = launchDataLoad{
+        run condition@ {
+            // The last time next page is this time current page.
+            val curPage = uiState.value.homeUiState.nextPage
+            val maxPage = uiState.value.homeUiState.maxPage
+            if (curPage >= maxPage) {
+                return@condition
+            }
+            val response = HomeRepository.fetchArticles(curPage)
+            if (response.errorCode == WAN_SUCCESS_CODE) {
+                uiState.update { it.copy(
+                    homeUiState = it.homeUiState.copy(
+                        articles = it.homeUiState.articles.toMutableList().apply {
+                            addAll(response.data.datas)
+                        }.toList(),
+                        maxPage = response.data.pageCount,
+                        nextPage = response.data.curPage,
+                    )
+                ) }
+            } else {
+                errorMsg.value = response.errorMsg
+            }
         }
     }
 
@@ -48,29 +75,19 @@ class MainContainerViewModel : BaseViewModel() {
         refreshHomeBanners()
     }
 
-    /*bottom bar 1*/
     private fun refreshHomeArticles() = launchDataLoad{
-        run condition@ {
-            // The last time next page is this time current page.
-            val curPage = uiState.value.homeUiState.nextPage
-            val maxPage = uiState.value.homeUiState.maxPage
-            if (curPage >= maxPage) {
-                return@condition
-            }
-            val response = HomeRepository.refreshArticles(curPage)
-            if (response.errorCode == WAN_SUCCESS_CODE) {
-                uiState.update { it.copy(
-                    homeUiState = it.homeUiState.copy(
-                        articles = it.homeUiState.articles.toMutableList().apply {
-                            addAll(response.data.datas)
-                        }.toList(),
-                        maxPage = response.data.pageCount,
-                        nextPage = response.data.curPage,
-                    )
-                ) }
-            } else {
-                errorMsg.value = response.errorMsg
-            }
+        val response = HomeRepository.fetchArticles(START_PAGE)
+        if (response.errorCode == WAN_SUCCESS_CODE) {
+            uiState.update { it.copy(
+                homeUiState = it.homeUiState.copy(
+                    articleListState = LazyListState(),
+                    articles = response.data.datas,
+                    maxPage = response.data.pageCount,
+                    nextPage = response.data.curPage,
+                )
+            ) }
+        } else {
+            errorMsg.value = response.errorMsg
         }
     }
 

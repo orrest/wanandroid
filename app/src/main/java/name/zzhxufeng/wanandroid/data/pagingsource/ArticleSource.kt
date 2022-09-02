@@ -16,7 +16,7 @@ class ArticleSource: PagingSource<Int, ArticleModel>() {
         /*TODO max page count*/
         return try {
             val nextPage = params.key ?: 0
-            val response = HomeRepository.refreshArticles(nextPage).data.datas
+            val response = HomeRepository.fetchArticles(nextPage).data.datas
 
             LoadResult.Page(
                 data = response,
