@@ -5,44 +5,40 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavHostController
+import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.ui.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
-import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
+import name.zzhxufeng.wanandroid.ui.screens.drawer.DrawerNavigation
+import name.zzhxufeng.wanandroid.viewmodel.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.viewmodel.state.MainContainerUiState
 
 @Composable
 fun WanMainContainer(
-    viewModel: HomeViewModel,
-    navController: NavHostController,
-    onArticleClick: (String) -> Unit
+    uiState: MainContainerUiState,
+    handleEvent: (MainContainerEvent) -> Unit,
+    onArticleClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
 ) {
     /*抽屉*/
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val selectedScreen = viewModel.selectedScreen
-
     /*只需要初始化一次，并且不需要作为state更新*/
     val allScreens = remember { WanScreen.allScreens() }
 
-    Log.d("selectedScreen", selectedScreen.toString())
-    Log.d("Is this the same ViewModel?", viewModel.toString())
+    Log.d("selectedScreen", uiState.currentScreen.toString())
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             WanTopBar(
-                desc = selectedScreen.value.route,
+                desc = uiState.currentScreen.route,
                 leftIcon = Icons.Default.Menu,
                 rightIcon = Icons.Default.Search,
                 onLeftIconClick = { scope.launch { scaffoldState.drawerState.open() } },
-                onRightIconClick = { navController.navigate(WanScreen.Search.route) {
-                    launchSingleTop = true
-                } }
+                onRightIconClick = onSearchClick
             )
         },
         bottomBar = {
@@ -51,21 +47,24 @@ fun WanMainContainer(
                 /*事件下降，状态上升：*/
                 /*让这个状态的改变发生的事件发生在它该发生的地方*/
                 /*这个状态反过来影响这个地方的重组*/
-                onScreenSelected = { screen -> selectedScreen.value = screen },
-                currentScreen = selectedScreen.value
+                onScreenSelected = {
+                    screen -> handleEvent(MainContainerEvent.ChangeScreen(screen))
+                },
+                currentScreen = uiState.currentScreen
             )
         },
         drawerContent = {
-            WanDrawer()
+            DrawerNavigation()
         },
     ) {
         val padding = it
-        Log.d("Switching...", selectedScreen.value.toString())
+        Log.d("Switching...", uiState.currentScreen.toString())
 
-        when (selectedScreen.value) {
+        when (uiState.currentScreen) {
             WanScreen.Home -> {
                 WanHome(
-                    viewModel = viewModel,
+                    uiState = uiState.homeUiState,
+                    handleEvent = handleEvent,
                     onArticleClick = onArticleClick,
                 )
             }
@@ -73,10 +72,11 @@ fun WanMainContainer(
                 WanNavi()
             }
             WanScreen.Projects -> {
-                WanProject(
-                    viewModel = viewModel,
-                    onArticleClick = onArticleClick
-                )
+                /*TODO*/
+//                WanProject(
+//                    viewModel = viewModel(),
+//                    onArticleClick = onArticleClick
+//                )
             }
             else -> {}
         }

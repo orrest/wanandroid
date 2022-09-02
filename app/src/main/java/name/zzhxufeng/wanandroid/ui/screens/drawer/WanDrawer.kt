@@ -1,30 +1,25 @@
-package name.zzhxufeng.wanandroid.ui.screens
+package name.zzhxufeng.wanandroid.ui.screens.drawer
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import name.zzhxufeng.wanandroid.ui.composables.WanAlertDialog
-import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
-import name.zzhxufeng.wanandroid.ui.screens.drawer.AuthenticationContent
 import name.zzhxufeng.wanandroid.viewmodel.drawer.DrawerItemViewModel
+import name.zzhxufeng.wanandroid.viewmodel.drawer.LoginViewModel
+import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
 import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
 import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItem
-import name.zzhxufeng.wanandroid.viewmodel.drawer.LoginViewModel
 import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItemUiState
 
 @Composable
-fun WanDrawer() {
+fun WanDrawer(
+    navHostController: NavHostController,
+) {
     val loginViewModel: LoginViewModel = viewModel()
     val loginUiState = loginViewModel.uiState.collectAsState().value
 
@@ -32,8 +27,9 @@ fun WanDrawer() {
         true ->{
             val viewModel: DrawerItemViewModel = viewModel()
             DrawerContent(
+                navHostController = navHostController,
                 state = viewModel.uiState.collectAsState().value,
-                handleEvent = viewModel::handleEvent
+                handleEvent = viewModel::handleEvent,
             )
 
             viewModel.errorMsg.value?.let {
@@ -69,63 +65,54 @@ fun WanDrawer() {
 @Composable
 fun DrawerContent(
     state: DrawerItemUiState,
-    handleEvent: (event: DrawerEvent) -> Unit
+    handleEvent: (event: DrawerEvent) -> Unit,
+    navHostController: NavHostController
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         PersonalInfo(
-            name = state.userName,
-            level = state.level,
-            rank = state.rank
+            name = state.userInfo?.userInfo?.publicName,
+            level = state.userInfo?.coinInfo?.level.toString(),
+            rank = state.userInfo?.coinInfo?.rank
         )
         Spacer(modifier = Modifier.height(80.dp))
-        state.drawerList.forEach { drawerItem ->
+        state.drawerItems.forEach { drawerItem ->
             DrawerItem(
                 item = drawerItem,
-                onClick = { handleEvent(DrawerEvent.OpenDrawerItem(drawerItem)) }
+                onClick = { handleEvent(DrawerEvent.OpenDrawerItem(
+                    drawerItem = drawerItem,
+                    navBlock = { navHostController.navigate(drawerItem.route) }
+                )) },
+                navBlock = { navHostController.navigate(drawerItem.route) }
             )
         }
     }
-}
 
-@Composable
-fun PersonalInfo(
-    name: String?,
-    level: String?,
-    rank: String?,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(imageVector = Icons.Default.AccountCircle, contentDescription = "avatar", Modifier.size(80.dp))
-        Text(text = name?: "name", color = Color.Black)
-        Text(text = "等级 ${level ?: ""}  |  排名 ${rank ?: ""}")
-    }
-}
+    state.drawerItemOpenState?.let {
+        when (it) {
+            DrawerItem.COINS -> {
 
-@Composable
-fun DrawerItem(
-    item: DrawerItem,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .clickable {
-                onClick()
             }
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = item.icon,
-            contentDescription = stringResource(id = item.desc),
-            modifier = Modifier.padding(10.dp)
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = stringResource(id = item.desc), modifier = Modifier.padding(10.dp))
+            DrawerItem.BOOKMARKS -> {
+
+            }
+            DrawerItem.SHARE -> {
+
+            }
+            DrawerItem.TODO -> {
+
+            }
+            DrawerItem.DARK_MODE -> {
+
+            }
+            DrawerItem.SETTINGS -> {
+
+            }
+            DrawerItem.LOGOUT -> {
+
+            }
+            else -> {}
+        }
     }
 }

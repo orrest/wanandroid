@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets
 object NavControllerNav{
     const val MAIN_NAV = "main"
     const val PUBLIC_NAV = "public"
+    const val DRAWER_NAV = "drawer"
 }
 
 sealed class WanScreen (

@@ -1,11 +1,6 @@
-package name.zzhxufeng.wanandroid.data
+package name.zzhxufeng.wanandroid.data.repository
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import name.zzhxufeng.wanandroid.data.model.AuthenticationModel
-import name.zzhxufeng.wanandroid.data.model.CoinInfo
-import name.zzhxufeng.wanandroid.data.model.UserInfoModel
-import name.zzhxufeng.wanandroid.data.model.WanResponse
+import name.zzhxufeng.wanandroid.data.model.*
 import name.zzhxufeng.wanandroid.data.network.WanAndroidNetwork
 import retrofit2.http.*
 
@@ -26,10 +21,11 @@ object DrawerRepository {
         drawerService.logout()
     }
 
-    suspend fun userInfo(): WanResponse<UserInfoModel>
-    = withContext(Dispatchers.Default) {
-        drawerService.userInfo()
-    }
+    suspend fun userInfo(): WanResponse<UserInfoData>
+    = drawerService.userInfo()
+
+    suspend fun coinList(page: Int): WanResponse<CoinListData>
+    = drawerService.coinList(page)
 }
 
 interface DrawerInterface {
@@ -52,8 +48,13 @@ interface DrawerInterface {
     suspend fun logout()
 
     @GET("user/lg/userinfo/json")
-    suspend fun userInfo(): WanResponse<UserInfoModel>
+    suspend fun userInfo(): WanResponse<UserInfoData>
 
     @GET("lg/coin/userinfo/json")
     suspend fun coinInfo(): WanResponse<CoinInfo>
+
+    @GET("/lg/coin/list/{page}/json")
+    suspend fun coinList(
+        @Path("page") page: Int
+    ): WanResponse<CoinListData>
 }

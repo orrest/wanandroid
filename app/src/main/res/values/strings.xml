@@ -29,5 +29,6 @@
 
     <string name="desc_topbar_left_icon">left icon</string>
     <string name="desc_topbar_right_icon">right icon</string>
+    <string name="drawer_main">抽屉容器</string>
 
 </resources>

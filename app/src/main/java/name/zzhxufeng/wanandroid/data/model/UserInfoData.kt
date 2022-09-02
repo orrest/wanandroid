@@ -1,8 +1,8 @@
 package name.zzhxufeng.wanandroid.data.model
 
 
-/*WanResponse<UserInfoModel>*/
-data class UserInfoModel(
+/*WanResponse<UserInfoData>*/
+data class UserInfoData(
     val coinInfo: CoinInfo,
     val collectArticleInfo: CollectArticleInfo,
     val userInfo: UserInfo

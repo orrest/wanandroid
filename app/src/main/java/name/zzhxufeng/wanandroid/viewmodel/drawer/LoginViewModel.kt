@@ -1,12 +1,11 @@
 package name.zzhxufeng.wanandroid.viewmodel.drawer
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import name.zzhxufeng.wanandroid.data.DrawerRepository
-import name.zzhxufeng.wanandroid.data.network.SUCCESS_CODE
+import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
+import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.utils.LoginManager
 import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
 import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItem
 import name.zzhxufeng.wanandroid.viewmodel.state.LoginUiState
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 
@@ -25,7 +24,6 @@ class LoginViewModel: BaseViewModel() {
 
     fun handleEvent(event: DrawerEvent) {
         when (event) {
-            is DrawerEvent.OpenDrawerItem -> openDrawerItem(event.drawerItem)
             is DrawerEvent.AccountNameChanged -> updateName(event.name)
             is DrawerEvent.PasswordChanged -> updatePassword(event.pwd)
             is DrawerEvent.RepasswordChanged -> updateRepassword(event.repwd)
@@ -34,24 +32,12 @@ class LoginViewModel: BaseViewModel() {
             DrawerEvent.Register -> register()
             DrawerEvent.ToggleAuthenticationMode -> toggleDrawerMode()
             DrawerEvent.ErrorDismissed -> dismissError()
+            else -> {}
         }
     }
 
     private fun updateRepassword(pwd: String) {
         uiState.value = uiState.value.copy(repassword = pwd)
-    }
-
-    private fun openDrawerItem(drawerItem: DrawerItem) {
-        when (drawerItem) {
-            /*TODO open drawer item*/
-            DrawerItem.LOYALTY      -> {}
-            DrawerItem.BOOKMARKS    -> {}
-            DrawerItem.SHARE        -> {}
-            DrawerItem.TODO         -> {}
-            DrawerItem.DARK_MODE    -> {}
-            DrawerItem.SETTINGS     -> {}
-            DrawerItem.LOGOUT       -> {}
-        }
     }
 
     private fun register() = launchDataLoad {
@@ -80,7 +66,7 @@ class LoginViewModel: BaseViewModel() {
                 name = uiState.value.inputName,
                 pwd = uiState.value.password
             )
-            if (response.errorCode == SUCCESS_CODE) {
+            if (response.errorCode == WAN_SUCCESS_CODE) {
                 uiState.value = uiState.value.copy(
                     authenticationMode = AuthenticationMode.LOGGED_IN
                 )

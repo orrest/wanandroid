@@ -1,80 +1,57 @@
 package name.zzhxufeng.wanandroid.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import name.zzhxufeng.wanandroid.data.model.BannerModel
 import name.zzhxufeng.wanandroid.ui.composables.*
-import name.zzhxufeng.wanandroid.data.BannerModel
-import name.zzhxufeng.wanandroid.viewmodel.HomeViewModel
+import name.zzhxufeng.wanandroid.viewmodel.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.viewmodel.state.HomeUiState
+import name.zzhxufeng.wanandroid.viewmodel.state.MainContainerUiState
 
-/*
-* 如果
-* LazyColumn#
-*   LazyRow
-*   LazyColumn*
-* 那么LazyColumn*的滚动与LazyColumn#的滚动是分开的，造成非预期的滚动效果。
-*
-* 所以需要
-* LazyColumn
-*   item    { LazyRow }
-*   items   { }
-* 此时LazyRow仅仅属于一个LazyColumn，因此会跟随列表一起向上滚动。
-* */
+
+@SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 fun WanHome(
-    viewModel: HomeViewModel,
+    uiState: HomeUiState,
+    handleEvent: (MainContainerEvent.HomeEvent) -> Unit,
     onArticleClick: (String) -> Unit,
 ) {
-    val flowItems = viewModel.articleFlow.collectAsLazyPagingItems()
-
-    LazyColumn {
+    val state = rememberLazyListState(
+        initialFirstVisibleItemIndex = uiState.articleListState.firstVisibleItemIndex,
+        initialFirstVisibleItemScrollOffset = uiState.articleListState.firstVisibleItemScrollOffset
+    )
+    DisposableEffect(Unit) {
+        onDispose {
+            handleEvent(MainContainerEvent.HomeEvent.UpdateListState(state))
+        }
+    }
+    LazyColumn(
+        state = state
+    ) {
         item {
             Banners(
-                banners = viewModel.banners,
+                banners = uiState.banners,
                 navigateToArticle = onArticleClick,
             )
         }
 
-        items(flowItems) { item ->
-            if (item == null) {
-                NetworkErrorIndicator()
-            } else {
-                ArticleItem(model = item, onArticleClick = onArticleClick)
-            }
+        items(uiState.articles) { item ->
+            ArticleItem(model = item, onArticleClick = onArticleClick)
             Divider(color = Color.Gray, thickness = 1.dp)
-        }
-
-        flowItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { ListCircularProgressIndicator() }
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { ListCircularProgressIndicator() }
-                }
-
-                loadState.refresh is LoadState.Error -> {
-                    val e = flowItems.loadState.refresh as LoadState.Error
-                    item { BottomSnackBar(e.toString()) }
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = flowItems.loadState.append as LoadState.Error
-                    item { BottomSnackBar(e.toString()) }
-                }
-            }
         }
     }
 }
