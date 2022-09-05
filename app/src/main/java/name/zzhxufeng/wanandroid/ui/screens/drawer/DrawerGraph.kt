@@ -16,7 +16,9 @@ import name.zzhxufeng.wanandroid.ui.composables.WanWebView
 import name.zzhxufeng.wanandroid.ui.screens.NavControllerNav
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
-import name.zzhxufeng.wanandroid.ui.screens.drawer.items.Coins
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.CheckInRecords
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.Coins
+import name.zzhxufeng.wanandroid.viewmodel.drawer.CheckInRecordViewModel
 import name.zzhxufeng.wanandroid.viewmodel.drawer.CoinViewModel
 import name.zzhxufeng.wanandroid.viewmodel.drawer.DrawerViewModel
 
@@ -63,7 +65,7 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
                 uiState = coinViewModel.uiState.collectAsState().value,
                 handleEvent = coinViewModel::handleEvent,
                 navigateBack = { navController.popBackStack() },
-                navigateToCheckInRecord = { navController.navigate("check_in_records") },
+                navigateToCheckInRecord = { navController.navigate(CHECK_IN_RECORDS_ROUTE) },
                 navigateToHelp = { navController.navigate(WanScreen.Web.createRoute(
                     "https://www.wanandroid.com/blog/show/2653"
                 )) },
@@ -94,8 +96,13 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
             Text(text = "COINS TODO")
         }
 
-        composable(route = "check_in_records") {
-            Text(text = "check_in_records")
+        composable(route = CHECK_IN_RECORDS_ROUTE) {
+            val checkInViewModel: CheckInRecordViewModel = viewModel()
+            CheckInRecords(
+                uiState = checkInViewModel.uiState.collectAsState().value,
+                handleEvent = checkInViewModel::handleEvent,
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable(
@@ -111,3 +118,5 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
         }
     }
 }
+
+private const val CHECK_IN_RECORDS_ROUTE = "check_in_records_route"

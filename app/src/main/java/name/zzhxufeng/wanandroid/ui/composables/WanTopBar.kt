@@ -50,7 +50,7 @@ fun WanTopBar(
     desc: String?,
     backIcon: ImageVector?,
     onBackClick: () -> Unit = {},
-    rightContent: @Composable () -> Unit
+    rightContent: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),

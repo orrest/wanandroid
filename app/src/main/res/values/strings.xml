@@ -35,5 +35,6 @@
     <string name="desc_help_web">help web</string>
 
     <string name="title_coin_rank">积分排行</string>
+    <string name="desc_check_in_records">积分记录</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer.items
+package name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults.indicatorLine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.HelpCenter
@@ -19,17 +18,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.RankModel
-import name.zzhxufeng.wanandroid.event.MainContainerEvent
 import name.zzhxufeng.wanandroid.event.drawer.CoinEvent
 import name.zzhxufeng.wanandroid.state.CoinUiState
+import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank
 import name.zzhxufeng.wanandroid.utils.*
 
 @Composable
@@ -88,16 +87,7 @@ fun Coins(
 fun RankItem(
     rankModel: RankModel
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                shape = RoundedCornerShape(ROUNDED_CORNER.dp),
-                color = Color.Transparent
-            )
-            .padding(vertical = ITEM_PADDING.dp)
-            .border(width = LINE_WIDTH_THIN.dp, color = Color.Black),
-    ) {
+    BorderedItemColumn {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

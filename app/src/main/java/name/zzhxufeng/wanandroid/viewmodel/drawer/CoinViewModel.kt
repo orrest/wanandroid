@@ -22,7 +22,9 @@ class CoinViewModel: BaseViewModel() {
 
     fun handleEvent(event: CoinEvent) {
         when (event) {
-            CoinEvent.LoadMoreRankList -> { loadMoreRankList() }
+            CoinEvent.LoadMoreRankList -> {
+                loadMoreRankList()
+            }
             else -> {}
         }
     }
@@ -30,25 +32,31 @@ class CoinViewModel: BaseViewModel() {
     private fun refreshRankInfo() = launchDataLoad {
         val response = DrawerRepository.rankInfo()
         if (response.errorCode == WAN_SUCCESS_CODE) {
-            uiState.update { it.copy(
-                myRank = response.data
-            ) }
+            uiState.update {
+                it.copy(
+                    myRank = response.data
+                )
+            }
         } else {
             errorMsg.value = response.errorMsg
         }
     }
 
-    private fun refreshRankList() = launchDataLoad{
+    private fun refreshRankList() = launchDataLoad {
         val response = DrawerRepository.coinRankList(START_PAGE)
         if (response.errorCode == WAN_SUCCESS_CODE) {
-            uiState.update { it.copy(
-                 rankUiState = it.rankUiState.copy(
-                    listState = LazyListState(),
-                    ranks = response.data.datas,
-                    maxPage = response.data.pageCount,
-                    nextPage = if (response.data.curPage + 1 >= response.data.pageCount) null else response.data.curPage + 1,
+            uiState.update {
+                it.copy(
+                    rankUiState = it.rankUiState.copy(
+                        listState = LazyListState(),
+                        ranks = response.data.datas,
+                        maxPage = response.data.pageCount,
+                        nextPage = if (response.data.curPage + 1
+                            >= response.data.pageCount) null
+                        else response.data.curPage + 1,
+                    )
                 )
-            ) }
+            }
         } else {
             errorMsg.value = response.errorMsg
         }
@@ -59,53 +67,17 @@ class CoinViewModel: BaseViewModel() {
         if (nextPage != null) {
             val response = DrawerRepository.coinRankList(nextPage)
             if (response.errorCode == WAN_SUCCESS_CODE) {
-                uiState.update { it.copy(
-                    rankUiState = it.rankUiState.copy(
-                        ranks = it.rankUiState.ranks.toMutableList().apply {
-                            addAll(response.data.datas)
-                        }.toList(),
-                        maxPage = response.data.pageCount,
-                        nextPage = if (response.data.curPage + 1 >= response.data.pageCount) null else response.data.curPage + 1,
+                uiState.update {
+                    it.copy(
+                        rankUiState = it.rankUiState.copy(
+                            ranks = it.rankUiState.ranks.toMutableList().apply {
+                                addAll(response.data.datas)
+                            }.toList(),
+                            maxPage = response.data.pageCount,
+                            nextPage = if (response.data.curPage + 1 >= response.data.pageCount) null else response.data.curPage + 1,
+                        )
                     )
-                ) }
-            } else {
-                errorMsg.value = response.errorMsg
-            }
-        } else {
-            errorMsg.value = "没有更多数据"
-        }
-    }
-
-    private fun refreshCheckInList() = launchDataLoad {
-        val response = DrawerRepository.coinCheckInList(START_PAGE_OLD_API)
-        if (response.errorCode == WAN_SUCCESS_CODE) {
-            uiState.update { it.copy(
-                checkInUiState = it.checkInUiState.copy(
-                    listState = LazyListState(),
-                    checkInRecords = response.data.datas,
-                    maxPage = response.data.pageCount,
-                    nextPage = response.data.curPage,
-                )
-            ) }
-        } else {
-            errorMsg.value = response.errorMsg
-        }
-    }
-
-    private fun loadMoreCheckInList() = launchDataLoad {
-        val nextPage = uiState.value.checkInUiState.nextPage
-        if (nextPage != null) {
-            val response = DrawerRepository.coinCheckInList(nextPage)
-            if (response.errorCode == WAN_SUCCESS_CODE) {
-                uiState.update { it.copy(
-                    checkInUiState = it.checkInUiState.copy(
-                        checkInRecords = it.checkInUiState.checkInRecords.toMutableList().apply {
-                            addAll(response.data.datas)
-                        }.toList(),
-                        maxPage = response.data.pageCount,
-                        nextPage = response.data.curPage,
-                    )
-                ) }
+                }
             } else {
                 errorMsg.value = response.errorMsg
             }
