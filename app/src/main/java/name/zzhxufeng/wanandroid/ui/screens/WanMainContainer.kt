@@ -6,13 +6,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.ui.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.ui.screens.drawer.DrawerNavigation
-import name.zzhxufeng.wanandroid.viewmodel.event.MainContainerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.MainContainerUiState
+import name.zzhxufeng.wanandroid.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.state.MainContainerUiState
 
 @Composable
 fun WanMainContainer(

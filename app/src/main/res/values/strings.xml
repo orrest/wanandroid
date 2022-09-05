@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">wanandroid</string>
 
+    <string name="item_drawer_main">抽屉容器</string>
+
     <string name="title_loyalty">   我的积分</string>
     <string name="title_bookmarks"> 我的收藏</string>
     <string name="title_share">     我的分享</string>
@@ -29,6 +31,9 @@
 
     <string name="desc_topbar_left_icon">left icon</string>
     <string name="desc_topbar_right_icon">right icon</string>
-    <string name="drawer_main">抽屉容器</string>
+    <string name="desc_coin_check_in_record">Coin check in record</string>
+    <string name="desc_help_web">help web</string>
+
+    <string name="title_coin_rank">积分排行</string>
 
 </resources>

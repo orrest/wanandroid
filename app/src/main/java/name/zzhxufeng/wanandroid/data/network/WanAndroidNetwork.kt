@@ -24,5 +24,6 @@ object WanAndroidNetwork {
 
 const val DEFAULT_PAGING_SIZE = 20
 const val MAX_PAGING_SIZE = 60
-const val START_PAGE = 0
+const val START_PAGE_OLD_API = 0
+const val START_PAGE = 1
 const val WAN_SUCCESS_CODE = 0

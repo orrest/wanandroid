@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.R
-import name.zzhxufeng.wanandroid.viewmodel.state.NavUiState
+import name.zzhxufeng.wanandroid.state.NavUiState
 import name.zzhxufeng.wanandroid.viewmodel.NavViewModel
 import kotlin.math.roundToInt
 

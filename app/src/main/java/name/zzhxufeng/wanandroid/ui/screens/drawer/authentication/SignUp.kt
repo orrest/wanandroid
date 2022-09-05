@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer
+package name.zzhxufeng.wanandroid.ui.screens.drawer.authentication
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -8,19 +8,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
-import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.LoginUiState
+import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
+import name.zzhxufeng.wanandroid.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.LoginUiState
+import name.zzhxufeng.wanandroid.ui.screens.drawer.*
 
 @Composable
-fun SignIn(
+fun SingUp(
     state: LoginUiState,
-    handleEvent: (DrawerEvent) -> Unit
+    handleEvent: (DrawerEvent) -> Unit,
+    authenticationMode: AuthenticationMode
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(32.dp))
-        AuthenticationTitle(authenticationMode = state.authenticationMode)
+        AuthenticationTitle(authenticationMode = authenticationMode)
         Spacer(modifier = Modifier.height(40.dp))
 
         Card(
@@ -34,6 +37,7 @@ fun SignIn(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val passwordFocusRequester = FocusRequester()
+                val repasswordFocusRequester = FocusRequester()
                 AccountInput(
                     modifier = Modifier.fillMaxWidth(),
                     accountName = state.inputName,
@@ -43,18 +47,29 @@ fun SignIn(
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                PasswordInput(
+                PasswordInputNext(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(passwordFocusRequester),
                     password = state.password,
                     onPasswordChanged = { handleEvent(DrawerEvent.PasswordChanged(it)) },
-                    onDoneClicked = { handleEvent(DrawerEvent.Authenticate) }
+                    onNextClicked = {
+                        repasswordFocusRequester.requestFocus()
+                    }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                PasswordInput(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(repasswordFocusRequester),
+                    password = state.repassword,
+                    onPasswordChanged = { handleEvent(DrawerEvent.PasswordChanged(it)) },
+                    onDoneClicked = { handleEvent(DrawerEvent.Register) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AuthenticationButton(
-                    authenticationMode = state.authenticationMode,
-                    onAuthenticate = { handleEvent(DrawerEvent.Authenticate) }
+                    authenticationMode = authenticationMode,
+                    onAuthenticate = { handleEvent(DrawerEvent.Register) }
                 )
             }
         }

@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import name.zzhxufeng.wanandroid.R
-import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.AuthenticationMode
 
 @Composable
 fun AuthenticationTitle(

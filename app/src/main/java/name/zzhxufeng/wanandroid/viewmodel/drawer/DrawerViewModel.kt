@@ -1,25 +1,40 @@
 package name.zzhxufeng.wanandroid.viewmodel.drawer
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
+import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
+import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
+import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
+import name.zzhxufeng.wanandroid.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.DrawerUiState
 import name.zzhxufeng.wanandroid.utils.LoginManager
-import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.viewmodel.state.LoginUiState
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 
-class LoginViewModel: BaseViewModel() {
-    val uiState = MutableStateFlow(LoginUiState())
+class DrawerViewModel: BaseViewModel() {
+    val uiState = MutableStateFlow(DrawerUiState())
 
     init {
-        uiState.value = uiState.value.copy(
-            authenticationMode = if (LoginManager.isLogin()) {
-                AuthenticationMode.LOGGED_IN
-            } else {
-                AuthenticationMode.SIGN_IN
-            }
-        )
+        if (LoginManager.isLogin()) {
+            getUserInfo()
+            uiState.update { it.copy(
+                authenticationMode = AuthenticationMode.LOGGED_IN
+            ) }
+        } else {
+            uiState.update { it.copy(
+                authenticationMode = AuthenticationMode.SIGN_IN
+            ) }
+        }
+    }
+
+    private fun getUserInfo() = launchDataLoad {
+        val response = DrawerRepository.userInfo()
+        if (response.errorCode == WAN_SUCCESS_CODE) {
+            uiState.update { it.copy(
+                userInfo = response.data
+            ) }
+        } else {
+            errorMsg.value = response.errorMsg
+        }
     }
 
     fun handleEvent(event: DrawerEvent) {
@@ -37,19 +52,23 @@ class LoginViewModel: BaseViewModel() {
     }
 
     private fun updateRepassword(pwd: String) {
-        uiState.value = uiState.value.copy(repassword = pwd)
+        uiState.update { it.copy(
+            loginUiState = it.loginUiState.copy(
+                repassword = pwd
+            )
+        ) }
     }
 
     private fun register() = launchDataLoad {
-        if (uiState.value.inputName == ""
-            || uiState.value.password == ""
-            || uiState.value.repassword == "") {
+        if (uiState.value.loginUiState.inputName == ""
+            || uiState.value.loginUiState.password == ""
+            || uiState.value.loginUiState.repassword == "") {
             errorMsg.value = "不能为空！"
         } else {
             val response = DrawerRepository.register(
-                uiState.value.inputName,
-                uiState.value.password,
-                uiState.value.repassword,
+                uiState.value.loginUiState.inputName,
+                uiState.value.loginUiState.password,
+                uiState.value.loginUiState.repassword,
             )
             uiState.value = uiState.value.copy(
                 authenticationMode = AuthenticationMode.SIGN_IN
@@ -59,19 +78,18 @@ class LoginViewModel: BaseViewModel() {
     }
 
     private fun login() = launchDataLoad {
-        if (uiState.value.password == "" || uiState.value.inputName == "") {
+        if (uiState.value.loginUiState.password == "" || uiState.value.loginUiState.inputName == "") {
             errorMsg.value = "用户名或密码为空."
         } else {
             val response = DrawerRepository.login(
-                name = uiState.value.inputName,
-                pwd = uiState.value.password
+                name = uiState.value.loginUiState.inputName,
+                pwd = uiState.value.loginUiState.password
             )
             if (response.errorCode == WAN_SUCCESS_CODE) {
                 uiState.value = uiState.value.copy(
                     authenticationMode = AuthenticationMode.LOGGED_IN
                 )
                 val response = DrawerRepository.userInfo()
-
             }
             errorMsg.value = response.errorMsg
         }
@@ -83,12 +101,20 @@ class LoginViewModel: BaseViewModel() {
     }
 
     private fun updateName(name: String) {
-        uiState.value = uiState.value.copy(inputName = name)
+        uiState.update { it.copy(
+            loginUiState = it.loginUiState.copy(
+                inputName = name
+            )
+        ) }
     }
 
 
     private fun updatePassword(password: String) {
-        uiState.value = uiState.value.copy(password = password)
+        uiState.update { it.copy(
+            loginUiState = it.loginUiState.copy(
+                password = password
+            )
+        ) }
     }
 
     private fun toggleDrawerMode() {

@@ -1,20 +1,14 @@
 package name.zzhxufeng.wanandroid.data.model
 
+import com.google.gson.annotations.SerializedName
+
 
 /*WanResponse<UserInfoData>*/
 data class UserInfoData(
-    val coinInfo: CoinInfo,
+    @SerializedName("coinInfo")
+    val rankModel: RankModel,
     val collectArticleInfo: CollectArticleInfo,
     val userInfo: UserInfo
-)
-
-data class CoinInfo(
-    val coinCount: Int,
-    val level: Int,
-    val nickname: String,
-    val rank: String,
-    val userId: Int,
-    val username: String
 )
 
 data class CollectArticleInfo(

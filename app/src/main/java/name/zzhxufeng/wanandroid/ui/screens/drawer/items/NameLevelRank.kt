@@ -1,23 +1,20 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer
+package name.zzhxufeng.wanandroid.ui.screens.drawer.items
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import name.zzhxufeng.wanandroid.utils.TEXT_FONT_MEDIUM
 
 @Composable
-fun PersonalInfo(
+fun NameLevelRank(
     name: String?,
-    level: String?,
+    level: Int?,
     rank: String?,
 ) {
     Column(
@@ -25,8 +22,11 @@ fun PersonalInfo(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(imageVector = Icons.Default.AccountCircle, contentDescription = "avatar", Modifier.size(80.dp))
-        Text(text = name?: "name", color = Color.Black)
+        Text(
+            text = name?: "name",
+            color = Color.Black,
+            fontSize = TEXT_FONT_MEDIUM.sp
+        )
         Text(text = "等级 ${level ?: ""}  |  排名 ${rank ?: ""}")
     }
 }

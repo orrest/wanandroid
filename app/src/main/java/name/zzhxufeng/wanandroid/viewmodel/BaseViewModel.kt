@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.data.model.WanResponse
+import name.zzhxufeng.wanandroid.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.event.UiEvent
 import retrofit2.HttpException
 
-open class BaseViewModel: ViewModel() {
+abstract class BaseViewModel: ViewModel() {
     var errorMsg = mutableStateOf<String?>(null)
         private set
     var isRefreshing = mutableStateOf(false)

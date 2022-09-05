@@ -1,10 +1,9 @@
 package name.zzhxufeng.wanandroid.data.model
 
-
-/*WanResponse<CoinListData>*/
-data class CoinListData(
+// /lg/coin/list/1/json
+data class CheckInData(
     val curPage: Int,
-    val datas: List<CoinListModel>,
+    val datas: List<CheckInModel>,
     val offset: Int,
     val over: Boolean,
     val pageCount: Int,
@@ -12,7 +11,7 @@ data class CoinListData(
     val total: Int
 )
 
-data class CoinListModel(
+data class CheckInModel(
     val coinCount: Int,
     val date: Long,
     val desc: String,

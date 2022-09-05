@@ -14,14 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import name.zzhxufeng.wanandroid.data.model.BannerModel
 import name.zzhxufeng.wanandroid.ui.composables.*
-import name.zzhxufeng.wanandroid.viewmodel.event.MainContainerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.HomeUiState
-import name.zzhxufeng.wanandroid.viewmodel.state.MainContainerUiState
+import name.zzhxufeng.wanandroid.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.state.HomeUiState
 
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")

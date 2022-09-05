@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer
+package name.zzhxufeng.wanandroid.ui.screens.drawer.authentication
 
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import name.zzhxufeng.wanandroid.R
-import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.AuthenticationMode
 
 @Composable
 fun ToggleAuthenticationMode(

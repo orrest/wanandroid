@@ -1,26 +1,5 @@
 package name.zzhxufeng.wanandroid.data.model
 
-/*https://www.wanandroid.com/navi/json*/
-/*
-{                           NaviResponse
-    data: [                 NaviResponse.data
-        {                   NaviData
-            articles: [
-                            NaviModel
-            ],
-            cid: 272,
-            name: "常用网站"
-        },
-        ...,
-    ]
-}
-* */
-data class NaviResponse(
-    val `data`: List<NaviData>,
-    val errorCode: Int,
-    val errorMsg: String
-)
-
 data class NaviData(
     val articles: List<NaviModel>,
     val cid: Int,

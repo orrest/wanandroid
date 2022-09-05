@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.viewmodel.state
+package name.zzhxufeng.wanandroid.state
 
 import name.zzhxufeng.wanandroid.data.model.NaviData
 import name.zzhxufeng.wanandroid.data.model.WanResponse

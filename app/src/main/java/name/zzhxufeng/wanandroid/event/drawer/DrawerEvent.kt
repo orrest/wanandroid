@@ -1,14 +1,9 @@
-package name.zzhxufeng.wanandroid.viewmodel.event
+package name.zzhxufeng.wanandroid.event.drawer
 
-import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItem
+import name.zzhxufeng.wanandroid.event.UiEvent
 
-sealed class DrawerEvent {
-    /*Drawer item.*/
-    class OpenDrawerItem(
-        val drawerItem: DrawerItem,
-        val navBlock: () -> Unit
-    ): DrawerEvent()
 
+sealed class DrawerEvent: UiEvent {
     /*Drawer sign in, sign up.*/
     class AccountNameChanged(val name: String): DrawerEvent()
     class PasswordChanged(val pwd: String): DrawerEvent()

@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer
+package name.zzhxufeng.wanandroid.ui.screens.drawer.items
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -12,20 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItem
+import name.zzhxufeng.wanandroid.ui.model.DrawerItem
 
 
 @Composable
 fun DrawerItem(
     item: DrawerItem,
     onClick: () -> Unit,
-    navBlock: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .clickable {
-                navBlock()
                 onClick()
             }
             .fillMaxWidth(),

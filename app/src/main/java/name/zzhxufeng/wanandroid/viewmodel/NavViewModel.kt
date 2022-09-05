@@ -2,7 +2,7 @@ package name.zzhxufeng.wanandroid.viewmodel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import name.zzhxufeng.wanandroid.data.NaviRepository
-import name.zzhxufeng.wanandroid.viewmodel.state.NavUiState
+import name.zzhxufeng.wanandroid.state.NavUiState
 
 class NavViewModel: BaseViewModel() {
     val uiState = MutableStateFlow(NavUiState())

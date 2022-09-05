@@ -1,9 +1,9 @@
-package name.zzhxufeng.wanandroid.viewmodel.event
+package name.zzhxufeng.wanandroid.event
 
 import androidx.compose.foundation.lazy.LazyListState
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
 
-sealed class MainContainerEvent {
+sealed class MainContainerEvent: UiEvent {
     sealed class HomeEvent: MainContainerEvent() {
         class UpdateListState(val listState: LazyListState): HomeEvent()
         object LoadMoreArticles: HomeEvent()

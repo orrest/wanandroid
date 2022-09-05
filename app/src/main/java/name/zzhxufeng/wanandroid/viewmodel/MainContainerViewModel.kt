@@ -3,12 +3,12 @@ package name.zzhxufeng.wanandroid.viewmodel
 import androidx.compose.foundation.lazy.LazyListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import name.zzhxufeng.wanandroid.data.network.START_PAGE
+import name.zzhxufeng.wanandroid.data.network.START_PAGE_OLD_API
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.HomeRepository
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
-import name.zzhxufeng.wanandroid.viewmodel.event.MainContainerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.MainContainerUiState
+import name.zzhxufeng.wanandroid.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.state.MainContainerUiState
 
 class MainContainerViewModel : BaseViewModel() {
 
@@ -76,7 +76,7 @@ class MainContainerViewModel : BaseViewModel() {
     }
 
     private fun refreshHomeArticles() = launchDataLoad{
-        val response = HomeRepository.fetchArticles(START_PAGE)
+        val response = HomeRepository.fetchArticles(START_PAGE_OLD_API)
         if (response.errorCode == WAN_SUCCESS_CODE) {
             uiState.update { it.copy(
                 homeUiState = it.homeUiState.copy(

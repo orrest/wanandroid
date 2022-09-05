@@ -1,118 +1,74 @@
 package name.zzhxufeng.wanandroid.ui.screens.drawer
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import name.zzhxufeng.wanandroid.ui.composables.WanAlertDialog
-import name.zzhxufeng.wanandroid.viewmodel.drawer.DrawerItemViewModel
-import name.zzhxufeng.wanandroid.viewmodel.drawer.LoginViewModel
-import name.zzhxufeng.wanandroid.viewmodel.event.DrawerEvent
-import name.zzhxufeng.wanandroid.viewmodel.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItem
-import name.zzhxufeng.wanandroid.viewmodel.state.DrawerItemUiState
+import name.zzhxufeng.wanandroid.data.model.UserInfoData
+import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
+import name.zzhxufeng.wanandroid.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.DrawerUiState
+import name.zzhxufeng.wanandroid.ui.model.DrawerItem
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItem
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank
 
 @Composable
 fun WanDrawer(
-    navHostController: NavHostController,
+    uiState: DrawerUiState,
+    handleEvent: (DrawerEvent) -> Unit,
+    onDrawerItemNavigate: (DrawerItem) -> Unit
 ) {
-    val loginViewModel: LoginViewModel = viewModel()
-    val loginUiState = loginViewModel.uiState.collectAsState().value
 
-    when (loginUiState.authenticationMode == AuthenticationMode.LOGGED_IN) {
+    when (uiState.authenticationMode == AuthenticationMode.LOGGED_IN) {
         true ->{
-            val viewModel: DrawerItemViewModel = viewModel()
             DrawerContent(
-                navHostController = navHostController,
-                state = viewModel.uiState.collectAsState().value,
-                handleEvent = viewModel::handleEvent,
+                userInfo = uiState.userInfo,
+                drawerItems = uiState.drawerItems,
+                onNavigate = onDrawerItemNavigate
             )
-
-            viewModel.errorMsg.value?.let {
-                WanAlertDialog(
-                    error = viewModel.errorMsg.value.toString(),
-                    dismissError = { viewModel.dismissError() }
-                )
-            }
         }
 
         false -> {
             AuthenticationContent(
-                state = loginUiState,
-                handleEvent = loginViewModel::handleEvent
+                authenticationMode = uiState.authenticationMode,
+                state = uiState.loginUiState,
+                handleEvent = handleEvent
             )
-
-            if (loginViewModel.isRefreshing.value) {
-                Dialog(onDismissRequest = { /*no need*/ }) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            loginViewModel.errorMsg.value?.let {
-                WanAlertDialog(
-                    error = loginViewModel.errorMsg.value.toString(),
-                    dismissError = { loginViewModel.dismissError() }
-                )
-            }
         }
     }
 }
 
 @Composable
 fun DrawerContent(
-    state: DrawerItemUiState,
-    handleEvent: (event: DrawerEvent) -> Unit,
-    navHostController: NavHostController
+    userInfo: UserInfoData?,
+    drawerItems: List<DrawerItem>,
+    onNavigate: (DrawerItem) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        PersonalInfo(
-            name = state.userInfo?.userInfo?.publicName,
-            level = state.userInfo?.coinInfo?.level.toString(),
-            rank = state.userInfo?.coinInfo?.rank
+        Image(
+            imageVector = Icons.Default.AccountCircle,
+            contentDescription = "avatar", Modifier.size(80.dp)
+        )
+        NameLevelRank(
+            name = userInfo?.userInfo?.publicName,
+            level = userInfo?.rankModel?.level,
+            rank = userInfo?.rankModel?.rank
         )
         Spacer(modifier = Modifier.height(80.dp))
-        state.drawerItems.forEach { drawerItem ->
-            DrawerItem(
-                item = drawerItem,
-                onClick = { handleEvent(DrawerEvent.OpenDrawerItem(
-                    drawerItem = drawerItem,
-                    navBlock = { navHostController.navigate(drawerItem.route) }
-                )) },
-                navBlock = { navHostController.navigate(drawerItem.route) }
-            )
-        }
-    }
-
-    state.drawerItemOpenState?.let {
-        when (it) {
-            DrawerItem.COINS -> {
-
+        drawerItems.forEach { drawerItem ->
+            if (drawerItem.show){
+                DrawerItem(
+                    item = drawerItem,
+                    onClick = { onNavigate(drawerItem) },
+                )
             }
-            DrawerItem.BOOKMARKS -> {
-
-            }
-            DrawerItem.SHARE -> {
-
-            }
-            DrawerItem.TODO -> {
-
-            }
-            DrawerItem.DARK_MODE -> {
-
-            }
-            DrawerItem.SETTINGS -> {
-
-            }
-            DrawerItem.LOGOUT -> {
-
-            }
-            else -> {}
         }
     }
 }

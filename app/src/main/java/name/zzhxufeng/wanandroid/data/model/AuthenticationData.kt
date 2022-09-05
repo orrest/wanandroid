@@ -1,12 +1,6 @@
 package name.zzhxufeng.wanandroid.data.model
 
-data class AuthenticationModel(
-    val `data`: Data,
-    val errorCode: Int,
-    val errorMsg: String
-)
-
-data class Data(
+data class AuthenticationData(
     val admin: Boolean,
     val chapterTops: List<Any>,
     val coinCount: Int,

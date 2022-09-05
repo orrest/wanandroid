@@ -7,14 +7,14 @@ import retrofit2.http.*
 object DrawerRepository {
     private val drawerService = WanAndroidNetwork.retrofit.create(DrawerInterface::class.java)
 
-    suspend fun login(name: String, pwd: String): WanResponse<AuthenticationModel> =
+    suspend fun login(name: String, pwd: String): WanResponse<AuthenticationData> =
         drawerService.login(name, pwd)
 
     suspend fun register(
         username: String,
         password: String,
         repassword: String
-    ): WanResponse<AuthenticationModel> =
+    ): WanResponse<AuthenticationData> =
         drawerService.register(username, password, repassword)
 
     suspend fun logout() {
@@ -24,8 +24,14 @@ object DrawerRepository {
     suspend fun userInfo(): WanResponse<UserInfoData>
     = drawerService.userInfo()
 
-    suspend fun coinList(page: Int): WanResponse<CoinListData>
-    = drawerService.coinList(page)
+    suspend fun rankInfo(): WanResponse<RankModel>
+    = drawerService.rankInfo()
+
+    suspend fun coinCheckInList(page: Int): WanResponse<CheckInData>
+    = drawerService.coinCheckInList(page)
+
+    suspend fun coinRankList(page: Int): WanResponse<RankData>
+    = drawerService.rank(page)
 }
 
 interface DrawerInterface {
@@ -34,7 +40,7 @@ interface DrawerInterface {
     suspend fun login(
         @Field("username") username: String,
         @Field("password") password: String
-    ): WanResponse<AuthenticationModel>
+    ): WanResponse<AuthenticationData>
 
     @FormUrlEncoded
     @POST("user/register")
@@ -42,7 +48,7 @@ interface DrawerInterface {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("repassword") repassword: String,
-    ): WanResponse<AuthenticationModel>
+    ): WanResponse<AuthenticationData>
 
     @GET("user/logout/json")
     suspend fun logout()
@@ -51,10 +57,15 @@ interface DrawerInterface {
     suspend fun userInfo(): WanResponse<UserInfoData>
 
     @GET("lg/coin/userinfo/json")
-    suspend fun coinInfo(): WanResponse<CoinInfo>
+    suspend fun rankInfo(): WanResponse<RankModel>
 
     @GET("/lg/coin/list/{page}/json")
-    suspend fun coinList(
+    suspend fun coinCheckInList(
         @Path("page") page: Int
-    ): WanResponse<CoinListData>
+    ): WanResponse<CheckInData>
+
+    @GET("/coin/rank/{page}/json")
+    suspend fun rank(
+        @Path("page") page: Int
+    ): WanResponse<RankData>
 }
