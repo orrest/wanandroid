@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,8 +17,10 @@ import name.zzhxufeng.wanandroid.ui.composables.WanWebView
 import name.zzhxufeng.wanandroid.ui.screens.NavControllerNav
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.Bookmarks
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.CheckInRecords
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.Coins
+import name.zzhxufeng.wanandroid.viewmodel.drawer.BookmarkViewModel
 import name.zzhxufeng.wanandroid.viewmodel.drawer.CheckInRecordViewModel
 import name.zzhxufeng.wanandroid.viewmodel.drawer.CoinViewModel
 import name.zzhxufeng.wanandroid.viewmodel.drawer.DrawerViewModel
@@ -73,7 +76,15 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
         }
 
         composable(route = DrawerItem.BOOKMARKS.route) {
-            Text(text = "COINS TODO")
+            val bookmarkViewModel: BookmarkViewModel = viewModel()
+            Bookmarks(
+                uiState = bookmarkViewModel.uiState.collectAsState().value,
+                handleEvent = bookmarkViewModel::handleEvent,
+                onBackClick = { navController.popBackStack() },
+                onBookmarkClick = { link ->
+                    navController.navigate(WanScreen.Web.createRoute(link))
+                },
+            )
         }
 
         composable(route = DrawerItem.SHARE.route) {

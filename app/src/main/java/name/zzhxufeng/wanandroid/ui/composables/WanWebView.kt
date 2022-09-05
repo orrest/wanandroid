@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import com.google.accompanist.web.*
 import name.zzhxufeng.wanandroid.ui.theme.WanAndroidTheme
 
-@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WanWebView(

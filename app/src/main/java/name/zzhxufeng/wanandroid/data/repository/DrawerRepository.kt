@@ -32,6 +32,9 @@ object DrawerRepository {
 
     suspend fun coinRankList(page: Int): WanResponse<RankData>
     = drawerService.rank(page)
+
+    suspend fun bookmarks(page: Int): WanResponse<BookmarkData>
+    = drawerService.bookmarks(page)
 }
 
 interface DrawerInterface {
@@ -68,4 +71,9 @@ interface DrawerInterface {
     suspend fun rank(
         @Path("page") page: Int
     ): WanResponse<RankData>
+
+    @GET("/lg/collect/list/{page}/json")
+    suspend fun bookmarks(
+        @Path("page") page: Int
+    ): WanResponse<BookmarkData>
 }

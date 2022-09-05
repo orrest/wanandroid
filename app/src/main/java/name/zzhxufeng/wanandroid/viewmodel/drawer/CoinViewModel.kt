@@ -25,7 +25,6 @@ class CoinViewModel: BaseViewModel() {
             CoinEvent.LoadMoreRankList -> {
                 loadMoreRankList()
             }
-            else -> {}
         }
     }
 
@@ -51,9 +50,7 @@ class CoinViewModel: BaseViewModel() {
                         listState = LazyListState(),
                         ranks = response.data.datas,
                         maxPage = response.data.pageCount,
-                        nextPage = if (response.data.curPage + 1
-                            >= response.data.pageCount) null
-                        else response.data.curPage + 1,
+                        nextPage = nextPage(response.data.curPage, response.data.pageCount),
                     )
                 )
             }
@@ -74,7 +71,7 @@ class CoinViewModel: BaseViewModel() {
                                 addAll(response.data.datas)
                             }.toList(),
                             maxPage = response.data.pageCount,
-                            nextPage = if (response.data.curPage + 1 >= response.data.pageCount) null else response.data.curPage + 1,
+                            nextPage = nextPage(response.data.curPage, response.data.pageCount),
                         )
                     )
                 }

@@ -40,4 +40,9 @@ abstract class BaseViewModel: ViewModel() {
             throw RuntimeException(response.errorMsg)
         }
     }
+
+    fun nextPage(curPage: Int, maxPage: Int): Int? {
+        return if (curPage + 1 >= maxPage) null
+        else curPage + 1
+    }
 }

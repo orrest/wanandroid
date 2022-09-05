@@ -17,10 +17,11 @@ import name.zzhxufeng.wanandroid.utils.ROUNDED_CORNER
 
 @Composable
 fun BorderedItemColumn(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 shape = RoundedCornerShape(ROUNDED_CORNER.dp),
