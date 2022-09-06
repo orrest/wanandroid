@@ -9,8 +9,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
-import name.zzhxufeng.wanandroid.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.state.LoginUiState
+import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.drawer.LoginUiState
 import name.zzhxufeng.wanandroid.ui.screens.drawer.*
 
 @Composable

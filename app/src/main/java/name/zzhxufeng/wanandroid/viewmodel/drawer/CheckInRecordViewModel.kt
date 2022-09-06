@@ -7,7 +7,7 @@ import name.zzhxufeng.wanandroid.data.network.START_PAGE_OLD_API
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
 import name.zzhxufeng.wanandroid.event.drawer.CheckInEvent
-import name.zzhxufeng.wanandroid.state.CheckInUiState
+import name.zzhxufeng.wanandroid.state.drawer.CheckInUiState
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 
 class CheckInRecordViewModel: BaseViewModel() {

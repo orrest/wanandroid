@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.state
+package name.zzhxufeng.wanandroid.state.drawer
 
 import name.zzhxufeng.wanandroid.data.model.BookmarkModel
 import name.zzhxufeng.wanandroid.data.network.START_PAGE_OLD_API

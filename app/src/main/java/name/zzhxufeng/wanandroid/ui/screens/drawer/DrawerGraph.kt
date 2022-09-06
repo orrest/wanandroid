@@ -4,7 +4,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,10 +19,8 @@ import name.zzhxufeng.wanandroid.ui.model.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.Bookmarks
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.CheckInRecords
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.Coins
-import name.zzhxufeng.wanandroid.viewmodel.drawer.BookmarkViewModel
-import name.zzhxufeng.wanandroid.viewmodel.drawer.CheckInRecordViewModel
-import name.zzhxufeng.wanandroid.viewmodel.drawer.CoinViewModel
-import name.zzhxufeng.wanandroid.viewmodel.drawer.DrawerViewModel
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.sharing.Sharings
+import name.zzhxufeng.wanandroid.viewmodel.drawer.*
 
 @Composable
 fun DrawerNavigation() {
@@ -80,15 +77,21 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
             Bookmarks(
                 uiState = bookmarkViewModel.uiState.collectAsState().value,
                 handleEvent = bookmarkViewModel::handleEvent,
-                onBackClick = { navController.popBackStack() },
-                onBookmarkClick = { link ->
+                navigateBack = { navController.popBackStack() },
+                navigateToBookmarkPage = { link ->
                     navController.navigate(WanScreen.Web.createRoute(link))
                 },
             )
         }
 
         composable(route = DrawerItem.SHARE.route) {
-            Text(text = "COINS TODO")
+            val shareViewModel: ShareViewModel = viewModel()
+            Sharings(
+                uiState = shareViewModel.uiState.collectAsState().value,
+                handleEvent = shareViewModel::handleEvent,
+                navigateBack = { navController.popBackStack() },
+                navigateToPostShare = { navigate(navController, SHARING_ADD) }
+            )
         }
 
         composable(route = DrawerItem.TODO.route) {
@@ -116,6 +119,11 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
             )
         }
 
+        composable(route = SHARING_ADD) {
+
+            Text(text = SHARING_ADD)
+        }
+
         composable(
             route = WanScreen.Web.route,
             arguments = listOf(navArgument("url") { type = NavType.StringType })
@@ -131,3 +139,4 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
 }
 
 private const val CHECK_IN_RECORDS_ROUTE = "check_in_records_route"
+private const val SHARING_ADD = "sharing_add"

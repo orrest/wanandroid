@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import name.zzhxufeng.wanandroid.R
-import name.zzhxufeng.wanandroid.state.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
 
 @Composable
 fun AuthenticationButton(

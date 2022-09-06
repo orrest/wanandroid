@@ -4,11 +4,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.START_PAGE
-import name.zzhxufeng.wanandroid.data.network.START_PAGE_OLD_API
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
 import name.zzhxufeng.wanandroid.event.drawer.CoinEvent
-import name.zzhxufeng.wanandroid.state.CoinUiState
+import name.zzhxufeng.wanandroid.state.drawer.CoinUiState
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 
 class CoinViewModel: BaseViewModel() {

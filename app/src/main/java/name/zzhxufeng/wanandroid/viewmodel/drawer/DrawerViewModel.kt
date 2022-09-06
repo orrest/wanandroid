@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
 import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
-import name.zzhxufeng.wanandroid.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.state.DrawerUiState
+import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.drawer.DrawerUiState
 import name.zzhxufeng.wanandroid.utils.LoginManager
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 

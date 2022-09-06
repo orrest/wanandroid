@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.state
+package name.zzhxufeng.wanandroid.state.drawer
 
 import androidx.compose.foundation.lazy.LazyListState
 import name.zzhxufeng.wanandroid.data.model.CheckInModel

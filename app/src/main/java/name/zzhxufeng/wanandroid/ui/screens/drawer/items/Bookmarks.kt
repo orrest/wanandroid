@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.BookmarkModel
 import name.zzhxufeng.wanandroid.event.BookmarkEvent
-import name.zzhxufeng.wanandroid.state.BookmarkUiState
+import name.zzhxufeng.wanandroid.state.drawer.BookmarkUiState
 import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
@@ -25,8 +25,8 @@ import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 fun Bookmarks(
     uiState: BookmarkUiState,
     handleEvent: (BookmarkEvent) -> Unit,
-    onBackClick: () -> Unit,
-    onBookmarkClick: (String) -> Unit
+    navigateBack: () -> Unit,
+    navigateToBookmarkPage: (String) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(SCREEN_PADDING.dp)
@@ -34,12 +34,12 @@ fun Bookmarks(
         WanTopBar(
             desc = stringResource(id = R.string.title_bookmarks),
             backIcon = Icons.Default.ArrowBack,
-            onBackClick = onBackClick
+            onBackClick = navigateBack
         )
 
         LazyColumn {
             itemsIndexed(uiState.bookmarks) { index, item ->
-                BookmarkItem(item, onBookmarkClick)
+                BookmarkItem(item, navigateToBookmarkPage)
 
                 LaunchedEffect(key1 = uiState.nextPage, block = {
                     if (uiState.bookmarks.size - index == 3) {

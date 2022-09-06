@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.state
+package name.zzhxufeng.wanandroid.state.drawer
 
 import name.zzhxufeng.wanandroid.data.model.UserInfoData
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem

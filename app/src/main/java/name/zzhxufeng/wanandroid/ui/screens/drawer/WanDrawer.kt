@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import name.zzhxufeng.wanandroid.data.model.UserInfoData
 import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
-import name.zzhxufeng.wanandroid.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.state.DrawerUiState
+import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.drawer.DrawerUiState
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank

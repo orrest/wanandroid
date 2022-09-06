@@ -35,6 +35,9 @@ object DrawerRepository {
 
     suspend fun bookmarks(page: Int): WanResponse<BookmarkData>
     = drawerService.bookmarks(page)
+
+    suspend fun mySharing(page: Int): WanResponse<SharingData>
+    = drawerService.mySharing(page)
 }
 
 interface DrawerInterface {
@@ -76,4 +79,9 @@ interface DrawerInterface {
     suspend fun bookmarks(
         @Path("page") page: Int
     ): WanResponse<BookmarkData>
+
+    @GET("/user/lg/private_articles/{page}/json")
+    suspend fun mySharing(
+        @Path("page") page: Int
+    ): WanResponse<SharingData>
 }

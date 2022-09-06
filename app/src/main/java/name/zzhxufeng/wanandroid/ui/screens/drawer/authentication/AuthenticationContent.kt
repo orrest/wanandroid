@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
-import name.zzhxufeng.wanandroid.state.AuthenticationMode
-import name.zzhxufeng.wanandroid.state.LoginUiState
+import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
+import name.zzhxufeng.wanandroid.state.drawer.LoginUiState
 import name.zzhxufeng.wanandroid.ui.screens.drawer.authentication.SignIn
 import name.zzhxufeng.wanandroid.ui.screens.drawer.authentication.SingUp
 import name.zzhxufeng.wanandroid.ui.screens.drawer.authentication.ToggleAuthenticationMode

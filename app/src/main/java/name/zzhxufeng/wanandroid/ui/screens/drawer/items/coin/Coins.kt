@@ -2,13 +2,10 @@ package name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -25,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.RankModel
 import name.zzhxufeng.wanandroid.event.drawer.CoinEvent
-import name.zzhxufeng.wanandroid.state.CoinUiState
+import name.zzhxufeng.wanandroid.state.drawer.CoinUiState
 import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank
