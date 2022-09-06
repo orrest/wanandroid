@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.SharingArticleModel
-import name.zzhxufeng.wanandroid.event.drawer.ShareEvent
+import name.zzhxufeng.wanandroid.event.drawer.SharingEvent
 import name.zzhxufeng.wanandroid.state.drawer.ShareUiState
 import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
 import name.zzhxufeng.wanandroid.ui.composables.EmptyContent
@@ -29,7 +29,7 @@ import name.zzhxufeng.wanandroid.utils.ITEM_PADDING
 @Composable
 fun Sharings(
     uiState: ShareUiState,
-    handleEvent: (ShareEvent) -> Unit,
+    handleEvent: (SharingEvent) -> Unit,
     navigateBack: () -> Unit,
     navigateToPostShare: () -> Unit,
 ) {
@@ -58,7 +58,7 @@ fun Sharings(
 @Composable
 fun SharingContent(
     uiState: ShareUiState,
-    handleEvent: (ShareEvent) -> Unit
+    handleEvent: (SharingEvent) -> Unit
 ) {
     LazyColumn {
         itemsIndexed(uiState.mySharing) { index, item ->
@@ -66,7 +66,7 @@ fun SharingContent(
 
             LaunchedEffect(key1 = uiState.nextPage, block = {
                 if (uiState.mySharing.size - index == 3) {
-                    handleEvent(ShareEvent.LoadMore())
+                    handleEvent(SharingEvent.LoadMore())
                 }
             })
         }
@@ -76,7 +76,7 @@ fun SharingContent(
 @Composable
 fun SharingItem(
     sharingModel: SharingArticleModel,
-    handleEvent: (ShareEvent) -> Unit
+    handleEvent: (SharingEvent) -> Unit
 ) {
     BorderedItemColumn {
         Row(
@@ -104,7 +104,7 @@ fun SharingItem(
                 imageVector = Icons.Default.CollectionsBookmark,
                 contentDescription = null,
                 modifier = Modifier.clickable {
-                    handleEvent(ShareEvent.AddBookmark(articleId = sharingModel.id))
+                    handleEvent(SharingEvent.AddBookmark(articleId = sharingModel.id))
                 }
             )
         }

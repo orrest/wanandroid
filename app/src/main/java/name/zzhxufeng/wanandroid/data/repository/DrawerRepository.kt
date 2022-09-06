@@ -38,6 +38,9 @@ object DrawerRepository {
 
     suspend fun mySharing(page: Int): WanResponse<SharingData>
     = drawerService.mySharing(page)
+
+    suspend fun shareArticle(title: String, link: String) : WanResponse<Any>
+    = drawerService.shareArticle(title, link)
 }
 
 interface DrawerInterface {
@@ -84,4 +87,11 @@ interface DrawerInterface {
     suspend fun mySharing(
         @Path("page") page: Int
     ): WanResponse<SharingData>
+
+    @FormUrlEncoded
+    @POST("/lg/user_article/add/json")
+    suspend fun shareArticle(
+        @Field("title") title: String,
+        @Field("link") link: String,
+    ): WanResponse<Any>
 }

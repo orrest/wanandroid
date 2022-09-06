@@ -19,6 +19,7 @@ import name.zzhxufeng.wanandroid.ui.model.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.Bookmarks
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.CheckInRecords
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin.Coins
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.sharing.SharingAdd
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.sharing.Sharings
 import name.zzhxufeng.wanandroid.viewmodel.drawer.*
 
@@ -120,8 +121,12 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
         }
 
         composable(route = SHARING_ADD) {
-
-            Text(text = SHARING_ADD)
+            val viewModel: ShareArticleViewModel = viewModel()
+            SharingAdd(
+                uiState = viewModel.uiState.collectAsState().value,
+                handleEvent = viewModel::handleEvent,
+                navigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(

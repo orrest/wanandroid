@@ -36,5 +36,11 @@
 
     <string name="title_coin_rank">积分排行</string>
     <string name="desc_check_in_records">积分记录</string>
+    <string name="label_title">标题</string>
+    <string name="label_link">链接</string>
+    <string name="label_post">提交</string>
+    <string name="label_introduction">说明</string>
+    <string name="label_title_placeholder">100字以内</string>
+    <string name="label_link_placeholder">例如：https://www.wanandroid.com</string>
 
 </resources>

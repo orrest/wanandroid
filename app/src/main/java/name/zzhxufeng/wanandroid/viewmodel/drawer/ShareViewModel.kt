@@ -1,12 +1,11 @@
 package name.zzhxufeng.wanandroid.viewmodel.drawer
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.START_PAGE
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE
 import name.zzhxufeng.wanandroid.data.repository.DrawerRepository
-import name.zzhxufeng.wanandroid.event.drawer.ShareEvent
+import name.zzhxufeng.wanandroid.event.drawer.SharingEvent
 import name.zzhxufeng.wanandroid.state.drawer.ShareUiState
 import name.zzhxufeng.wanandroid.viewmodel.BaseViewModel
 
@@ -17,10 +16,10 @@ class ShareViewModel: BaseViewModel() {
         refreshMySharing()
     }
 
-    fun handleEvent(event: ShareEvent) {
+    fun handleEvent(event: SharingEvent) {
         when (event) {
-            is ShareEvent.LoadMore -> { loadMore() }
-            is ShareEvent.AddBookmark -> {}
+            is SharingEvent.LoadMore -> { loadMore() }
+            is SharingEvent.AddBookmark -> { /*TODO*/ }
         }
     }
 
