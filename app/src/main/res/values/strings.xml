@@ -42,9 +42,9 @@
     <string name="label_introduction">说明</string>
     <string name="label_title_placeholder">100字以内</string>
     <string name="label_link_placeholder">例如：https://www.wanandroid.com</string>
-    <string name="theme_white">白色</string>
-    <string name="theme_orange">橙色</string>
-    <string name="theme_blue">蓝色</string>
+    <string name="theme_white">蓝灰</string>
+    <string name="theme_orange">橙黄</string>
+    <string name="theme_blue">蓝绿</string>
     <string name="theme_dark">暗色模式</string>
 
 </resources>
