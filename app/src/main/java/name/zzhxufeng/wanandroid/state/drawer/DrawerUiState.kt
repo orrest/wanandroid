@@ -8,6 +8,7 @@ data class DrawerUiState(
     val drawerItems: List<DrawerItem> = DrawerItem.values().toList(),
     val authenticationMode: AuthenticationMode = AuthenticationMode.SIGN_IN,
     val userInfo: UserInfoData? = null,
+    val themeDropdownExpanded: Boolean = false,
 )
 
 data class LoginUiState(

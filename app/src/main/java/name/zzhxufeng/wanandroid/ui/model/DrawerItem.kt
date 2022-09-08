@@ -17,7 +17,7 @@ enum class DrawerItem(
     BOOKMARKS(R.string.title_bookmarks, Icons.Default.Favorite, "BOOKMARKS"),
     SHARE(R.string.title_share, Icons.Default.Share, "SHARE"),
     TODO(R.string.title_todo, Icons.Default.Event, "TODO", show = false), /*not yet*/
-    DARK_MODE(R.string.title_dark_mode, Icons.Default.DarkMode, "DARK_MODE"),
-    SETTINGS(R.string.title_settings, Icons.Default.Settings, "SETTINGS"),
+    THEME(R.string.title_theme, Icons.Default.Palette, "THEME"),
+    CLEAR_CACHE(R.string.title_clear_cache, Icons.Default.Settings, "CLEAR_CACHE"),
     LOGOUT(R.string.title_logout, Icons.Default.Logout, "LOGOUT")
 }

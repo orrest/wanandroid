@@ -14,6 +14,7 @@ import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
 import name.zzhxufeng.wanandroid.state.drawer.DrawerUiState
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItem
+import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItemTheme
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank
 
 @Composable
@@ -27,7 +28,8 @@ fun WanDrawer(
         true ->{
             DrawerContent(
                 userInfo = uiState.userInfo,
-                drawerItems = uiState.drawerItems,
+                themeDropdownExpanded = uiState.themeDropdownExpanded,
+                themeDropdownExpandedEvent = { handleEvent(DrawerEvent.ThemeDropdownMenu) },
                 onNavigate = onDrawerItemNavigate
             )
         }
@@ -45,7 +47,8 @@ fun WanDrawer(
 @Composable
 fun DrawerContent(
     userInfo: UserInfoData?,
-    drawerItems: List<DrawerItem>,
+    themeDropdownExpanded: Boolean,
+    themeDropdownExpandedEvent: () -> Unit,
     onNavigate: (DrawerItem) -> Unit,
 ) {
     Column(
@@ -62,13 +65,36 @@ fun DrawerContent(
             rank = userInfo?.rankModel?.rank
         )
         Spacer(modifier = Modifier.height(80.dp))
-        drawerItems.forEach { drawerItem ->
-            if (drawerItem.show){
-                DrawerItem(
-                    item = drawerItem,
-                    onClick = { onNavigate(drawerItem) },
-                )
-            }
-        }
+
+        DrawerItem(
+            item = DrawerItem.COINS,
+            onClick = { onNavigate(DrawerItem.COINS) }
+        )
+
+        DrawerItem(
+            item = DrawerItem.BOOKMARKS,
+            onClick = { onNavigate(DrawerItem.BOOKMARKS) }
+        )
+
+        DrawerItem(
+            item = DrawerItem.SHARE,
+            onClick = { onNavigate(DrawerItem.SHARE) }
+        )
+
+        DrawerItemTheme(
+            item = DrawerItem.THEME,
+            dropdownExpanded = themeDropdownExpanded,
+            dropdownExpandedEvent = themeDropdownExpandedEvent
+        )
+
+        DrawerItem(
+            item = DrawerItem.CLEAR_CACHE,
+            onClick = { /*TODO*/ }
+        )
+
+        DrawerItem(
+            item = DrawerItem.LOGOUT,
+            onClick = { /*TODO*/ }
+        )
     }
 }

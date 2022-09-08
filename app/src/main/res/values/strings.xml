@@ -7,8 +7,8 @@
     <string name="title_bookmarks"> 我的收藏</string>
     <string name="title_share">     我的分享</string>
     <string name="title_todo">      TODO</string>
-    <string name="title_dark_mode"> 夜间模式</string>
-    <string name="title_settings">  设置</string>
+    <string name="title_theme">     主题颜色</string>
+    <string name="title_clear_cache">  清除缓存</string>
     <string name="title_logout">    退出登录</string>
 
     <string name="error_action">确认</string>
@@ -42,5 +42,9 @@
     <string name="label_introduction">说明</string>
     <string name="label_title_placeholder">100字以内</string>
     <string name="label_link_placeholder">例如：https://www.wanandroid.com</string>
+    <string name="theme_white">白色</string>
+    <string name="theme_orange">橙色</string>
+    <string name="theme_blue">蓝色</string>
+    <string name="theme_dark">暗色模式</string>
 
 </resources>

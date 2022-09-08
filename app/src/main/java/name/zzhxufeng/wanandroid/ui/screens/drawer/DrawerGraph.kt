@@ -51,8 +51,8 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
                 handleEvent = drawerViewModel::handleEvent,
                 onDrawerItemNavigate = { drawerItem ->
                     when (drawerItem) {
-                        DrawerItem.DARK_MODE -> { /*TODO handleEvent */ }
-                        DrawerItem.LOGOUT -> { /*TODO handleEvent */ }
+                        DrawerItem.THEME -> { /* no navigation */ }
+                        DrawerItem.LOGOUT -> { /* no navigation */ }
                         DrawerItem.MAIN -> { /*This won't be clicked, MAIN not shown.*/ }
                         else -> { navigate(navController, drawerItem.route) }
                     }
@@ -96,14 +96,6 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
         }
 
         composable(route = DrawerItem.TODO.route) {
-            Text(text = "COINS TODO")
-        }
-
-        composable(route = DrawerItem.DARK_MODE.route) {
-            Text(text = "COINS TODO")
-        }
-
-        composable(route = DrawerItem.SETTINGS.route) {
             Text(text = "COINS TODO")
         }
 

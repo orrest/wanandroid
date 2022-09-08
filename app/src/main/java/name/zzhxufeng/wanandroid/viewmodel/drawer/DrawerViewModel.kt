@@ -47,8 +47,14 @@ class DrawerViewModel: BaseViewModel() {
             DrawerEvent.Register -> register()
             DrawerEvent.ToggleAuthenticationMode -> toggleDrawerMode()
             DrawerEvent.ErrorDismissed -> dismissError()
-            else -> {}
+            DrawerEvent.ThemeDropdownMenu -> themeExpanded()
         }
+    }
+
+    private fun themeExpanded() {
+        uiState.update { it.copy(
+            themeDropdownExpanded = !uiState.value.themeDropdownExpanded
+        ) }
     }
 
     private fun updateRepassword(pwd: String) {

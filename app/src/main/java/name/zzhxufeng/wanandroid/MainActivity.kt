@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import name.zzhxufeng.wanandroid.ui.screens.*
 import name.zzhxufeng.wanandroid.viewmodel.MainContainerViewModel
 import name.zzhxufeng.wanandroid.ui.composables.WanWebView
+import name.zzhxufeng.wanandroid.ui.theme.WanAndroidTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppNavigation()
+            WanAndroidTheme {
+                AppNavigation()
+            }
         }
     }
 }
