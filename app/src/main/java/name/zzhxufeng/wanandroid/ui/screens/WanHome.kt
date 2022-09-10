@@ -1,6 +1,13 @@
 package name.zzhxufeng.wanandroid.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,17 +17,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
+import kotlinx.coroutines.delay
 import name.zzhxufeng.wanandroid.data.model.BannerModel
 import name.zzhxufeng.wanandroid.ui.composables.*
 import name.zzhxufeng.wanandroid.event.MainContainerEvent
 import name.zzhxufeng.wanandroid.state.HomeUiState
-import name.zzhxufeng.wanandroid.utils.ITEM_PADDING
 
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
@@ -43,11 +51,10 @@ fun WanHome(
         state = state
     ) {
         item {
-            Banners(
-                banners = uiState.banners,
-                navigateToArticle = onArticleClick,
-                modifier = Modifier
-                    .padding(vertical = ITEM_PADDING.dp)
+            BannerImage(
+                banner = uiState.currentBanner(),
+                onBannerClick = onArticleClick,
+                onAutoBannerChange = { handleEvent(MainContainerEvent.HomeEvent.AutoChangeBanner) },
             )
         }
 
@@ -64,55 +71,53 @@ fun WanHome(
 }
 
 @Composable
-private fun Banners(
-    banners: List<BannerModel>,
-    navigateToArticle: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    LazyRow(modifier = modifier) {
-        items(banners) { item ->
-            BannerImage(
-                banner = item,
-                onBannerClick = navigateToArticle,
-            )
-        }
-    }
-}
-
-@Composable
 fun BannerImage(
-    banner: BannerModel,
+    banner: BannerModel?,
     onBannerClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onAutoBannerChange: () -> Unit,
+    modifier: Modifier = Modifier,
+    delayMillis: Long = 5000
 ) {
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        modifier = modifier.size(400.dp, 240.dp)
+    LaunchedEffect(key1 = banner){
+        delay(delayMillis)
+        onAutoBannerChange()
+    }
+
+    Crossfade(
+        targetState = banner,
+        animationSpec = tween(durationMillis = 2000, easing = LinearEasing)
     ) {
-        Column(
-            modifier = Modifier.clickable { onBannerClick(banner.url) }
-        ){
-            val painter = rememberImagePainter(
-                data = banner.imagePath,
-                builder = { transformations(RoundedCornersTransformation()) }
-            )
+        val bm = it
+        Card(
+            shape = MaterialTheme.shapes.medium,
+        ) {
+            banner?.let {
+                Column(
+                    modifier = Modifier.clickable { onBannerClick(banner.url) }
+                ) {
+                    val painter = rememberAsyncImagePainter(
+                        ImageRequest.Builder(LocalContext.current).data(data = banner.imagePath)
+                            .apply(block = fun ImageRequest.Builder.() {
+                                transformations(RoundedCornersTransformation())
+                            }).build()
+                    )
 
-            Image(
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth(),
-            )
+                    Image(
+                        painter = painter,
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier
+                            .height(200.dp)
+                            .fillMaxWidth()
+                    )
 
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = banner.title,
-                    style = MaterialTheme.typography.h6,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                    Text(
+                        text = banner.title,
+                        style = MaterialTheme.typography.h6,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }

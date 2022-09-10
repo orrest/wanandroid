@@ -18,5 +18,10 @@ data class HomeUiState(
     val nextPage: Int = START_PAGE_OLD_API,
     val maxPage: Int = Int.MAX_VALUE,
     val PER_PAGE: Int = DEFAULT_PAGING_SIZE,
-    val banners: List<BannerModel> = emptyList()
-)
+    val banners: List<BannerModel> = emptyList(),
+    val currentBanner: Int? = null
+) {
+    fun currentBanner(): BannerModel?{
+        return if(currentBanner != null) banners[currentBanner] else null
+    }
+}

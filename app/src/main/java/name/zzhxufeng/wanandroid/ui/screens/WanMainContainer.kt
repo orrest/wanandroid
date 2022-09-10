@@ -33,8 +33,6 @@ fun WanMainContainer(
     /*只需要初始化一次，并且不需要作为state更新*/
     val allScreens = remember { WanScreen.allScreens() }
 
-    Log.d("selectedScreen", uiState.currentScreen.toString())
-
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {

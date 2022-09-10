@@ -1,6 +1,7 @@
 package name.zzhxufeng.wanandroid.viewmodel
 
 import androidx.compose.foundation.lazy.LazyListState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.START_PAGE_OLD_API
@@ -23,7 +24,23 @@ class MainContainerViewModel : BaseViewModel() {
             is MainContainerEvent.ChangeScreen -> { changeScreen(event.screen) }
             is MainContainerEvent.HomeEvent.UpdateListState -> { updateListState(event.listState) }
             MainContainerEvent.HomeEvent.LoadMoreArticles -> { loadMoreArticles() }
-            else -> {}
+            MainContainerEvent.HomeEvent.AutoChangeBanner -> { autoChangeBanner() }
+        }
+    }
+
+    private fun autoChangeBanner() = launchDataLoad{
+        val size = uiState.value.homeUiState.banners.size
+        val index = uiState.value.homeUiState.currentBanner
+        index?.let {
+            if (index+1 >= size) {
+                uiState.update { it.copy(
+                    homeUiState = it.homeUiState.copy(currentBanner = 0)
+                ) }
+            } else {
+                uiState.update { it.copy(
+                    homeUiState = it.homeUiState.copy(currentBanner = index+1)
+                ) }
+            }
         }
     }
 
@@ -96,7 +113,8 @@ class MainContainerViewModel : BaseViewModel() {
         if (response.errorCode == WAN_SUCCESS_CODE) {
             uiState.update { it.copy(
                 homeUiState = it.homeUiState.copy(
-                    banners = response.data
+                    banners = response.data,
+                    currentBanner = 0
                 )
             ) }
         } else {

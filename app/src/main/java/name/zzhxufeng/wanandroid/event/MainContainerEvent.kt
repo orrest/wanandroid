@@ -7,6 +7,7 @@ sealed class MainContainerEvent: UiEvent {
     sealed class HomeEvent: MainContainerEvent() {
         class UpdateListState(val listState: LazyListState): HomeEvent()
         object LoadMoreArticles: HomeEvent()
+        object AutoChangeBanner: HomeEvent()
     }
     class ChangeScreen(val screen: WanScreen): MainContainerEvent()
 }
