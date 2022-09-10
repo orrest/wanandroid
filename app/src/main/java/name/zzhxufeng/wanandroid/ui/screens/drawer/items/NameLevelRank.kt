@@ -24,7 +24,6 @@ fun NameLevelRank(
     ) {
         Text(
             text = name?: "name",
-            color = Color.Black,
             fontSize = TEXT_FONT_MEDIUM.sp
         )
         Text(text = "等级 ${level ?: ""}  |  排名 ${rank ?: ""}")

@@ -1,10 +1,9 @@
 package name.zzhxufeng.wanandroid.ui.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +30,7 @@ fun WanTopBar(
     ) {
         leftIcon?.let {
             IconButton(onClick = { onLeftIconClick() }) {
-                Image(imageVector = leftIcon, contentDescription = stringResource(R.string.desc_topbar_left_icon))
+                Icon(imageVector = leftIcon, contentDescription = stringResource(R.string.desc_topbar_left_icon))
             }
         }
 
@@ -39,7 +38,7 @@ fun WanTopBar(
 
         rightIcon?.let {
             IconButton(onClick = { onRightIconClick() }) {
-                Image(imageVector = rightIcon, contentDescription = stringResource(R.string.desc_topbar_right_icon))
+                Icon(imageVector = rightIcon, contentDescription = stringResource(R.string.desc_topbar_right_icon))
             }
         }
     }
@@ -59,9 +58,9 @@ fun WanTopBar(
     ) {
         backIcon?.let {
             IconButton(onClick = { onBackClick() }) {
-                Image(
+                Icon(
                     imageVector = backIcon,
-                    contentDescription = stringResource(R.string.desc_topbar_left_icon)
+                    contentDescription = stringResource(R.string.desc_topbar_left_icon),
                 )
             }
         }

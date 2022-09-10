@@ -1,10 +1,12 @@
 package name.zzhxufeng.wanandroid.ui.screens.drawer.items
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -17,7 +19,7 @@ import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.BookmarkModel
 import name.zzhxufeng.wanandroid.event.BookmarkEvent
 import name.zzhxufeng.wanandroid.state.drawer.BookmarkUiState
-import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
+import name.zzhxufeng.wanandroid.ui.composables.WanCard
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 
@@ -28,16 +30,22 @@ fun Bookmarks(
     navigateBack: () -> Unit,
     navigateToBookmarkPage: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(SCREEN_PADDING.dp)
+    Scaffold(
+        topBar = {
+            WanTopBar(
+                desc = stringResource(id = R.string.title_bookmarks),
+                backIcon = Icons.Default.ArrowBack,
+                onBackClick = navigateBack
+            )
+        }
     ) {
-        WanTopBar(
-            desc = stringResource(id = R.string.title_bookmarks),
-            backIcon = Icons.Default.ArrowBack,
-            onBackClick = navigateBack
-        )
+        val padding = it
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(SCREEN_PADDING.dp)
+        ) {
             itemsIndexed(uiState.bookmarks) { index, item ->
                 BookmarkItem(item, navigateToBookmarkPage)
 
@@ -56,15 +64,17 @@ fun BookmarkItem(
     bookmarkModel: BookmarkModel,
     onClick: (String) -> Unit
 ) {
-    BorderedItemColumn(
-        modifier = Modifier.clickable { onClick(bookmarkModel.link) }
+    WanCard(
+        onClick = { onClick(bookmarkModel.link) }
     ) {
-        Text(
-            text = bookmarkModel.title,
-        )
-        Text(
-            text = "作者：${if(bookmarkModel.author == "") "匿名" else bookmarkModel.author}\t" +
-                    "发布时间：${bookmarkModel.niceDate}",
-        )
+        Column {
+            Text(
+                text = bookmarkModel.title,
+            )
+            Text(
+                text = "作者：${if(bookmarkModel.author == "") "匿名" else bookmarkModel.author}\t" +
+                        "发布时间：${bookmarkModel.niceDate}",
+            )
+        }
     }
 }

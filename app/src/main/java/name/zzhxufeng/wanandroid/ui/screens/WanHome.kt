@@ -20,6 +20,7 @@ import name.zzhxufeng.wanandroid.data.model.BannerModel
 import name.zzhxufeng.wanandroid.ui.composables.*
 import name.zzhxufeng.wanandroid.event.MainContainerEvent
 import name.zzhxufeng.wanandroid.state.HomeUiState
+import name.zzhxufeng.wanandroid.utils.ITEM_PADDING
 
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
@@ -45,15 +46,16 @@ fun WanHome(
             Banners(
                 banners = uiState.banners,
                 navigateToArticle = onArticleClick,
+                modifier = Modifier
+                    .padding(vertical = ITEM_PADDING.dp)
             )
         }
 
         itemsIndexed(uiState.articles) { index, item ->
             ArticleItem(model = item, onArticleClick = onArticleClick)
-            Divider(color = Color.Gray, thickness = 1.dp)
 
             LaunchedEffect(key1 = uiState.nextPage, block = {
-                if (uiState.articles.size - index < 3) {
+                if (uiState.articles.size - index == 3) {
                     handleEvent(MainContainerEvent.HomeEvent.LoadMoreArticles)
                 }
             })
@@ -67,12 +69,11 @@ private fun Banners(
     navigateToArticle: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyRow(modifier = modifier.padding(5.dp)) {
+    LazyRow(modifier = modifier) {
         items(banners) { item ->
             BannerImage(
                 banner = item,
                 onBannerClick = navigateToArticle,
-                modifier = Modifier.padding(horizontal = 8.dp)
             )
         }
     }

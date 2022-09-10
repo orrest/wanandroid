@@ -12,14 +12,16 @@ import name.zzhxufeng.wanandroid.ui.model.Theme
 import name.zzhxufeng.wanandroid.ui.model.ThemeState
 
 private val DarkColorPalette = darkColors(
-    primary = primaryDark,
-    secondary = secondaryDark,
-    background = backgroundDark,
-    surface = secondaryDark,
-    onPrimary = secondaryDark,
-    onSecondary = contentDark,
-    onBackground = contentDark,
-    onSurface = contentDark,
+    primary = darkPrimary,
+    secondary = darkSecondary,
+    background = darkBackground,
+    surface = darkSurface,
+    onPrimary = darkOnPrimary,
+    onSecondary = darkOnSecondary,
+    onBackground = darkOnBackground,
+    onSurface = darkOnSurface,
+    primaryVariant = darkPrimaryVariant,
+    secondaryVariant = darkSecondaryVariant
 )
 
 private val WhiteColorPalette = darkColors(

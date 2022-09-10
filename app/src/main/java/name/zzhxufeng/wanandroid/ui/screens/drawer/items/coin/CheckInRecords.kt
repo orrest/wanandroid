@@ -16,7 +16,7 @@ import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.CheckInModel
 import name.zzhxufeng.wanandroid.event.drawer.CheckInEvent
 import name.zzhxufeng.wanandroid.state.drawer.CheckInUiState
-import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
+import name.zzhxufeng.wanandroid.ui.composables.WanCard
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 
@@ -50,7 +50,7 @@ fun CheckInRecords(
 fun CheckInRecordItem(
     checkInModel: CheckInModel
 ) {
-    BorderedItemColumn {
+    WanCard(onClick = { /*no*/ }) {
         Column {
             Text(text = checkInModel.reason)
             Text(text = "${checkInModel.desc}")

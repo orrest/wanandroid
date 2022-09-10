@@ -18,6 +18,6 @@ enum class DrawerItem(
     SHARE(R.string.title_share, Icons.Default.Share, "SHARE"),
     TODO(R.string.title_todo, Icons.Default.Event, "TODO", show = false), /*not yet*/
     THEME(R.string.title_theme, Icons.Default.Palette, "THEME"),
-    CLEAR_CACHE(R.string.title_clear_cache, Icons.Default.Settings, "CLEAR_CACHE"),
+    CLEAR_CACHE(R.string.title_clear_cache, Icons.Default.Settings, "CLEAR_CACHE", show = false),
     LOGOUT(R.string.title_logout, Icons.Default.Logout, "LOGOUT")
 }

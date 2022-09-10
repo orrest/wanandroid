@@ -21,10 +21,11 @@ import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.data.model.SharingArticleModel
 import name.zzhxufeng.wanandroid.event.drawer.SharingEvent
 import name.zzhxufeng.wanandroid.state.drawer.ShareUiState
-import name.zzhxufeng.wanandroid.ui.composables.BorderedItemColumn
 import name.zzhxufeng.wanandroid.ui.composables.EmptyContent
+import name.zzhxufeng.wanandroid.ui.composables.WanCard
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.utils.ITEM_PADDING
+import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 
 @Composable
 fun Sharings(
@@ -34,18 +35,22 @@ fun Sharings(
     navigateToPostShare: () -> Unit,
 ) {
     Scaffold(
-        floatingActionButton = { SharingFloatingButton(navigateToPostShare) },
-    ) {
-        val padding = it
-
-        Column(
-            modifier = Modifier.padding(horizontal = padding.calculateTopPadding())
-        ) {
+        topBar = {
             WanTopBar(
                 desc = stringResource(id = R.string.title_share),
                 backIcon = Icons.Default.ArrowBack,
                 onBackClick = navigateBack
             )
+        },
+        floatingActionButton = { SharingFloatingButton(navigateToPostShare) },
+    ) {
+        val padding = it
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = SCREEN_PADDING.dp)
+        ) {
             if (uiState.mySharing.isNotEmpty()) {
                 SharingContent(uiState, handleEvent)
             } else {
@@ -78,35 +83,37 @@ fun SharingItem(
     sharingModel: SharingArticleModel,
     handleEvent: (SharingEvent) -> Unit
 ) {
-    BorderedItemColumn {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+    WanCard(onClick = { /*no*/ }) {
+        Column {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = sharingModel.shareUser)
-                Spacer(modifier = Modifier.width(ITEM_PADDING.dp))
-                Text(text = if (sharingModel.fresh) "新" else "")
-            }
-            Text(text = sharingModel.niceDate)
-        }
-        Text(text = sharingModel.title)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "${sharingModel.superChapterName} · ${sharingModel.chapterName}")
-            Image(
-                imageVector = Icons.Default.CollectionsBookmark,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    handleEvent(SharingEvent.AddBookmark(articleId = sharingModel.id))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = sharingModel.shareUser)
+                    Spacer(modifier = Modifier.width(ITEM_PADDING.dp))
+                    Text(text = if (sharingModel.fresh) "新" else "")
                 }
-            )
+                Text(text = sharingModel.niceDate)
+            }
+            Text(text = sharingModel.title)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "${sharingModel.superChapterName} · ${sharingModel.chapterName}")
+                Image(
+                    imageVector = Icons.Default.CollectionsBookmark,
+                    contentDescription = null,
+                    modifier = Modifier.clickable {
+                        handleEvent(SharingEvent.AddBookmark(articleId = sharingModel.id))
+                    }
+                )
+            }
         }
     }
 }

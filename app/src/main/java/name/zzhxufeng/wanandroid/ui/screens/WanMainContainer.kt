@@ -1,17 +1,23 @@
 package name.zzhxufeng.wanandroid.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.ui.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.ui.screens.drawer.DrawerNavigation
 import name.zzhxufeng.wanandroid.event.MainContainerEvent
 import name.zzhxufeng.wanandroid.state.MainContainerUiState
+import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 
 @Composable
 fun WanMainContainer(
@@ -57,27 +63,32 @@ fun WanMainContainer(
         },
     ) {
         val padding = it
-        Log.d("Switching...", uiState.currentScreen.toString())
 
-        when (uiState.currentScreen) {
-            WanScreen.Home -> {
-                WanHome(
-                    uiState = uiState.homeUiState,
-                    handleEvent = handleEvent,
-                    onArticleClick = onArticleClick,
-                )
-            }
-            WanScreen.Navi -> {
-                WanNavi()
-            }
-            WanScreen.Projects -> {
-                /*TODO*/
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = SCREEN_PADDING.dp)
+        ) {
+            when (uiState.currentScreen) {
+                WanScreen.Home -> {
+                    WanHome(
+                        uiState = uiState.homeUiState,
+                        handleEvent = handleEvent,
+                        onArticleClick = onArticleClick,
+                    )
+                }
+                WanScreen.Navi -> {
+                    WanNavi()
+                }
+                WanScreen.Projects -> {
+                    /*TODO*/
 //                WanProject(
 //                    viewModel = viewModel(),
 //                    onArticleClick = onArticleClick
 //                )
+                }
+                else -> {}
             }
-            else -> {}
         }
     }
 }

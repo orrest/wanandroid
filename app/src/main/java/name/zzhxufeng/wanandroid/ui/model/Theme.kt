@@ -27,5 +27,5 @@ enum class ThemeColor(
     WHITE(R.string.theme_white, whitePrimary),
     ORANGE(R.string.theme_orange, orangePrimary),
     BLUE(R.string.theme_blue, bluePrimary),
-    DARK(R.string.theme_dark, backgroundDark)
+    DARK(R.string.theme_dark, darkPrimary)
 }

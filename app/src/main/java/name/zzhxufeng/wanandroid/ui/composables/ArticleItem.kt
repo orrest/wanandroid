@@ -1,6 +1,5 @@
 package name.zzhxufeng.wanandroid.ui.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,20 +16,20 @@ fun ArticleItem(
     onArticleClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.clickable { onArticleClick(model.link) }
-    ){
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            model.tags!!.forEach {
-                Text(text = it.name)
+    WanCard(onClick = { onArticleClick(model.link) }) {
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                model.tags!!.forEach {
+                    Text(text = it.name)
+                }
+                Text(text = model.author!!)
+                Text(text = model.niceDate)
             }
-            Text(text = model.author!!)
-            Text(text = model.niceDate)
+            Text(text = model.title, fontSize = 22.sp)
+            Text(text = "${model.superChapterName}/${model.chapterName}")
         }
-        Text(text = model.title, fontSize = 22.sp)
-        Text(text = "${model.superChapterName}/${model.chapterName}")
     }
 }
