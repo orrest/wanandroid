@@ -14,39 +14,31 @@ object NavControllerNav{
     const val DRAWER_NAV = "drawer"
 }
 
-sealed class WanScreen (
+sealed class WanScreen(
     val route: String,
-    val type: ScreenType,
     val icon: ImageVector
 ) {
 
-    /*main*/
     object Home: WanScreen (
         route = "首页",
-        type = ScreenType.main,
         icon = Icons.Filled.Home
     )
     object Navi: WanScreen (
         route = "导航",
-        type = ScreenType.main,
         icon = Icons.Filled.Person
     )
     object Projects: WanScreen (
         route = "项目",
-        type = ScreenType.main,
         icon = Icons.Filled.Face
     )
 
-    /*deep*/
     object Search: WanScreen(
         route = "搜索",
-        type = ScreenType.deep,
         icon = Icons.Filled.Search
     )
 
     object Web: WanScreen(
         route = "Web/{url}",
-        type = ScreenType.deep,
         icon = Icons.Filled.Web
     ){
         fun createRoute(url: String): String {
@@ -85,9 +77,4 @@ sealed class WanScreen (
             )
         }
     }
-}
-
-enum class ScreenType {
-    main,
-    deep
 }

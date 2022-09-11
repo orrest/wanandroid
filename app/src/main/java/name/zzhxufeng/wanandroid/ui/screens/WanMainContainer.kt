@@ -1,22 +1,24 @@
 package name.zzhxufeng.wanandroid.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import name.zzhxufeng.wanandroid.event.MainContainerEvent
+import name.zzhxufeng.wanandroid.state.MainContainerUiState
 import name.zzhxufeng.wanandroid.ui.composables.WanBottomBar
 import name.zzhxufeng.wanandroid.ui.composables.WanTopBar
 import name.zzhxufeng.wanandroid.ui.screens.drawer.DrawerNavigation
-import name.zzhxufeng.wanandroid.event.MainContainerEvent
-import name.zzhxufeng.wanandroid.state.MainContainerUiState
 import name.zzhxufeng.wanandroid.utils.SCREEN_PADDING
 
 @Composable
@@ -47,9 +49,6 @@ fun WanMainContainer(
         bottomBar = {
             WanBottomBar(
                 allScreens = allScreens,
-                /*事件下降，状态上升：*/
-                /*让这个状态的改变发生的事件发生在它该发生的地方*/
-                /*这个状态反过来影响这个地方的重组*/
                 onScreenSelected = {
                     screen -> handleEvent(MainContainerEvent.ChangeScreen(screen))
                 },
@@ -60,12 +59,11 @@ fun WanMainContainer(
             DrawerNavigation()
         },
     ) {
-        val padding = it
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = SCREEN_PADDING.dp)
+                .padding(bottom = it.calculateBottomPadding())
         ) {
             when (uiState.currentScreen) {
                 WanScreen.Home -> {

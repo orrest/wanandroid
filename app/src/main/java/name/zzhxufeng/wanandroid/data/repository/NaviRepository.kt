@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.data
+package name.zzhxufeng.wanandroid.data.repository
 
 import name.zzhxufeng.wanandroid.data.model.NaviData
 import name.zzhxufeng.wanandroid.data.model.WanResponse
