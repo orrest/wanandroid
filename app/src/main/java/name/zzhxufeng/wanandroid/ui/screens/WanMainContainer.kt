@@ -77,11 +77,9 @@ fun WanMainContainer(
                     WanNavi(onArticleClick)
                 }
                 WanScreen.Projects -> {
-                    /*TODO*/
-//                WanProject(
-//                    viewModel = viewModel(),
-//                    onArticleClick = onArticleClick
-//                )
+                    WanProjects(
+                        onArticleClick = onArticleClick
+                    )
                 }
                 else -> {}
             }

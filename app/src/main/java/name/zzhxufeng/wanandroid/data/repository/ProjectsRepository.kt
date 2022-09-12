@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.data
+package name.zzhxufeng.wanandroid.data.repository
 
 import name.zzhxufeng.wanandroid.data.model.WanResponse
 import name.zzhxufeng.wanandroid.data.network.WanAndroidNetwork
@@ -9,22 +9,22 @@ import retrofit2.http.Query
 object ProjectsRepository {
     private val projectService = WanAndroidNetwork.retrofit.create(ProjectsInterface::class.java)
 
-    suspend fun refreshProjectColumnName(): List<ProjectNameModel> {
-        return projectService.fetchProjectColumnName().data
+    suspend fun refreshTitles(): WanResponse<List<ProjectNameModel>>{
+        return projectService.fetchTitles()
     }
 
-    suspend fun refreshProjects(page: Int, cid: Int): List<ProjectModel> {
-        return projectService.fetchProjects(page, cid).data.datas
+    suspend fun refreshProjects(page: Int, id: Int): WanResponse<ProjectData> {
+        return projectService.fetchProjects(page, id)
     }
 }
 
 interface ProjectsInterface {
     @GET("project/tree/json")
-    suspend fun fetchProjectColumnName(): WanResponse<List<ProjectNameModel>>
+    suspend fun fetchTitles(): WanResponse<List<ProjectNameModel>>
 
     @GET("project/list/{page}/json")
     suspend fun fetchProjects(
-        @Path("page") page: Int, @Query("cid") cid: Int
+        @Path("page") page: Int, @Query("cid") id: Int
     ): WanResponse<ProjectData>
 }
 

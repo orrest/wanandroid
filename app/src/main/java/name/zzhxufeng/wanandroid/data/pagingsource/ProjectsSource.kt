@@ -3,8 +3,8 @@ package name.zzhxufeng.wanandroid.data.pagingsource
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import name.zzhxufeng.wanandroid.data.ProjectModel
-import name.zzhxufeng.wanandroid.data.ProjectsRepository
+import name.zzhxufeng.wanandroid.data.repository.ProjectModel
+import name.zzhxufeng.wanandroid.data.repository.ProjectsRepository
 
 class ProjectsSource(private val cid: Int): PagingSource<Int, ProjectModel>() {
     companion object {
@@ -22,9 +22,9 @@ class ProjectsSource(private val cid: Int): PagingSource<Int, ProjectModel>() {
             val response = ProjectsRepository.refreshProjects(nextPage, cid)
 
             LoadResult.Page(
-                data = response,
+                data = response.data.datas,
                 prevKey = if (nextPage == START_INDEX) null else nextPage - 1,
-                nextKey = if (response.isEmpty()) null else nextPage + 1
+                nextKey = if (response.data.datas.isEmpty()) null else nextPage + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

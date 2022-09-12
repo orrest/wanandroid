@@ -1,84 +1,112 @@
 package name.zzhxufeng.wanandroid.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 import name.zzhxufeng.wanandroid.ui.composables.UriImage
-import name.zzhxufeng.wanandroid.data.ProjectModel
-import name.zzhxufeng.wanandroid.viewmodel.MainContainerViewModel
+import name.zzhxufeng.wanandroid.data.repository.ProjectModel
+import name.zzhxufeng.wanandroid.event.ProjectsEvent
+import name.zzhxufeng.wanandroid.state.ProjectsUiState
+import name.zzhxufeng.wanandroid.ui.composables.WanCard
+import name.zzhxufeng.wanandroid.viewmodel.ProjectViewModel
+import kotlin.random.Random
 
-//@OptIn(ExperimentalPagerApi::class, ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
-//@Composable
-//fun WanProject(
-//    viewModel: MainContainerViewModel,
-//    onArticleClick: (String) -> Unit
-//) {
-//    val pagerState = rememberPagerState()
-//    /* pager 的标签不显示是为啥？多线程问题？*/
-//    /* 做个实验：tabrow的数据不从viewModel取。是能够显示的，因此写法没问题。
-//    *  问题在于从viewModel取数据。
-//    *  val list = viewModel.projectsName 这样取过来就没问题，可以用...
-//    * */
-//
-//    val list = viewModel.projectsName
-//    val pagerMap = viewModel.projectFlowMap
-//    val scope = rememberCoroutineScope()
-//
-//    Column {
-//        ScrollableTabRow(
-//            selectedTabIndex = pagerState.currentPage,
-//        ) {
-//            list.forEachIndexed { index, projectNameModel ->
-//                Tab(
-//                    selected = pagerState.currentPage == index,
-//                    onClick = { scope.launch { pagerState.scrollToPage(index) } },
-//                    text = { Text(text = projectNameModel.name) },
-//                )
-//            }
-//        }
-//        HorizontalPager(
-//            count = list.size,
-//            state = pagerState
-//        ) {
-//            val flowItems = pagerMap.get(list[pagerState.currentPage].id)!!.collectAsLazyPagingItems()
-//            LazyColumn {
-//                items(flowItems) {
-//                    ProjectItem(it!!, Modifier)
-//                    Divider()
-//                }
-//            }
-//        }
-//    }
-//}
+@Composable
+fun WanProjects(
+    onArticleClick: (String) -> Unit
+) {
+    val viewModel: ProjectViewModel = viewModel()
+
+    Projects(
+        uiState = viewModel.uiState.collectAsState().value,
+        handleEvent = viewModel::handleEvent,
+        onArticleClick = onArticleClick
+    )
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun Projects(
+    uiState: ProjectsUiState,
+    handleEvent: (ProjectsEvent) -> Unit,
+    onArticleClick: (String) -> Unit
+) {
+    val pagerState = rememberPagerState()
+    val scope = rememberCoroutineScope()
+    val titles = uiState.titles
+
+    Column {
+        titles?.let {
+            ScrollableTabRow(
+                selectedTabIndex = pagerState.currentPage,
+            ) {
+                titles.forEachIndexed { index, projectNameModel ->
+                    Tab(
+                        selected = pagerState.currentPage == index,
+                        onClick = { scope.launch { pagerState.scrollToPage(index) } },
+                        text = { Text(text = projectNameModel.name) },
+                    )
+                }
+            }
+
+            HorizontalPager(
+                count = uiState.projects.size,
+                state = pagerState,
+            ) {
+                val projects = uiState.projects[pagerState.currentPage]
+                LazyColumn {
+                    if (projects != null) {
+                        itemsIndexed(projects) { index, project ->
+                            ProjectItem(
+                                model = project,
+                                onArticleClick = onArticleClick
+                            )
+                            Divider()
+                        }
+                    } else {
+                        item {
+                            LaunchedEffect(key1 = currentPage) {
+                                handleEvent(ProjectsEvent.RefreshProjects(titles[currentPage].id, currentPage))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun ProjectItem(
     model: ProjectModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onArticleClick: (String) -> Unit
 ) {
-    Row(
-        modifier = modifier
-    ) {
-        UriImage(
-            uri = model.envelopePic,
-            modifier = Modifier
-                .width(180.dp)
-                .height(320.dp)
-        )
-        Column {
-            Text(text = model.title)
-            Text(text = model.desc)
-            Row {
-                Text(text = model.author)
-                Text(text = model.niceDate)
+    WanCard(onClick = { onArticleClick(model.link) }) {
+        Row(
+            modifier = modifier
+        ) {
+            UriImage(
+                uri = model.envelopePic,
+                modifier = Modifier
+                    .width(180.dp)
+                    .height(320.dp)
+            )
+            Column {
+                Text(text = model.title)
+                Text(text = model.desc)
+                Row {
+                    Text(text = model.author)
+                    Text(text = model.niceDate)
+                }
             }
         }
     }

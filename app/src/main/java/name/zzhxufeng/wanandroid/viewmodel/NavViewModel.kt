@@ -1,6 +1,5 @@
 package name.zzhxufeng.wanandroid.viewmodel
 
-import androidx.compose.foundation.lazy.LazyListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import name.zzhxufeng.wanandroid.data.network.WAN_SUCCESS_CODE

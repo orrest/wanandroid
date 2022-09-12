@@ -121,26 +121,4 @@ class MainContainerViewModel : BaseViewModel() {
             errorMsg.value = response.errorMsg
         }
     }
-
-
-//    /*bottom bar 3*/
-//    val projectsName = mutableStateListOf<ProjectNameModel>()
-//    val projectFlowMap = mutableMapOf<Int, Flow<PagingData<ProjectModel>>>()
-//
-//    private fun refreshProjectColumnName() {
-//        val asyncRes = viewModelScope.async { ProjectsRepository.refreshProjectColumnName() }
-//
-//        viewModelScope.launch {
-//            projectsName.addAll(asyncRes.await())
-//            projectsName.forEach {
-//                projectFlowMap.put(
-//                    key = it.id,
-//                    value = Pager(
-//                        config = PagingConfig(pageSize = DEFAULT_PAGING_SIZE, maxSize = MAX_PAGING_SIZE),
-//                        pagingSourceFactory = { ProjectsSource(it.id) })
-//                        .flow.cachedIn(viewModelScope)
-//                )
-//            }
-//        }
-//    }
 }
