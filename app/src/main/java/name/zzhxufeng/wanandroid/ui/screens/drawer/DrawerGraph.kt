@@ -1,5 +1,6 @@
 package name.zzhxufeng.wanandroid.ui.screens.drawer
 
+import android.content.Intent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,7 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import name.zzhxufeng.wanandroid.ui.composables.WanWebView
+import name.zzhxufeng.wanandroid.URL
+import name.zzhxufeng.wanandroid.WanApplication
+import name.zzhxufeng.wanandroid.WanWebActivity
 import name.zzhxufeng.wanandroid.ui.screens.NavControllerNav
 import name.zzhxufeng.wanandroid.ui.screens.WanScreen
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
@@ -67,9 +70,11 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
                 handleEvent = coinViewModel::handleEvent,
                 navigateBack = { navController.popBackStack() },
                 navigateToCheckInRecord = { navController.navigate(CHECK_IN_RECORDS_ROUTE) },
-                navigateToHelp = { navController.navigate(WanScreen.Web.createRoute(
-                    "https://www.wanandroid.com/blog/show/2653"
-                )) },
+                navigateToHelp = {
+                    val intent = Intent(WanApplication.getContext(), WanWebActivity::class.java)
+                    intent.putExtra(URL, "https://www.wanandroid.com/blog/show/2653")
+                    WanApplication.startActivity(intent)
+                },
             )
         }
 
@@ -80,7 +85,9 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
                 handleEvent = bookmarkViewModel::handleEvent,
                 navigateBack = { navController.popBackStack() },
                 navigateToBookmarkPage = { link ->
-                    navController.navigate(WanScreen.Web.createRoute(link))
+                    val intent = Intent(WanApplication.getContext(), WanWebActivity::class.java)
+                    intent.putExtra(URL, link)
+                    WanApplication.startActivity(intent)
                 },
             )
         }
@@ -119,18 +126,6 @@ fun NavGraphBuilder.drawerGraph(navController: NavHostController) {
                 handleEvent = viewModel::handleEvent,
                 navigateBack = { navController.popBackStack() }
             )
-        }
-
-        composable(
-            route = WanScreen.Web.route,
-            arguments = listOf(navArgument("url") { type = NavType.StringType })
-        ) { navBackStackEntry ->
-            val encodedUrl = navBackStackEntry.arguments?.getString("url")
-            if (encodedUrl != null) {
-                WanWebView(url = WanScreen.Web.parseUrl(encodedUrl))
-            } else {
-                Text(text = "不该发生的情况")
-            }
         }
     }
 }

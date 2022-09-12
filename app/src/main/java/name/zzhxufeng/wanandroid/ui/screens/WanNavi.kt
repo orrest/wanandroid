@@ -19,13 +19,14 @@ import name.zzhxufeng.wanandroid.ui.composables.WanCard
 import name.zzhxufeng.wanandroid.viewmodel.NavViewModel
 
 @Composable
-fun WanNavi() {
+fun WanNavi(onArticleClick: (String) -> Unit) {
     val viewModel: NavViewModel = viewModel()
 
     Navi(
         uiState = viewModel.uiState.collectAsState().value,
         error = viewModel.errorMsg.value,
-        dismissError = { viewModel.dismissError() }
+        dismissError = { viewModel.dismissError() },
+        onArticleClick = onArticleClick
     )
 }
 
@@ -35,6 +36,7 @@ fun Navi(
     uiState: NavUiState,
     error: String?,
     dismissError: () -> Unit,
+    onArticleClick: (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -65,7 +67,6 @@ fun Navi(
             uiState.naviList.forEachIndexed { index, naviData ->
                 stickyHeader {
                     WanCard(
-                        onClick = { /*TODO*/ },
                         padding = false,
                         backgroundColor = MaterialTheme.colors.primary,
                         modifier = Modifier.fillMaxWidth()
@@ -74,7 +75,7 @@ fun Navi(
                     }
                 }
                 items(naviData.articles) { article ->
-                    WanCard(onClick = { /*TODO*/ }) {
+                    WanCard(onClick = { onArticleClick(article.link) }) {
                         Text(text = article.title)
                     }
                 }

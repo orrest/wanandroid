@@ -74,7 +74,7 @@ fun WanMainContainer(
                     )
                 }
                 WanScreen.Navi -> {
-                    WanNavi()
+                    WanNavi(onArticleClick)
                 }
                 WanScreen.Projects -> {
                     /*TODO*/

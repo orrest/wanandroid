@@ -1,5 +1,7 @@
 package name.zzhxufeng.wanandroid
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +15,6 @@ import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import name.zzhxufeng.wanandroid.ui.screens.*
 import name.zzhxufeng.wanandroid.viewmodel.MainContainerViewModel
-import name.zzhxufeng.wanandroid.ui.composables.WanWebView
 import name.zzhxufeng.wanandroid.ui.theme.WanAndroidTheme
 
 
@@ -46,13 +47,11 @@ fun AppNavigation() {
                 WanMainContainer(
                     uiState = mainViewModel.uiState.collectAsState().value,
                     handleEvent = mainViewModel::handleEvent,
-                    onArticleClick = { navController.navigate(WanScreen.Web.createRoute(it)){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    } },
+                    onArticleClick = {
+                        val intent = Intent(WanApplication.getContext(), WanWebActivity::class.java)
+                        intent.putExtra(URL, it)
+                        WanApplication.startActivity(intent)
+                    },
                     onSearchClick = { navController.navigate(WanScreen.Search.route){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -65,18 +64,6 @@ fun AppNavigation() {
 
             composable(route = WanScreen.Search.route) {
                 WanSearch( onBackClicked = {navController.navigateUp()} )
-            }
-
-            composable(
-                route = WanScreen.Web.route,
-                arguments = listOf(navArgument("url") { type = NavType.StringType })
-            ) { navBackStackEntry ->
-                val encodedUrl = navBackStackEntry.arguments?.getString("url")
-                if (encodedUrl != null) {
-                    WanWebView(url = WanScreen.Web.parseUrl(encodedUrl))
-                } else {
-                    Text(text = "不该发生的情况")
-                }
             }
         }
     }

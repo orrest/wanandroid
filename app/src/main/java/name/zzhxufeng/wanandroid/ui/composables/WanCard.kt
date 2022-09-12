@@ -14,7 +14,7 @@ import name.zzhxufeng.wanandroid.utils.ITEM_PADDING
 @Composable
 fun WanCard(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
     padding: Boolean = true,
     backgroundColor: Color = MaterialTheme.colors.surface,
     content: @Composable () -> Unit

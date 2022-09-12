@@ -54,21 +54,6 @@ sealed class WanScreen(
 
     /*静态方法*/
     companion object {
-        fun fromRouteToScreen(route: String?): WanScreen {
-            Log.d("fromRouteToScreen", route.toString())
-            return when (route) {
-                /*direct compose*/
-                Home.route -> Home
-                Navi.route -> Navi
-                Projects.route -> Projects
-                /*deep compose*/
-                Search.route -> Search
-                Web.route -> Web
-                null -> Home
-                else -> throw IllegalArgumentException("Route $route is not recognized.")
-            }
-        }
-
         fun allScreens(): List<WanScreen> {
             return mutableListOf(
                 Home,
