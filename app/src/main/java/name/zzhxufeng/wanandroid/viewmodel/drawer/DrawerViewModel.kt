@@ -16,14 +16,16 @@ class DrawerViewModel: BaseViewModel() {
     init {
         if (LoginManager.isLogin()) {
             getUserInfo()
-            uiState.update { it.copy(
-                authenticationMode = AuthenticationMode.LOGGED_IN
-            ) }
+            changeLoginState(AuthenticationMode.LOGGED_IN)
         } else {
-            uiState.update { it.copy(
-                authenticationMode = AuthenticationMode.SIGN_IN
-            ) }
+            changeLoginState(AuthenticationMode.SIGN_IN)
         }
+    }
+
+    private fun changeLoginState(authenticationMode: AuthenticationMode) {
+        uiState.update { it.copy(
+            authenticationMode = authenticationMode
+        ) }
     }
 
     private fun getUserInfo() = launchDataLoad {
@@ -92,10 +94,8 @@ class DrawerViewModel: BaseViewModel() {
                 pwd = uiState.value.loginUiState.password
             )
             if (response.errorCode == WAN_SUCCESS_CODE) {
-                uiState.value = uiState.value.copy(
-                    authenticationMode = AuthenticationMode.LOGGED_IN
-                )
-                val response = DrawerRepository.userInfo()
+                getUserInfo()
+                changeLoginState(AuthenticationMode.LOGGED_IN)
             }
             errorMsg.value = response.errorMsg
         }

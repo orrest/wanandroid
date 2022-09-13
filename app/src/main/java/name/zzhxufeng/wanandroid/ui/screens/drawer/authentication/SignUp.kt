@@ -63,7 +63,7 @@ fun SingUp(
                         .fillMaxWidth()
                         .focusRequester(repasswordFocusRequester),
                     password = state.repassword,
-                    onPasswordChanged = { handleEvent(DrawerEvent.PasswordChanged(it)) },
+                    onPasswordChanged = { handleEvent(DrawerEvent.RepasswordChanged(it)) },
                     onDoneClicked = { handleEvent(DrawerEvent.Register) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
