@@ -17,9 +17,8 @@ object DrawerRepository {
     ): WanResponse<AuthenticationData> =
         drawerService.register(username, password, repassword)
 
-    suspend fun logout() {
-        drawerService.logout()
-    }
+    suspend fun logout(): WanResponse<Any>
+    = drawerService.logout()
 
     suspend fun userInfo(): WanResponse<UserInfoData>
     = drawerService.userInfo()
@@ -60,7 +59,7 @@ interface DrawerInterface {
     ): WanResponse<AuthenticationData>
 
     @GET("user/logout/json")
-    suspend fun logout()
+    suspend fun logout(): WanResponse<Any>
 
     @GET("user/lg/userinfo/json")
     suspend fun userInfo(): WanResponse<UserInfoData>

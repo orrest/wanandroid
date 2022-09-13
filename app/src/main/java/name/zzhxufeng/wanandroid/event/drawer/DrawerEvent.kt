@@ -14,4 +14,5 @@ sealed class DrawerEvent: UiEvent {
     object ErrorDismissed: DrawerEvent()
     object Register: DrawerEvent()
     object ThemeDropdownMenu: DrawerEvent()
+    object Logout: DrawerEvent()
 }

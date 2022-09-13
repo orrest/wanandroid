@@ -13,8 +13,4 @@ object LoginManager{
         Log.d(LoginManager.toString(), cookies.toString())
         return cookies != null && cookies.isNotEmpty()
     }
-
-    fun clearCookies() {
-
-    }
 }

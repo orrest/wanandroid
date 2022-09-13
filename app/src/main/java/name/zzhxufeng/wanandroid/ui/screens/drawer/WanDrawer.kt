@@ -2,7 +2,6 @@ package name.zzhxufeng.wanandroid.ui.screens.drawer
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,7 +11,6 @@ import name.zzhxufeng.wanandroid.event.drawer.DrawerEvent
 import name.zzhxufeng.wanandroid.state.drawer.AuthenticationMode
 import name.zzhxufeng.wanandroid.state.drawer.DrawerUiState
 import name.zzhxufeng.wanandroid.ui.model.DrawerItem
-import name.zzhxufeng.wanandroid.ui.model.WanScreen
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItem
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.DrawerItemTheme
 import name.zzhxufeng.wanandroid.ui.screens.drawer.items.NameLevelRank
@@ -39,7 +37,8 @@ fun WanDrawer(
                         userInfo = uiState.userInfo,
                         themeDropdownExpanded = uiState.themeDropdownExpanded,
                         themeDropdownExpandedEvent = { handleEvent(DrawerEvent.ThemeDropdownMenu) },
-                        onNavigate = onDrawerItemNavigate
+                        onNavigate = onDrawerItemNavigate,
+                        logout = { handleEvent(DrawerEvent.Logout) }
                     )
                 }
 
@@ -61,6 +60,7 @@ fun DrawerContent(
     themeDropdownExpanded: Boolean,
     themeDropdownExpandedEvent: () -> Unit,
     onNavigate: (DrawerItem) -> Unit,
+    logout: () -> Unit,
 ) {
     Spacer(modifier = Modifier.height(40.dp))
 
@@ -95,6 +95,6 @@ fun DrawerContent(
 
     DrawerItem(
         item = DrawerItem.LOGOUT,
-        onClick = { /*TODO*/ }
+        onClick = { logout() }
     )
 }

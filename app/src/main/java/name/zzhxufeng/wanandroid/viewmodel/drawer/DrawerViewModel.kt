@@ -50,6 +50,7 @@ class DrawerViewModel: BaseViewModel() {
             DrawerEvent.ToggleAuthenticationMode -> toggleDrawerMode()
             DrawerEvent.ErrorDismissed -> dismissError()
             DrawerEvent.ThemeDropdownMenu -> themeExpanded()
+            DrawerEvent.Logout -> logout()
         }
     }
 
@@ -101,9 +102,17 @@ class DrawerViewModel: BaseViewModel() {
         }
     }
 
-    private fun exit() {
-        /*in login manager*/
-        LoginManager.clearCookies()
+    private fun logout() = launchDataLoad{
+        val response = DrawerRepository.logout()
+        if (response.errorCode == WAN_SUCCESS_CODE) {
+            uiState.update { it.copy(
+                userInfo = null
+            )}
+            changeLoginState(AuthenticationMode.SIGN_IN)
+            errorMsg.value = "已退出登录"
+        } else {
+            errorMsg.value = response.errorMsg
+        }
     }
 
     private fun updateName(name: String) {
