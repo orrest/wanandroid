@@ -34,8 +34,8 @@ fun Bookmarks(
         topBar = {
             WanTopBar(
                 desc = stringResource(id = R.string.title_bookmarks),
-                backIcon = Icons.Default.ArrowBack,
-                onBackClick = navigateBack
+                leftIcon = Icons.Default.ArrowBack,
+                onLeftClick = navigateBack
             )
         }
     ) {
@@ -67,7 +67,9 @@ fun BookmarkItem(
     WanCard(
         onClick = { onClick(bookmarkModel.link) }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = bookmarkModel.title,
             )

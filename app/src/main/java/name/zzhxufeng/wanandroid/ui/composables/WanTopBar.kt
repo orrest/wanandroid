@@ -1,6 +1,7 @@
 package name.zzhxufeng.wanandroid.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
@@ -19,58 +20,39 @@ import name.zzhxufeng.wanandroid.utils.TEXT_FONT_SMALL
 fun WanTopBar(
     desc: String?,
     leftIcon: ImageVector?,
-    rightIcon: ImageVector?,
-    onLeftIconClick: () -> Unit = {},
-    onRightIconClick: () -> Unit = {}
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        leftIcon?.let {
-            IconButton(onClick = { onLeftIconClick() }) {
-                Icon(imageVector = leftIcon, contentDescription = stringResource(R.string.desc_topbar_left_icon))
-            }
-        }
-
-        desc?.let { Text(text = desc) }
-
-        rightIcon?.let {
-            IconButton(onClick = { onRightIconClick() }) {
-                Icon(imageVector = rightIcon, contentDescription = stringResource(R.string.desc_topbar_right_icon))
-            }
-        }
-    }
-}
-
-@Composable
-fun WanTopBar(
-    desc: String?,
-    backIcon: ImageVector?,
-    onBackClick: () -> Unit = {},
+    onLeftClick: () -> Unit = {},
     rightContent: @Composable () -> Unit = {}
 ) {
-    Row(
+    Box(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        backIcon?.let {
-            IconButton(onClick = { onBackClick() }) {
+        leftIcon?.let {
+            IconButton(
+                modifier = Modifier.align(Alignment.CenterStart),
+                onClick = { onLeftClick() }
+            ) {
                 Icon(
-                    imageVector = backIcon,
+                    imageVector = leftIcon,
                     contentDescription = stringResource(R.string.desc_topbar_left_icon),
                 )
             }
         }
 
-        desc?.let { Text(
-            text = desc,
-            fontSize = TEXT_FONT_SMALL.sp
-        ) }
+        desc?.let {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = desc,
+                fontSize = TEXT_FONT_SMALL.sp
+            )
+        }
 
-        rightContent()
+        Row(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            rightContent()
+        }
     }
 }
 

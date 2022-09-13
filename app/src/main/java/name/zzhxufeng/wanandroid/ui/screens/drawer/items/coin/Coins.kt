@@ -128,8 +128,8 @@ private fun CoinsTopBar(
 ) {
     WanTopBar(
         desc = desc,
-        backIcon = Icons.Default.ArrowBack,
-        onBackClick = navigateBack,
+        leftIcon = Icons.Default.ArrowBack,
+        onLeftClick = navigateBack,
     ){
         Row {
             Icon(

@@ -3,6 +3,8 @@ package name.zzhxufeng.wanandroid.ui.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -11,9 +13,12 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import name.zzhxufeng.wanandroid.R
 import name.zzhxufeng.wanandroid.event.MainContainerEvent
 import name.zzhxufeng.wanandroid.state.MainContainerUiState
 import name.zzhxufeng.wanandroid.ui.composables.WanBottomBar
@@ -41,10 +46,17 @@ fun WanMainContainer(
             WanTopBar(
                 desc = uiState.currentScreen.route,
                 leftIcon = Icons.Default.Menu,
-                rightIcon = Icons.Default.Search,
-                onLeftIconClick = { scope.launch { scaffoldState.drawerState.open() } },
-                onRightIconClick = onSearchClick
-            )
+                onLeftClick = { scope.launch { scaffoldState.drawerState.open() } },
+            ){
+                IconButton(
+                    onClick = { onSearchClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null,
+                    )
+                }
+            }
         },
         bottomBar = {
             WanBottomBar(

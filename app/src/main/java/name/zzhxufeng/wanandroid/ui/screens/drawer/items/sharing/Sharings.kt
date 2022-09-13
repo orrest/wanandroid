@@ -38,8 +38,8 @@ fun Sharings(
         topBar = {
             WanTopBar(
                 desc = stringResource(id = R.string.title_share),
-                backIcon = Icons.Default.ArrowBack,
-                onBackClick = navigateBack
+                leftIcon = Icons.Default.ArrowBack,
+                onLeftClick = navigateBack
             )
         },
         floatingActionButton = { SharingFloatingButton(navigateToPostShare) },

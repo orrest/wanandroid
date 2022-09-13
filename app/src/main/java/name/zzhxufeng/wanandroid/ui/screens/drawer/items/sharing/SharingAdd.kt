@@ -29,8 +29,8 @@ fun SharingAdd(
     Column(modifier = Modifier.padding(horizontal = SCREEN_PADDING.dp)) {
         WanTopBar(
             desc = stringResource(id = R.string.title_share),
-            backIcon = Icons.Default.ArrowBack,
-            onBackClick = navigateBack
+            leftIcon = Icons.Default.ArrowBack,
+            onLeftClick = navigateBack
         )
         Text(text = stringResource(R.string.label_title))
 

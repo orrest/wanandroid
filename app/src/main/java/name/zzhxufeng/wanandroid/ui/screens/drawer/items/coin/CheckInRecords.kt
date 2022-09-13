@@ -31,8 +31,8 @@ fun CheckInRecords(
     Scaffold(
         topBar = {
             WanTopBar(
-                backIcon = Icons.Default.ArrowBack,
-                onBackClick = onBackClick,
+                leftIcon = Icons.Default.ArrowBack,
+                onLeftClick = onBackClick,
                 desc = stringResource(R.string.desc_check_in_records),
             )
         }
