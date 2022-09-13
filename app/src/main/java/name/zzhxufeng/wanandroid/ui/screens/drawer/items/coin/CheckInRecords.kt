@@ -1,9 +1,11 @@
 package name.zzhxufeng.wanandroid.ui.screens.drawer.items.coin
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,21 +28,27 @@ fun CheckInRecords(
     handleEvent: (CheckInEvent) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    Column(modifier = Modifier.padding(horizontal = SCREEN_PADDING.dp)) {
-        WanTopBar(
-            backIcon = Icons.Default.ArrowBack,
-            onBackClick = onBackClick,
-            desc = stringResource(R.string.desc_check_in_records),
-        )
-        LazyColumn {
-            itemsIndexed(uiState.checkInRecords) { index, item ->
-                CheckInRecordItem(item)
+    Scaffold(
+        topBar = {
+            WanTopBar(
+                backIcon = Icons.Default.ArrowBack,
+                onBackClick = onBackClick,
+                desc = stringResource(R.string.desc_check_in_records),
+            )
+        }
+    ) {
+        val padding = it
+        Column(modifier = Modifier.padding(horizontal = SCREEN_PADDING.dp)) {
+            LazyColumn {
+                itemsIndexed(uiState.checkInRecords) { index, item ->
+                    CheckInRecordItem(item)
 
-                LaunchedEffect(key1 = uiState.nextPage, block = {
-                    if (uiState.checkInRecords.size - index == 3) {
-                        handleEvent(CheckInEvent.LoadMore)
-                    }
-                })
+                    LaunchedEffect(key1 = uiState.nextPage, block = {
+                        if (uiState.checkInRecords.size - index == 3) {
+                            handleEvent(CheckInEvent.LoadMore)
+                        }
+                    })
+                }
             }
         }
     }
@@ -51,10 +59,10 @@ fun CheckInRecordItem(
     checkInModel: CheckInModel
 ) {
     WanCard(onClick = { /*no*/ }) {
-        Column {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = checkInModel.reason)
-            Text(text = "${checkInModel.desc}")
+            Text(text = checkInModel.desc)
+            Text(text = "总计：${checkInModel.coinCount}")
         }
-        Text(text = "总计：${checkInModel.coinCount}")
     }
 }
