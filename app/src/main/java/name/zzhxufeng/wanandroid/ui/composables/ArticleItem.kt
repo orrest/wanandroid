@@ -28,7 +28,7 @@ fun ArticleItem(
                 Text(text = model.author!!)
                 Text(text = model.niceDate)
             }
-            Text(text = model.title, fontSize = 22.sp)
+            Text(text = model.title)
             Text(text = "${model.superChapterName}/${model.chapterName}")
         }
     }

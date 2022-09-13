@@ -28,7 +28,11 @@ class BookmarkViewModel: BaseViewModel() {
             uiState.update {
                 it.copy(
                     bookmarks = response.data.datas,
-                    nextPage = nextPage(response.data.curPage, response.data.pageCount)
+                    nextPage = nextPage(
+                        START_PAGE_OLD_API,
+                        response.data.curPage,
+                        response.data.pageCount
+                    )
                 )
             }
         } else {
@@ -47,7 +51,9 @@ class BookmarkViewModel: BaseViewModel() {
                             addAll(response.data.datas)
                         }.toList(),
                         nextPage = nextPage(
-                            response.data.curPage, response.data.pageCount
+                            START_PAGE_OLD_API,
+                            response.data.curPage,
+                            response.data.pageCount
                         ),
                     )
                 }

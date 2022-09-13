@@ -1,4 +1,4 @@
-package name.zzhxufeng.wanandroid.ui.screens.drawer
+package name.zzhxufeng.wanandroid.ui.screens.drawer.authentication
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardActions

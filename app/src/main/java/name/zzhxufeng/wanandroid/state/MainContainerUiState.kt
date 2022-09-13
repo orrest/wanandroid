@@ -15,8 +15,7 @@ data class MainContainerUiState(
 data class HomeUiState(
     val articleListState: LazyListState = LazyListState(),
     val articles: List<ArticleModel> = emptyList(),
-    val nextPage: Int = START_PAGE_OLD_API,
-    val maxPage: Int = Int.MAX_VALUE,
+    val nextPage: Int? = START_PAGE_OLD_API,
     val PER_PAGE: Int = DEFAULT_PAGING_SIZE,
     val banners: List<BannerModel> = emptyList(),
     val currentBanner: Int? = null

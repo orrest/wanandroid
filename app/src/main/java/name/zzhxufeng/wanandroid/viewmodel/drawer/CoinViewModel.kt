@@ -49,7 +49,11 @@ class CoinViewModel: BaseViewModel() {
                         listState = LazyListState(),
                         ranks = response.data.datas,
                         maxPage = response.data.pageCount,
-                        nextPage = nextPage(response.data.curPage, response.data.pageCount),
+                        nextPage = nextPage(
+                            START_PAGE,
+                            response.data.curPage,
+                            response.data.pageCount
+                        ),
                     )
                 )
             }
@@ -70,7 +74,11 @@ class CoinViewModel: BaseViewModel() {
                                 addAll(response.data.datas)
                             }.toList(),
                             maxPage = response.data.pageCount,
-                            nextPage = nextPage(response.data.curPage, response.data.pageCount),
+                            nextPage = nextPage(
+                                START_PAGE,
+                                response.data.curPage,
+                                response.data.pageCount
+                            ),
                         )
                     )
                 }

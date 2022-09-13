@@ -29,6 +29,7 @@ class ShareViewModel: BaseViewModel() {
             uiState.update { it.copy(
                 mySharing = response.data.sharingArticles.datas,
                 nextPage = nextPage(
+                    START_PAGE,
                     response.data.sharingArticles.curPage,
                     response.data.sharingArticles.pageCount
                 )
@@ -48,6 +49,7 @@ class ShareViewModel: BaseViewModel() {
                         addAll(response.data.sharingArticles.datas)
                     }.toList(),
                     nextPage = nextPage(
+                        START_PAGE,
                         response.data.sharingArticles.curPage,
                         response.data.sharingArticles.pageCount
                     )

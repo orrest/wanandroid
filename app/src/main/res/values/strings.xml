@@ -46,5 +46,7 @@
     <string name="theme_orange">橙黄</string>
     <string name="theme_blue">蓝绿</string>
     <string name="theme_dark">暗色模式</string>
+    <string name="label_hot_history">热门搜索</string>
+    <string name="indicator_search">搜索 ...</string>
 
 </resources>

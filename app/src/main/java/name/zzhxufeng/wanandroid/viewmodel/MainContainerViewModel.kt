@@ -45,27 +45,27 @@ class MainContainerViewModel : BaseViewModel() {
     }
 
     private fun loadMoreArticles() = launchDataLoad{
-        run condition@ {
-            // The last time next page is this time current page.
-            val curPage = uiState.value.homeUiState.nextPage
-            val maxPage = uiState.value.homeUiState.maxPage
-            if (curPage >= maxPage) {
-                return@condition
-            }
-            val response = HomeRepository.fetchArticles(curPage)
+        val nextPage = uiState.value.homeUiState.nextPage
+        if (nextPage != null) {
+            val response = HomeRepository.fetchArticles(nextPage)
             if (response.errorCode == WAN_SUCCESS_CODE) {
                 uiState.update { it.copy(
                     homeUiState = it.homeUiState.copy(
                         articles = it.homeUiState.articles.toMutableList().apply {
                             addAll(response.data.datas)
                         }.toList(),
-                        maxPage = response.data.pageCount,
-                        nextPage = response.data.curPage,
+                        nextPage = nextPage(
+                            START_PAGE_OLD_API,
+                            response.data.curPage,
+                            response.data.pageCount
+                        ),
                     )
                 ) }
             } else {
                 errorMsg.value = response.errorMsg
             }
+        } else {
+            errorMsg.value = "没有更多数据"
         }
     }
 
@@ -99,8 +99,11 @@ class MainContainerViewModel : BaseViewModel() {
                 homeUiState = it.homeUiState.copy(
                     articleListState = LazyListState(),
                     articles = response.data.datas,
-                    maxPage = response.data.pageCount,
-                    nextPage = response.data.curPage,
+                    nextPage = nextPage(
+                        START_PAGE_OLD_API,
+                        response.data.curPage,
+                        response.data.pageCount
+                    )
                 )
             ) }
         } else {

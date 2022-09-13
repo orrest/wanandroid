@@ -41,8 +41,22 @@ abstract class BaseViewModel: ViewModel() {
         }
     }
 
-    fun nextPage(curPage: Int, maxPage: Int): Int? {
-        return if (curPage + 1 >= maxPage) null
-        else curPage + 1
+    fun nextPage(
+        startFrom: Int,
+        curPage: Int,
+        maxPage: Int
+    ): Int? {
+        return when (startFrom) {
+            0 -> when (curPage >= maxPage) {
+                true -> null
+                false -> curPage
+            }
+
+            1 -> when (curPage + 1 >= maxPage) {
+                true -> null
+                false -> curPage + 1
+            }
+            else -> null
+        }
     }
 }
