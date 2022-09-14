@@ -22,13 +22,9 @@ class WanAndroidResponseInterceptor: Interceptor {
             }
             Log.d(WanAndroidNetwork.javaClass.name, "cookies: $cookies")
             CookieMMKVRepo.putStringSet(COOKIES, cookies)
-        } else if (response.request.url.encodedPath.contains("logout")
-            && response.headers("Set-Cookies").isNotEmpty()
-        ) {
-            val allExpire = response.headers("Set-Cookies").all { it.contains("1970") }
-            if (allExpire) {
-                CookieMMKVRepo.remove(COOKIES)
-            }
+        } else if (response.request.url.encodedPath.contains("logout")) {
+            Log.d("Logout", "clear cookie cache")
+            CookieMMKVRepo.remove(COOKIES)
         }
         return response
     }
