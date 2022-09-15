@@ -1,5 +1,9 @@
 # wanandroid
 A project that using the 'WanAndroid" api.
 
-- Jetpack Compose for UI
-- MMVM architecture with MutableStateFlow
+- Architecture: MMVM
+- UI: Jetpack Compose & Accompanist libs
+- Network: Okhttp, Retrofit
+- Database: Room, SQLite, MMKV
+
+Working in progress...
